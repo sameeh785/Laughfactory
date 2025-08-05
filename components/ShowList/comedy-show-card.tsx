@@ -28,10 +28,10 @@ export default function ComedyShowCard({
   return (
     <div className="bg-white rounded-lg shadow-lg">
       {/* Banner Image */}
-      <div className="relative h-48 bg-black">
+      <div className="relative h-48 bg-black rounded-t-lg">
         <Image src={showDetails.bannerImage || "/placeholder.svg"} alt={showDetails.title} fill className="object-contain" />
         {/* Decorative stars */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent rounded-t-lg">
           <div className="absolute top-4 right-8 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
           <div className="absolute top-8 right-16 w-1 h-1 bg-cyan-300 rounded-full animate-pulse delay-300"></div>
           <div className="absolute bottom-6 right-12 w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse delay-700"></div>
