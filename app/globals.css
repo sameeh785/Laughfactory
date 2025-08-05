@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for react-multi-carousel to prevent width issues */
+.react-multi-carousel-list {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.react-multi-carousel-item {
+  width: auto !important;
+  max-width: 120px !important;
+  flex: 0 0 auto !important;
+}
+
+.react-multi-carousel-track {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+/* For Firefox */
+.scroll-v {
+  scrollbar-width: thin;
+  scrollbar-color: #444547 transparent;
+}
+  
