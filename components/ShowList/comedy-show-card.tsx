@@ -40,11 +40,11 @@ export default function ComedyShowCard({
 
       <div className="px-6 py-4">
         <div className="flex justify-between items-start gap-6">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {/* Title and Subtitle */}
             <div className="mb-3">
-              <h3 className="text-[20px] font-bold text-gray-900 mb-2">{showDetails.title}</h3>
-              <p className="text-gray-600 text-[14px]">{showDetails.subtitle}</p>
+              <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">{showDetails.title}</h3>
+              <p className="text-gray-600 text-[14px] line-clamp-2">{showDetails.subtitle}</p>
             </div>
 
             {/* Comedians Section */}

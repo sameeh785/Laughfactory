@@ -12,11 +12,11 @@ interface ComedianCarouselProps {
   comedians: Comedian[]
 }
 
-export default function ComedianCarousel({ comedians }: ComedianCarouselProps) {
+export default function ComedianList({ comedians }: ComedianCarouselProps) {
   return (
     <div className="mt-4">
       <h4 className="text-lg font-semibold text-gray-900 mb-4">Features comedians:</h4>
-        <div className="flex gap-4 max-w-[368px] overflow-scroll scroll-v pb-3">
+        <div className="flex gap-4 w-full overflow-x-auto pb-3 scroll-v">
           {comedians.map((comedian, index) => (
             <div key={index} className="flex flex-col items-center justify-center flex-shrink-0">
               <Tooltip content={comedian.name} placement="top">
@@ -32,7 +32,7 @@ export default function ComedianCarousel({ comedians }: ComedianCarouselProps) {
               </Tooltip>
             </div>
           ))}
-        </div>
+      </div>
     </div>
   )
 } 
