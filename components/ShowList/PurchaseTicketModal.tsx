@@ -234,7 +234,7 @@ export default function PurchaseTicketModal() {
                                                 <p>
                                                     To find more information or to answer other commonly asked questions, please visit our FAQ page at:{" "}
                                                     <a href="https://www.laughfactory.com/hollywood/faqs" className="text-blue-600 underline hover:text-blue-800">
-                                                        https://www.laughfactory.com/hollywood/faqs
+                                                        Laugh Factory FAQ
                                                     </a>
                                                 </p>
                                                 <p>Prices, performers, and schedule are subject to change.</p>
