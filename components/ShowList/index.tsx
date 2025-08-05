@@ -1,5 +1,5 @@
-import ComedyShowCard from "./comedy-show-card"
-import PurchaseTicketModal from "./PurchaseTicketModal"
+import ComedyShowCard from "@/components/ShowList/comedy-show-card"
+import PurchaseTicketModal from "@/components/ShowList/PurchaseTicketModal"
 
 
 // Example data structure
@@ -67,7 +67,6 @@ const showsData = [
 ]
 
 export default function ShowsList() {
-
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">

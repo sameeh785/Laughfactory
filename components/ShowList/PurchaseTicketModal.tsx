@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ArrowLeft, X } from "lucide-react"
-import Button from "../ui/Button"
+import Button from "@/components/ui/Button"
 import { useModalStore } from "@/store/useModalStore"
 import { useSelectedShowStore } from "@/store/selectedShow"
-import TicketList from "./TicketList"
-import PaymentForm from "./PaymentForm"
+import TicketList from "@/components/ShowList/TicketList"
+import PaymentForm from "@/components/ShowList/PaymentForm"
 import { cn } from "@/utils/common"
 
 const ticketOptions = [

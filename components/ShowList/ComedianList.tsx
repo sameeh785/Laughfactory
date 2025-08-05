@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import Tooltip from "../ui/Tooltip"
+import Tooltip from "@/components/ui/Tooltip"
 
 interface Comedian {
   name: string

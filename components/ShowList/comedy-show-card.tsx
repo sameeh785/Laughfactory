@@ -1,6 +1,6 @@
 import Image from "next/image"
-import InteractiveButtons from "./InteractiveButtons"
-import ComedianList from "./ComedianList"
+import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
+import ComedianList from "@/components/ShowList/ComedianList"
 
 interface Comedian {
   name: string

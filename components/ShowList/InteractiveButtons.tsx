@@ -1,7 +1,7 @@
 "use client"
 
 import { Share2 } from "lucide-react"
-import Button from "../ui/Button"
+import Button from "@/components/ui/Button"
 import { useSelectedShowStore } from "@/store/selectedShow"
 import { useModalStore } from "@/store/useModalStore"
 

@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
-import Button from "../ui/Button"
 import Image from "next/image"
 
 interface PaymentFormData {
