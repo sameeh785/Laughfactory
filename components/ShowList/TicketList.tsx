@@ -27,6 +27,7 @@ export default function TicketList() {
             <div className="space-y-4">
                 {ticketList.map((ticket) => {
                     const purchaseTicket = purchaseTicketList.find((purchaseTicket) => purchaseTicket.ticket_id === ticket.ticket_id)
+                    console.log(purchaseTicket,"purchaseTicket")
                     return (
                         <div key={ticket.ticket_id} className="border-2 border-orange-200 rounded-lg p-4">
                             <div className="flex justify-between items-start mb-3">
@@ -39,7 +40,7 @@ export default function TicketList() {
                                 <div className="flex items-center gap-3 text-gray-500">
                                     <button
                                         onClick={() => removeQuantity(ticket.ticket_id.toString())}
-                                        disabled={purchaseTicket?.quantity === 0}
+                                        disabled={!purchaseTicket || purchaseTicket?.quantity === 0}
                                         className="w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                     >
                                         <Minus className="h-4 w-4" />

@@ -1,6 +1,6 @@
 import { IPurchaseTicket, ITicket } from "@/interface/tickets"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
-import { useSelectedShowStore } from "@/store/useSelectedShow"
+import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react"
 

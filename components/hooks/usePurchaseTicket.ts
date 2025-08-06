@@ -1,9 +1,9 @@
 
 import { useModalStore } from "@/store/useModalStore"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
-import { useSelectedShowStore } from "@/store/useSelectedShow"
+import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 export const usePurchaseTicket = () => {
     // hooks
@@ -12,6 +12,8 @@ export const usePurchaseTicket = () => {
     const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
     const { purchaseTicketList } = usePurchaseTicketsStore()
     const { setPurchaseTicketList } = usePurchaseTicketsStore()
+    const formRef = useRef<HTMLFormElement>(null)
+    const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
 
     // state
     const [termsAccepted, setTermsAccepted] = useState(false)
@@ -21,24 +23,26 @@ export const usePurchaseTicket = () => {
 
     // calculations
     const subtotal = useMemo(() => {
-        const total =  purchaseTicketList.reduce((sum, option) => {
+        const total = purchaseTicketList.reduce((sum, option) => {
             return sum + parseFloat(option.price) * option.quantity
         }, 0) - discount
         return total > 0 ? total : 0
-    }, [purchaseTicketList,discount])
+    }, [purchaseTicketList, discount])
     const hasTicketsSelected = useMemo(() => purchaseTicketList.some((ticket) => ticket.quantity > 0), [purchaseTicketList])
 
     // functions
     const handlePurchase = useCallback(() => {
+        if (currentStep === "payment") {
+            const form = formRef.current
+            if (form) {
+                const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
+                form.dispatchEvent(submitEvent)
+            }
+            return
+        }
         setCurrentStep("payment")
-    }, [])
-    const handlePaymentSubmit = useCallback((paymentData: any) => {
-        showToast.success("Payment successful!")
-        closeModal()
-        // Reset states
-        setCurrentStep("tickets")
-        setPurchaseTicketList([])
-    }, [closeModal, setCurrentStep, setPurchaseTicketList])
+
+    }, [currentStep])
 
     const resetStates = useCallback(() => {
         setCurrentStep("tickets")
@@ -71,7 +75,7 @@ export const usePurchaseTicket = () => {
         } finally {
             setIsLoading(false)
         }
-    }, [promoCode, subtotal, selectedShow,purchaseTicketList])
+    }, [promoCode, subtotal, selectedShow, purchaseTicketList])
 
 
     // effects
@@ -114,12 +118,13 @@ export const usePurchaseTicket = () => {
         closeModal,
         isModalOpen,
         handlePurchase,
-        handlePaymentSubmit,
         purchaseTicketList,
         promoCode,
         setPromoCode,
         handlePromoCode,
         isLoading,
-        discount
+        discount,
+        formRef,
+        submitFormRef
     }
 }

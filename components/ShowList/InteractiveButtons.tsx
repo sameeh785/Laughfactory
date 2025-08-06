@@ -2,7 +2,7 @@
 
 import { Share2 } from "lucide-react"
 import Button from "@/components/ui/Button"
-import { useSelectedShowStore } from "@/store/useSelectedShow"
+import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { useModalStore } from "@/store/useModalStore"
 import { useCallback } from "react"
 import { showToast } from "@/utils/toast"

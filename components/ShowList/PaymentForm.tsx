@@ -1,186 +1,35 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React from "react"
 import { ChevronDown } from "lucide-react"
 import Image from "next/image"
-
-interface PaymentFormData {
-  cardNumber: string
-  expiryDate: string
-  securityCode: string
-  country: string
-  fullName: string
-  email: string
-  addressLine1: string
-  addressLine2: string
-  zipCode: string
-  billingCountry: string
-  state: string
-  city: string
-}
+import { countries } from "@/constant/countries"
+import { useCheckout } from "../hooks/useCheckout"
 
 interface PaymentFormProps {
-  onSubmit: (data: PaymentFormData) => void
-  onBack: () => void
-  total: number
+  formRef: React.RefObject<HTMLFormElement>
+  submitFormRef?: React.MutableRefObject<((e?: React.FormEvent) => void) | null>
 }
 
-interface FormErrors {
-  [key: string]: string
-}
+export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps) {
+  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm } = useCheckout(formRef)
 
-export default function PaymentForm({ onSubmit, onBack, total }: PaymentFormProps) {
-  const [formData, setFormData] = useState<PaymentFormData>({
-    cardNumber: "",
-    expiryDate: "",
-    securityCode: "",
-    country: "United States",
-    fullName: "",
-    email: "",
-    addressLine1: "",
-    addressLine2: "",
-    zipCode: "",
-    billingCountry: "United States",
-    state: "",
-    city: "",
-  })
-
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const countries = [
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "Australia",
-    "Germany",
-    "France",
-    "Japan",
-    "Pakistan",
-    "India",
-    "Brazil",
-  ]
-
-  const validateCardNumber = (cardNumber: string): boolean => {
-    const cleaned = cardNumber.replace(/\s/g, "")
-    return /^\d{13,19}$/.test(cleaned)
-  }
-
-  const validateExpiryDate = (expiryDate: string): boolean => {
-    const regex = /^(0[1-9]|1[0-2])\/\d{2}$/
-    if (!regex.test(expiryDate)) return false
-
-    const [month, year] = expiryDate.split("/")
-    const currentDate = new Date()
-    const currentYear = currentDate.getFullYear() % 100
-    const currentMonth = currentDate.getMonth() + 1
-
-    const expYear = Number.parseInt(year)
-    const expMonth = Number.parseInt(month)
-
-    if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
-      return false
+  // Pass the submit function to the ref if provided
+  React.useEffect(() => {
+    if (submitFormRef) {
+      submitFormRef.current = (e?: React.FormEvent) => {
+        if (e) {
+          submitForm(e)
+        } else {
+          // Call submitForm without event - it will handle the submission properly
+          submitForm({} as React.FormEvent)
+        }
+      }
     }
-
-    return true
-  }
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {}
-
-    // Card validation
-    if (!formData.cardNumber.trim()) {
-      newErrors.cardNumber = "Card number is required"
-    } else if (!validateCardNumber(formData.cardNumber)) {
-      newErrors.cardNumber = "Please enter a valid card number"
-    }
-
-    if (!formData.expiryDate.trim()) {
-      newErrors.expiryDate = "Expiry date is required"
-    } else if (!validateExpiryDate(formData.expiryDate)) {
-      newErrors.expiryDate = "Please enter a valid expiry date (MM/YY)"
-    }
-
-    if (!formData.securityCode.trim()) {
-      newErrors.securityCode = "Security code is required"
-    } else if (!/^\d{3,4}$/.test(formData.securityCode)) {
-      newErrors.securityCode = "Please enter a valid security code"
-    }
-
-    // Personal info validation
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required"
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address"
-    }
-
-    // Billing info validation
-    if (!formData.addressLine1.trim()) {
-      newErrors.addressLine1 = "Address is required"
-    }
-
-    if (!formData.zipCode.trim()) {
-      newErrors.zipCode = "Zip code is required"
-    }
-
-    if (!formData.state.trim()) {
-      newErrors.state = "State is required"
-    }
-
-    if (!formData.city.trim()) {
-      newErrors.city = "City is required"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleInputChange = (field: keyof PaymentFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }))
-    }
-  }
-
-  const formatCardNumber = (value: string) => {
-    const cleaned = value.replace(/\s/g, "")
-    const formatted = cleaned.replace(/(.{4})/g, "$1 ").trim()
-    return formatted.substring(0, 19) // Max 16 digits + 3 spaces
-  }
-
-  const formatExpiryDate = (value: string) => {
-    const cleaned = value.replace(/\D/g, "")
-    if (cleaned.length >= 2) {
-      return cleaned.substring(0, 2) + "/" + cleaned.substring(2, 4)
-    }
-    return cleaned
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!validateForm()) return
-
-    setIsSubmitting(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    onSubmit(formData)
-    setIsSubmitting(false)
-  }
+  }, [submitForm, submitFormRef])
 
   return (
-    <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6 text-gray-900">
+    <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6 text-gray-900" ref={formRef}>
       {/* Payment Information */}
       <div className="space-y-4 bg-gray-50 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-gray-900">Payment Information</h3>
@@ -391,20 +240,6 @@ export default function PaymentForm({ onSubmit, onBack, total }: PaymentFormProp
           </div>
         </div>
       </div>
-
-      {/* Action Buttons
-      <div className="flex gap-4 pt-4">
-        <Button type="button" variant="outline" onClick={onBack} className="flex-1">
-          Back to Tickets
-        </Button>
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:opacity-50"
-        >
-          {isSubmitting ? "Processing..." : `Complete Purchase - $${total.toFixed(2)}`}
-        </Button>
-      </div> */}
     </form>
   )
 }

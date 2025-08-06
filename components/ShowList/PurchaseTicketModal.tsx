@@ -11,7 +11,7 @@ import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, handlePaymentSubmit, purchaseTicketList, promoCode, setPromoCode, discount } = usePurchaseTicket()
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, discount, formRef, submitFormRef } = usePurchaseTicket()
 
     if (!isModalOpen || !selectedShow) return <></>
 
@@ -45,7 +45,7 @@ export default function PurchaseTicketModal() {
                             <TicketList />
                         )}
                         {currentStep === "payment" && (
-                            <PaymentForm onSubmit={handlePaymentSubmit} onBack={() => setCurrentStep("tickets")} total={subtotal} />
+                            <PaymentForm formRef={formRef} submitFormRef={submitFormRef} />
                         )}
 
                         {/* Right Column - Order Summary */}
