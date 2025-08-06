@@ -29,14 +29,15 @@ export default function ShowsList({shows}: {shows: IShow[]}) {
               key={show.id || index}
               showDetails={{
                 title: show.title,
-                subtitle: show.description,
-                bannerImage: show.image || "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
+                description: show.description,
+                image: show.image || "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
                 comedians: show.comedians.map((comedian: any) => ({
                   name: comedian.name,
                   image: comedian.image || "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg"
                 })),
                 date: formatDate(show.date, show.start_time),
                 dateId: show.date_id,
+                id: show.id
               }}
             />
           ))}

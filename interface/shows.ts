@@ -1,7 +1,8 @@
 export interface IShow {
+    id: number
     title: string
-    subtitle: string
-    bannerImage: string
+    description: string
+    image: string
     comedians: IComedian[]
     date: {
         month: string

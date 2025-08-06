@@ -6,7 +6,6 @@ import Loader from '@/components/ui/Loader'
 export default function TicketList() {
     // hooks
     const { selectedShow, addQuantity, removeQuantity, loading, ticketList, purchaseTicketList } = useTicketList()
-    console.log(ticketList, "purchaseTicketList")
     if (loading) {
         return (
             <div className="lg:col-span-2 flex justify-center items-center min-h-[200px]">
@@ -14,7 +13,6 @@ export default function TicketList() {
             </div>
         )
     }
-
     return (
         <div className="lg:col-span-2 space-y-6">
             <div>
@@ -22,7 +20,7 @@ export default function TicketList() {
                 <p className="text-gray-600 mb-4">
                     {selectedShow?.date?.month} {selectedShow?.date?.day} at {selectedShow?.date?.time}
                 </p>
-                <p className="text-gray-700">{selectedShow?.subtitle}</p>
+                <p className="text-gray-700">{selectedShow?.description}</p>
             </div>
             {ticketList?.length === 0 && <div className="text-center text-gray-500 text-lg mt-4">No tickets found for this show</div>}
             {/* Ticket Options */}

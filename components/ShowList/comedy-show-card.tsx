@@ -16,7 +16,7 @@ export default function ComedyShowCard({
         <div className="bg-white rounded-lg shadow-lg">
             {/* Banner Image */}
             <div className="relative h-48 rounded-t-lg">
-                <Image src={showDetails.bannerImage || "/placeholder.svg"} alt={showDetails.title} fill className="object-image-initial rounded-t-lg" />
+                <Image src={showDetails.image || "/placeholder.svg"} alt={showDetails.title} fill className="object-image-initial rounded-t-lg" />
                 {/* Time Badge */}
                 <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
                     {showDetails.date.month} {showDetails.date.day} / {showDetails.date.time}
@@ -31,7 +31,7 @@ export default function ComedyShowCard({
                             <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">
                                 {showDetails.title}
                             </h3>
-                            <p className="text-gray-600 text-[14px]">{showDetails.subtitle}</p>
+                            <p className="text-gray-600 text-[14px]">{showDetails.description}</p>
                         </div>
 
                         {/* Comedians Section */}

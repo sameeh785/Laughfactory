@@ -11,8 +11,8 @@ import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted,closeModal,selectedShow,isModalOpen ,handlePurchase,handlePaymentSubmit,purchaseTicketList} = usePurchaseTicket()
-  
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, handlePaymentSubmit, purchaseTicketList, promoCode, setPromoCode, discount } = usePurchaseTicket()
+
     if (!isModalOpen || !selectedShow) return <></>
 
     return (
@@ -60,7 +60,7 @@ export default function PurchaseTicketModal() {
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
 
                                 <div className="space-y-2 mb-4">
-                                    {purchaseTicketList.map((option : IPurchaseTicket) => {
+                                    {purchaseTicketList.map((option: IPurchaseTicket) => {
                                         if (option.quantity === 0) return null
 
                                         return (
@@ -87,6 +87,14 @@ export default function PurchaseTicketModal() {
                                         <span>Taxes</span>
                                         <span>$0.00</span>
                                     </div>
+                                    {
+                                        discount > 0 && (
+                                            <div className="flex justify-between text-sm">
+                                                <span>Discount</span>
+                                                <span>${discount.toFixed(2)}</span>
+                                            </div>
+                                        )
+                                    }
                                 </div>
 
                                 <div className="border-t pt-4 mb-4">
@@ -107,10 +115,13 @@ export default function PurchaseTicketModal() {
                                                     type="text"
                                                     placeholder="Enter your code"
                                                     className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                                    value={promoCode}
+                                                    onChange={(e) => setPromoCode(e.target.value)}
                                                 />
                                                 <Button
-                                                    className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm"
+                                                    className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                                                     size="sm"
+                                                    disabled={!promoCode}
                                                 >
                                                     Apply
                                                 </Button>
