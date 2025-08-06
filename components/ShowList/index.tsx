@@ -1,73 +1,20 @@
 import ComedyShowCard from "@/components/ShowList/comedy-show-card"
 import PurchaseTicketModal from "@/components/ShowList/PurchaseTicketModal"
+import { IShow } from "@/interface/shows"
 
+// Helper function to format date
+const formatDate = (dateString: string, timeString: string) => {
+  const date = new Date(dateString);
+  const time = timeString.split(':');
+  
+  return {
+    month: date.toLocaleDateString('en-US', { month: 'short', weekday: 'short' }).toUpperCase(),
+    day: date.getDate().toString().padStart(2, '0'),
+    time: `${time[0]}:${time[1]} ${parseInt(time[0]) >= 12 ? 'PM' : 'AM'}`
+  };
+};
 
-// Example data structure
-const showsData = [
-  {
-    title: "Mike Binder & Friends!",
-    subtitle: "Laugh Factory Hollywood presents: Mike Binder & Friends",
-    bannerImage: "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
-    comedians: [
-      { name: "Mike Binder", image:  "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Jeff Dye", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Jetski Johnson", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Adam Hunter", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Vinny Fasline", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Greg Baldwin", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Chris Ramos", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-    ],
-    date: {
-      month: "MON AUG",
-      day: "04",
-      time: "8:00 PM",
-    },
-    ticketUrl: "https://example.com/tickets",
-  },
-  {
-    title: "Mike Binder & Friends!",
-    subtitle: "Laugh Factory Hollywood presents: Mike Binder & Friends",
-    bannerImage: "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
-    comedians: [
-      { name: "Mike Binder", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Jeff Dye", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Jetski Johnson", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Adam Hunter", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Vinny Fasline", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Greg Baldwin", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Chris Ramos", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-    ],
-    date: {
-      month: "MON AUG",
-      day: "04",
-      time: "8:00 PM",
-    },
-    ticketUrl: "https://example.com/tickets",
-  },
-  {
-    title: "Mike Binder & Friends!",
-    subtitle: "Laugh Factory Hollywood presents: Mike Binder & Friends",
-    bannerImage: "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
-    comedians: [
-      { name: "Mike Binder", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Jeff Dye", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Jetski Johnson", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Adam Hunter", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Vinny Fasline", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Greg Baldwin", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-      { name: "Chris Ramos", image: "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg" },
-    ],
-    date: {
-      month: "MON AUG",
-      day: "04",
-      time: "8:00 PM",
-    },
-    ticketUrl: "https://example.com/tickets",
-  },
-]
-
-export default function ShowsList() {
-
+export default function ShowsList({shows}: {shows: IShow[]}) {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="mx-auto px-4">
@@ -75,20 +22,22 @@ export default function ShowsList() {
       <div className="px-6 py-4 bg-gray-50 rounded-lg">
         <h2 className="text-xl font-bold text-gray-900 uppercase tracking-wide">UPCOMING SHOWS - Hollywood</h2>
       </div>
+      {shows?.length === 0 && <div className="text-center text-gray-500 text-lg mt-4">No shows found</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {showsData.map((show, index) => (
+          {shows?.map((show: any, index: number) => (
             <ComedyShowCard
-              key={index}
-              showDetails={
-                {
-                  title: show.title,
-                  subtitle: show.subtitle,
-                  bannerImage: show.bannerImage,
-                  comedians: show.comedians,
-                  date: show.date,
-                  ticketUrl: show.ticketUrl,
-                }
-              }
+              key={show.id || index}
+              showDetails={{
+                title: show.title,
+                subtitle: show.description,
+                bannerImage: show.image || "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
+                comedians: show.comedians.map((comedian: any) => ({
+                  name: comedian.name,
+                  image: comedian.image || "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg"
+                })),
+                date: formatDate(show.date, show.start_time),
+                dateId: show.date_id,
+              }}
             />
           ))}
           </div>

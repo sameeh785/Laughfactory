@@ -42,3 +42,6 @@ body {
   scrollbar-color: #444547 transparent;
 }
   
+.object-image-initial {
+  object-fit: initial;
+}

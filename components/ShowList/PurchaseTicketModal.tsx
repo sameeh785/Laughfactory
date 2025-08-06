@@ -1,97 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ArrowLeft, X } from "lucide-react"
 import Button from "@/components/ui/Button"
-import { useModalStore } from "@/store/useModalStore"
-import { useSelectedShowStore } from "@/store/selectedShow"
 import TicketList from "@/components/ShowList/TicketList"
 import PaymentForm from "@/components/ShowList/PaymentForm"
 import { cn } from "@/utils/common"
-
-const ticketOptions = [
-    {
-        id: "1",
-        name: "Ticket",
-        price: 10,
-        fees: 1,
-        description: "Ticket description",
-        timeSlot: "Time slot",
-    },
-    {
-        id: "2",
-        name: "Ticket",
-        price: 10,
-        fees: 1,
-        description: "Ticket description",
-        timeSlot: "Time slot",
-    },
-]
+import { usePurchaseTicket } from "../hooks/usePurchaseTicket"
+import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
-    // hooks
-    const { isModalOpen, closeModal } = useModalStore()
-    const { selectedShow } = useSelectedShowStore()
-    const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
-    // functions
-    const handlePurchase = () => {
-        setCurrentStep("payment")
-    }
-    const handlePaymentSubmit = (paymentData: any) => {
-        alert(`Payment successful! Total: $${total.toFixed(2)}`)
-        closeModal()
-        // Reset states
-        setCurrentStep("tickets")
-        setQuantities(ticketOptions.reduce((acc, option) => ({ ...acc, [option.id]: 0 }), {}))
-    }
 
-    // state
-    const [quantities, setQuantities] = useState<Record<string, number>>(
-        ticketOptions.reduce((acc, option) => ({ ...acc, [option.id]: 0 }), {}),
-    )
-    const [termsAccepted, setTermsAccepted] = useState(false)
-    // calculations
-    const subtotal = ticketOptions.reduce((sum, option) => {
-        return sum + option.price * quantities[option.id]
-    }, 0)
-
-    const totalFees = ticketOptions.reduce((sum, option) => {
-        return sum + option.fees * quantities[option.id]
-    }, 0)
-
-    const total = subtotal + totalFees
-
-    const hasTicketsSelected = Object.values(quantities).some((qty) => qty > 0)
-
-    // effects
-    useEffect(() => {
-        if (isModalOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "unset"
-        }
-
-        return () => {
-            document.body.style.overflow = "unset"
-        }
-    }, [isModalOpen])
-
-    useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                closeModal()
-            }
-        }
-
-        if (isModalOpen) {
-            document.addEventListener("keydown", handleEscape)
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape)
-        }
-    }, [isModalOpen, closeModal])
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted,closeModal,selectedShow,isModalOpen ,handlePurchase,handlePaymentSubmit,purchaseTicketList} = usePurchaseTicket()
+  
     if (!isModalOpen || !selectedShow) return <></>
 
     return (
@@ -121,10 +42,10 @@ export default function PurchaseTicketModal() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Left Column - Ticket Options */}
                         {currentStep === "tickets" && (
-                            <TicketList quantities={quantities} setQuantities={setQuantities} ticketOptions={ticketOptions} />
+                            <TicketList />
                         )}
                         {currentStep === "payment" && (
-                            <PaymentForm onSubmit={handlePaymentSubmit} onBack={() => setCurrentStep("tickets")} total={total} />
+                            <PaymentForm onSubmit={handlePaymentSubmit} onBack={() => setCurrentStep("tickets")} total={subtotal} />
                         )}
 
                         {/* Right Column - Order Summary */}
@@ -139,16 +60,15 @@ export default function PurchaseTicketModal() {
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
 
                                 <div className="space-y-2 mb-4">
-                                    {ticketOptions.map((option) => {
-                                        const qty = quantities[option.id]
-                                        if (qty === 0) return null
+                                    {purchaseTicketList.map((option : IPurchaseTicket) => {
+                                        if (option.quantity === 0) return null
 
                                         return (
-                                            <div key={option.id} className="flex justify-between text-sm">
+                                            <div key={option.ticket_id} className="flex justify-between text-sm">
                                                 <span>
-                                                    {qty} x {option.name}
+                                                    {option.quantity} x {option.name}
                                                 </span>
-                                                <span>${(option.price * qty).toFixed(2)}</span>
+                                                <span>${(parseFloat(option.price) * option.quantity).toFixed(2)}</span>
                                             </div>
                                         )
                                     })}
@@ -161,7 +81,7 @@ export default function PurchaseTicketModal() {
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span>Fees</span>
-                                        <span>${totalFees.toFixed(2)}</span>
+                                        <span>${subtotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span>Taxes</span>
@@ -172,7 +92,7 @@ export default function PurchaseTicketModal() {
                                 <div className="border-t pt-4 mb-4">
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Total</span>
-                                        <span>USD ${total.toFixed(2)}</span>
+                                        <span>USD ${subtotal.toFixed(2)}</span>
                                     </div>
                                 </div>
 
