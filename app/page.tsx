@@ -8,6 +8,5 @@ export default async function Home(): Promise<JSX.Element> {
     });
 
     const { data: showsData } = await shows.json();
-
     return <ShowsList shows={showsData?.data} />;
 }

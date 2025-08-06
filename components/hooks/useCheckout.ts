@@ -1,11 +1,14 @@
 import { IPaymentFormData, IPaymentFormErrors } from "@/interface/payment"
 import usePaymentFormStore from "@/store/usePaymentFormStore"
 import { validateCardNumber, validateEmail, validateExpiryDate } from "@/utils/common"
+import { useCallback } from "react"
 
 export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
+    // hooks
     const { formData, updateFormData, updateErrors, errors, setIsSubmitting } = usePaymentFormStore()
 
-    const validateForm = (): boolean => {
+    //functions
+    const validateForm = useCallback((): boolean => {
         const newErrors: IPaymentFormErrors = {}
 
         // Card validation
@@ -57,9 +60,9 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
 
         updateErrors(newErrors)
         return Object.keys(newErrors).length === 0
-    }
+    }, [formData, updateErrors, errors])
 
-    const handleInputChange = (field: keyof IPaymentFormData, value: string) => {
+    const handleInputChange = useCallback((field: keyof IPaymentFormData, value: string) => {
         updateFormData({
             [field]: value
         })
@@ -69,23 +72,23 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 [field]: ""
             })
         }
-    }
+    }, [updateFormData, errors, updateErrors])  
 
-    const formatCardNumber = (value: string) => {
+    const formatCardNumber = useCallback((value: string) => {
         const cleaned = value.replace(/\s/g, "")
         const formatted = cleaned.replace(/(.{4})/g, "$1 ").trim()
         return formatted.substring(0, 19) // Max 16 digits + 3 spaces
-    }
+    }, [])
 
-    const formatExpiryDate = (value: string) => {
+    const formatExpiryDate = useCallback((value: string) => {
         const cleaned = value.replace(/\D/g, "")
         if (cleaned.length >= 2) {
             return cleaned.substring(0, 2) + "/" + cleaned.substring(2, 4)
         }
         return cleaned
-    }
+    }, [])
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault()
         alert("submit")
         if (!validateForm()) return
@@ -94,7 +97,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 2000))
         setIsSubmitting(false)
-    }
+    }, [validateForm, setIsSubmitting])
 
     return {
         handleSubmit,

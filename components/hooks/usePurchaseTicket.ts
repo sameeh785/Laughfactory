@@ -65,6 +65,7 @@ export const usePurchaseTicket = () => {
                 })
             })
             const { data } = await response.json()
+            console.log(data,"data")
             if (data.status) {
                 showToast.success("Promo code applied!")
             } else {
