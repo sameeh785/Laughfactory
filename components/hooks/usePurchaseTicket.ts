@@ -1,4 +1,4 @@
-
+import usePaymentFormStore from "@/store/usePaymentFormStore"
 import { useModalStore } from "@/store/useModalStore"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
@@ -10,9 +10,9 @@ export const usePurchaseTicket = () => {
     const { isModalOpen, closeModal } = useModalStore()
     const { selectedShow } = useSelectedShowStore()
     const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
-    const { purchaseTicketList } = usePurchaseTicketsStore()
-    const { setPurchaseTicketList } = usePurchaseTicketsStore()
+    const { purchaseTicketList,setPurchaseTicketList,setSubtotal} = usePurchaseTicketsStore()
     const formRef = useRef<HTMLFormElement>(null)
+    const { resetForm } = usePaymentFormStore()
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
 
     // state
@@ -49,27 +49,39 @@ export const usePurchaseTicket = () => {
         setPurchaseTicketList([])
         setPromoCode("")
         setTermsAccepted(false)
-    }, [setCurrentStep, setPurchaseTicketList, setPromoCode, setTermsAccepted])
+        setDiscount(0)
+        resetForm()
+    }, [setCurrentStep, setPurchaseTicketList, setPromoCode, setTermsAccepted, setDiscount, resetForm])
+
 
     const handlePromoCode = useCallback(async () => {
         if (!promoCode || !selectedShow || !purchaseTicketList?.length) return
         setIsLoading(true)
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/validate-coupon`, {
+            const response = await fetch('/api/validate-coupon', {
                 method: "POST",
                 body: JSON.stringify({
                     "coupon_code": promoCode,
                     "show_id": selectedShow?.id,
-                    "ticket_type_id": purchaseTicketList?.map((ticket) => ticket.ticket_id),
+                    "ticket_types": purchaseTicketList?.map((ticket) => {
+                        return {
+                            "ticket_type_id" : ticket.ticket_type_id,
+                            "amount" : Number(ticket.price),
+                            "quantity" : ticket.quantity
+                        }
+                    }),
                     "total_amount": subtotal
-                })
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
             const { data } = await response.json()
-            console.log(data,"data")
-            if (data.status) {
+            if (data?.discount_applied) {
                 showToast.success("Promo code applied!")
-            } else {
-                showToast.error("Invalid promo code")
+                setDiscount(data?.discount_applied)
+            } else if (data?.error) {
+                showToast.error(data?.error)
             }
         } catch (error) {
             showToast.error("Error applying promo code")
@@ -108,6 +120,13 @@ export const usePurchaseTicket = () => {
         }
     }, [isModalOpen, closeModal, setCurrentStep])
 
+    useEffect(() => {
+        setSubtotal(subtotal)
+        if(currentStep === "tickets"){
+            setPromoCode("")
+        }
+    }, [subtotal,currentStep])
+
     return {
         currentStep,
         setCurrentStep,
@@ -126,6 +145,6 @@ export const usePurchaseTicket = () => {
         isLoading,
         discount,
         formRef,
-        submitFormRef
+        submitFormRef,
     }
 }

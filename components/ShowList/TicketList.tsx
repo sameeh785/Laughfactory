@@ -27,7 +27,6 @@ export default function TicketList() {
             <div className="space-y-4">
                 {ticketList.map((ticket) => {
                     const purchaseTicket = purchaseTicketList.find((purchaseTicket) => purchaseTicket.ticket_id === ticket.ticket_id)
-                    console.log(purchaseTicket,"purchaseTicket")
                     return (
                         <div key={ticket.ticket_id} className="border-2 border-orange-200 rounded-lg p-4">
                             <div className="flex justify-between items-start mb-3">

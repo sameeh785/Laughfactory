@@ -1,11 +1,16 @@
 import { IPaymentFormData, IPaymentFormErrors } from "@/interface/payment"
 import usePaymentFormStore from "@/store/usePaymentFormStore"
 import { validateCardNumber, validateEmail, validateExpiryDate } from "@/utils/common"
+import { showToast } from "@/utils/toast"
 import { useCallback } from "react"
+import { useModalStore } from "@/store/useModalStore"
+import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 
 export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     // hooks
     const { formData, updateFormData, updateErrors, errors, setIsSubmitting } = usePaymentFormStore()
+    const { subtotal } = usePurchaseTicketsStore()
+    const { closeModal } = useModalStore()
 
     //functions
     const validateForm = useCallback((): boolean => {
@@ -72,7 +77,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 [field]: ""
             })
         }
-    }, [updateFormData, errors, updateErrors])  
+    }, [updateFormData, errors, updateErrors])
 
     const formatCardNumber = useCallback((value: string) => {
         const cleaned = value.replace(/\s/g, "")
@@ -90,14 +95,63 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
 
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault()
-        alert("submit")
         if (!validateForm()) return
 
-        setIsSubmitting(true)
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-        setIsSubmitting(false)
-    }, [validateForm, setIsSubmitting])
+        try {
+            setIsSubmitting(true)
+
+            // Parse full name into first and last name
+            const nameParts = formData.fullName.trim().split(' ')
+            const firstName = nameParts[0] || ''
+            const lastName = nameParts.slice(1).join(' ') || ''
+
+            // Format expiry date from MM/YY to YYYY-MM
+            const [month, year] = formData.expiryDate.split('/')
+            const expirationDate = `20${year}-${month.padStart(2, '0')}`
+
+            const payload = {
+                amount: subtotal?.toFixed(2),
+                cardNumber: formData.cardNumber.replace(/\s/g, ""),
+                expirationDate: expirationDate,
+                cardCode: formData.securityCode,
+                billTo: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    address: formData.addressLine1 + (formData.addressLine2 ? ` ${formData.addressLine2}` : ''),
+                    city: formData.city,
+                    state: formData.state,
+                    zip: formData.zipCode,
+                    country: formData.country,
+                    email: formData.email
+                }
+            }
+
+            const response = await fetch('/api/charge', {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (!response.ok) {
+                throw new Error('Payment failed')
+            }
+
+            const result = await response.json()
+            if (result?.status) {
+                showToast.success("Tickets purchased successfully")
+                closeModal()
+            } else {
+                showToast.error(result?.message)
+            }
+
+        } catch (error) {
+            showToast.error("Payment failed. Please try again.")
+        } finally {
+            setIsSubmitting(false)
+        }
+    }, [validateForm, setIsSubmitting, formData, subtotal])
 
     return {
         handleSubmit,

@@ -11,7 +11,7 @@ import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, discount, formRef, submitFormRef } = usePurchaseTicket()
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, discount, formRef, submitFormRef, handlePromoCode, isLoading, } = usePurchaseTicket()
 
     if (!isModalOpen || !selectedShow) return <></>
 
@@ -52,7 +52,7 @@ export default function PurchaseTicketModal() {
                         <div className="space-y-6 text-gray-900 bg-gray-50 rounded-lg">
                             {/* Promo Image */}
                             <div className="relative h-64 rounded-lg overflow-hidden">
-                                <Image src={"https://storage.googleapis.com/partner-portal-storage/ticketing/others/730HWInstagramjpg5c0f2b24-382b-40c5-9beb-0dcb6291017e.jpeg"} alt={selectedShow?.title || ""} className="object-contain m-auto rounded-lg mt-2" width={224} height={300} />
+                                <Image src={"https://storage.googleapis.com/partner-portal-storage/ticketing/others/730HWInstagramjpg5c0f2b24-382b-40c5-9beb-0dcb6291017e.jpeg"} alt={selectedShow?.title || ""} className="m-auto rounded-lg mt-2 object-image-initial" width={224} height={300} />
                             </div>
 
                             {/* Order Summary */}
@@ -75,6 +75,14 @@ export default function PurchaseTicketModal() {
                                 </div>
 
                                 <div className="border-t pt-4 space-y-2">
+                                    {
+                                        discount > 0 && (
+                                            <div className="flex justify-between text-sm">
+                                                <span>Discount</span>
+                                                <span>${discount.toFixed(2)}</span>
+                                            </div>
+                                        )
+                                    }
                                     <div className="flex justify-between text-sm">
                                         <span>Subtotal</span>
                                         <span>${subtotal.toFixed(2)}</span>
@@ -87,14 +95,7 @@ export default function PurchaseTicketModal() {
                                         <span>Taxes</span>
                                         <span>$0.00</span>
                                     </div>
-                                    {
-                                        discount > 0 && (
-                                            <div className="flex justify-between text-sm">
-                                                <span>Discount</span>
-                                                <span>${discount.toFixed(2)}</span>
-                                            </div>
-                                        )
-                                    }
+
                                 </div>
 
                                 <div className="border-t pt-4 mb-4">
@@ -121,7 +122,8 @@ export default function PurchaseTicketModal() {
                                                 <Button
                                                     className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                                                     size="sm"
-                                                    disabled={!promoCode}
+                                                    disabled={!promoCode || isLoading}
+                                                    onClick={handlePromoCode}
                                                 >
                                                     Apply
                                                 </Button>

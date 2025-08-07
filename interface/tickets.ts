@@ -5,6 +5,7 @@ export interface ITicket {
     price: string
     available_quantity: number
     is_sold_out: boolean
+    ticket_type_id: string  
 }
 export interface IPurchaseTicket extends ITicket {
     quantity: number

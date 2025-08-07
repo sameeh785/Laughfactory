@@ -28,27 +28,18 @@ export const useTicketList = () => {
         setPurchaseTicketList(purchaseTicket ? purchaseTicketList?.map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity + 1 } : t) : [...purchaseTicketList, { ...ticket, quantity: 1 }])
     }, [ticketList, purchaseTicketList, setTicketList, setPurchaseTicketList])
 
+
     const removeQuantity = useCallback((ticketId: string) => {
-        const ticket = ticketList.find((ticket) => ticket.ticket_id.toString() === ticketId)
-        const purchaseTicket = purchaseTicketList?.find((t) => t.ticket_id === ticket?.ticket_id)
-        if (!ticket) return
-        if (ticket?.is_sold_out) {
-            showToast.error('Ticket is sold out')
-            return
-        }
-        if (purchaseTicket?.quantity === 0) {
-            return
-        }
         setTicketList(prev => prev.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity + 1 } : t))
         setPurchaseTicketList([
-            ...purchaseTicketList?.map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity - 1 } : t) || []
+            ...purchaseTicketList?.filter(t => t.ticket_id.toString() === ticketId && t.quantity === 1 ? false : true).map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity - 1 } : t) || []
         ])
     }, [ticketList, purchaseTicketList, setTicketList, setPurchaseTicketList])
 
 
     const getShowTicketList = useCallback(async () => {
         try {
-            const response = await fetch(`http://34.212.24.109/api/show-tickets/${selectedShow?.dateId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/show-tickets/${selectedShow?.dateId}`, {
                 headers: {
                     'Authorization': 'Basic ' + Buffer.from(process.env.NEXT_PUBLIC_API_USERNAME + ':' + process.env.NEXT_PUBLIC_API_PASSWORD).toString('base64')
                 }
@@ -70,7 +61,7 @@ export const useTicketList = () => {
     //effect
     useEffect(() => {
         getShowTicketList()
-    }, [getShowTicketList])
+    }, [])
     return {
         selectedShow,
         setSelectedShow,
