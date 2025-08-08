@@ -5,11 +5,13 @@ import { showToast } from "@/utils/toast"
 import { useCallback } from "react"
 import { useModalStore } from "@/store/useModalStore"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
+import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 
 export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     // hooks
-    const { formData, updateFormData, updateErrors, errors, setIsSubmitting } = usePaymentFormStore()
-    const { subtotal } = usePurchaseTicketsStore()
+    const { formData, updateFormData, updateErrors, errors, setIsSubmitting, appliedCoupon, isSubmitting } = usePaymentFormStore()
+    const { subtotal, purchaseTicketList } = usePurchaseTicketsStore()
+    const { selectedShow } = useSelectedShowStore()
     const { closeModal } = useModalStore()
 
     //functions
@@ -109,7 +111,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             const [month, year] = formData.expiryDate.split('/')
             const expirationDate = `20${year}-${month.padStart(2, '0')}`
 
-            const payload = {
+            const payload : any= {
                 amount: subtotal?.toFixed(2),
                 cardNumber: formData.cardNumber.replace(/\s/g, ""),
                 expirationDate: expirationDate,
@@ -123,9 +125,21 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                     zip: formData.zipCode,
                     country: formData.country,
                     email: formData.email
-                }
+                },
+                tickets: purchaseTicketList?.map((ticket) => {
+                    return {
+                        "show_id": selectedShow?.id,
+                        "show_date_id": selectedShow?.dateId,
+                        "ticket_type_id": ticket.ticket_type_id,
+                        "quantity": ticket.quantity,
+                        "price": Number(ticket.price)
+                    }
+                })
             }
 
+            if(appliedCoupon){
+                payload.coupon_code = appliedCoupon
+            }
             const response = await fetch('/api/charge', {
                 method: "POST",
                 body: JSON.stringify(payload),
@@ -151,7 +165,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         } finally {
             setIsSubmitting(false)
         }
-    }, [validateForm, setIsSubmitting, formData, subtotal])
+    }, [validateForm, setIsSubmitting, formData, subtotal, appliedCoupon])
 
     return {
         handleSubmit,
@@ -160,6 +174,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         formatExpiryDate,
         formData,
         errors,
-        submitForm: handleSubmit
+        submitForm: handleSubmit,
+        isSubmitting
     }
 }

@@ -11,7 +11,7 @@ import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, discount, formRef, submitFormRef, handlePromoCode, isLoading, } = usePurchaseTicket()
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting } = usePurchaseTicket()
 
     if (!isModalOpen || !selectedShow) return <></>
 
@@ -55,6 +55,7 @@ export default function PurchaseTicketModal() {
                                 <Image src={"https://storage.googleapis.com/partner-portal-storage/ticketing/others/730HWInstagramjpg5c0f2b24-382b-40c5-9beb-0dcb6291017e.jpeg"} alt={selectedShow?.title || ""} className="m-auto rounded-lg mt-2 object-image-initial" width={224} height={300} />
                             </div>
 
+
                             {/* Order Summary */}
                             <div className="rounded-lg p-4">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
@@ -62,13 +63,24 @@ export default function PurchaseTicketModal() {
                                 <div className="space-y-2 mb-4">
                                     {purchaseTicketList.map((option: IPurchaseTicket) => {
                                         if (option.quantity === 0) return null
-
+                                        const discount = appliedCouponApiResponse?.applied_ticket_types?.find((ticket) => ticket.ticket_type_id === option.ticket_type_id)?.discount
                                         return (
                                             <div key={option.ticket_id} className="flex justify-between text-sm">
                                                 <span>
                                                     {option.quantity} x {option.name}
                                                 </span>
-                                                <span>${(parseFloat(option.price) * option.quantity).toFixed(2)}</span>
+                                                <div>
+                                                    <span className={discount ? "line-through text-gray-500" : ""}>
+                                                        ${ (parseFloat(option.price) * option.quantity).toFixed(2) }
+                                                    </span>
+                                                    <span>
+                                                        {
+                                                            discount
+                                                                ? <span className="font-bold">&nbsp;${((parseFloat(option.price) * option.quantity) - discount).toFixed(2)}</span>
+                                                                : null
+                                                        }
+                                                    </span>
+                                                </div>
                                             </div>
                                         )
                                     })}
@@ -76,10 +88,10 @@ export default function PurchaseTicketModal() {
 
                                 <div className="border-t pt-4 space-y-2">
                                     {
-                                        discount > 0 && (
+                                        appliedCouponApiResponse?.discount_applied && !appliedCouponApiResponse?.applied_ticket_types?.length && (
                                             <div className="flex justify-between text-sm">
                                                 <span>Discount</span>
-                                                <span>${discount.toFixed(2)}</span>
+                                                <span>${appliedCouponApiResponse?.discount_applied.toFixed(2)}</span>
                                             </div>
                                         )
                                     }
@@ -153,9 +165,9 @@ export default function PurchaseTicketModal() {
                                         className={`w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed`}
                                         size="lg"
                                         onClick={handlePurchase}
-                                        disabled={!hasTicketsSelected || currentStep === "payment" && !termsAccepted}
+                                        disabled={isSubmitting || !hasTicketsSelected || currentStep === "payment" && !termsAccepted}
                                     >
-                                        {currentStep === "tickets" ? "Purchase" : "Complete Purchase"}
+                                        {isSubmitting ? "Processing..." : currentStep === "tickets" ? "Purchase" : "Complete Purchase"}
                                     </Button>
                                     {
                                         currentStep === "payment" && (

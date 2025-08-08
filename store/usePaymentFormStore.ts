@@ -19,6 +19,8 @@ const initialFormData: IPaymentFormData = {
 const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set) => ({
     formData: initialFormData,
     errors: {},
+    appliedCoupon: "",
+    setAppliedCoupon: (appliedCoupon: string) => set({ appliedCoupon }),
     isSubmitting: false,
     setIsSubmitting: (isSubmitting: boolean) => 
         set({ isSubmitting }),

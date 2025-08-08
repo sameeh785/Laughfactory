@@ -4,6 +4,7 @@ import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { IAppliedCouponApiResponse } from "@/interface/tickets"
 
 export const usePurchaseTicket = () => {
     // hooks
@@ -12,23 +13,24 @@ export const usePurchaseTicket = () => {
     const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
     const { purchaseTicketList,setPurchaseTicketList,setSubtotal} = usePurchaseTicketsStore()
     const formRef = useRef<HTMLFormElement>(null)
-    const { resetForm } = usePaymentFormStore()
+    const { resetForm, setAppliedCoupon, isSubmitting } = usePaymentFormStore()
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
 
     // state
     const [termsAccepted, setTermsAccepted] = useState(false)
     const [promoCode, setPromoCode] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-    const [discount, setDiscount] = useState(0)
+    const [appliedCouponApiResponse, setAppliedCouponApiResponse] = useState<IAppliedCouponApiResponse | null>(null)
 
     // calculations
     const subtotal = useMemo(() => {
+        const discount = appliedCouponApiResponse?.discount_applied ?? 0;
         const total = purchaseTicketList.reduce((sum, option) => {
             return sum + parseFloat(option.price) * option.quantity
-        }, 0) - discount
-        return total > 0 ? total : 0
-    }, [purchaseTicketList, discount])
-    const hasTicketsSelected = useMemo(() => purchaseTicketList.some((ticket) => ticket.quantity > 0), [purchaseTicketList])
+        }, 0) - discount;
+        return total > 0 ? total : 0;
+    }, [purchaseTicketList, appliedCouponApiResponse]);
+    const hasTicketsSelected = useMemo(() => purchaseTicketList.some((ticket) => ticket.quantity > 0), [purchaseTicketList]);
 
     // functions
     const handlePurchase = useCallback(() => {
@@ -48,10 +50,11 @@ export const usePurchaseTicket = () => {
         setCurrentStep("tickets")
         setPurchaseTicketList([])
         setPromoCode("")
+        setAppliedCoupon("")
         setTermsAccepted(false)
-        setDiscount(0)
+        setAppliedCouponApiResponse(null)
         resetForm()
-    }, [setCurrentStep, setPurchaseTicketList, setPromoCode, setTermsAccepted, setDiscount, resetForm])
+    }, [setCurrentStep, setPurchaseTicketList, setPromoCode, setTermsAccepted, setAppliedCouponApiResponse, resetForm])
 
 
     const handlePromoCode = useCallback(async () => {
@@ -78,8 +81,9 @@ export const usePurchaseTicket = () => {
             })
             const { data } = await response.json()
             if (data?.discount_applied) {
+                setAppliedCoupon(promoCode)
                 showToast.success("Promo code applied!")
-                setDiscount(data?.discount_applied)
+                setAppliedCouponApiResponse(data)
             } else if (data?.error) {
                 showToast.error(data?.error)
             }
@@ -143,8 +147,9 @@ export const usePurchaseTicket = () => {
         setPromoCode,
         handlePromoCode,
         isLoading,
-        discount,
+        appliedCouponApiResponse,
         formRef,
         submitFormRef,
+        isSubmitting
     }
 }
