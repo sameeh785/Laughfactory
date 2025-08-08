@@ -39,12 +39,10 @@ export const useTicketList = () => {
 
     const getShowTicketList = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/show-tickets/${selectedShow?.dateId}`, {
-                headers: {
-                    'Authorization': 'Basic ' + Buffer.from(process.env.NEXT_PUBLIC_API_USERNAME + ':' + process.env.NEXT_PUBLIC_API_PASSWORD).toString('base64')
-                }
-            })
+            const response = await fetch(`/api/show-tickets?dateId=${selectedShow?.dateId}`)
+
             const { data: showTickets } = await response.json()
+
             if (showTickets?.length) {
                 setTicketList(showTickets)
             } else {
