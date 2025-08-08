@@ -1,6 +1,6 @@
 import Image from "next/image"
 import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
-import ComedianList from "@/components/ShowList/ComedianList"
+import ComedianList from "@/components/ShowList/comedianList"
 import { IShow } from "@/interface/shows"
 
 
