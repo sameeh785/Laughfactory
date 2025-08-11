@@ -39,7 +39,7 @@ export const useTicketList = () => {
 
     const getShowTicketList = useCallback(async () => {
         try {
-            const response = await fetch(`/api/show-tickets?dateId=${selectedShow?.dateId}`)
+            const response = await fetch(`/api/show-tickets/${selectedShow?.dateId}`)
 
             const { data: showTickets } = await response.json()
 
