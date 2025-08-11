@@ -11,7 +11,7 @@ import { ITicketList } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, handleCloseModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting, showID } = usePurchaseTicket()
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, handleCloseModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting, showID, appliedCoupon } = usePurchaseTicket()
 
     if (!showID && (!isModalOpen || !selectedShow)) return <></>
 
@@ -76,7 +76,7 @@ export default function PurchaseTicketModal() {
                                                     <span>
                                                         {
                                                             discount
-                                                                ? <span className="font-bold">&nbsp;${((parseFloat(option.price) * option.quantity) - discount).toFixed(2)}</span>
+                                                                ? <span className="font-bold text-orange-500">&nbsp;${((parseFloat(option.price) * option.quantity) - discount).toFixed(2)}</span>
                                                                 : null
                                                         }
                                                     </span>
@@ -132,12 +132,12 @@ export default function PurchaseTicketModal() {
                                                     onChange={(e) => setPromoCode(e.target.value)}
                                                 />
                                                 <Button
-                                                    className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className={cn("bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed", appliedCoupon ? "bg-red-500 hover:bg-red-600" : "")}
                                                     size="sm"
                                                     disabled={!promoCode || isLoading}
                                                     onClick={handlePromoCode}
                                                 >
-                                                    Apply
+                                                    {appliedCoupon ? "Remove" : "Apply"}
                                                 </Button>
                                             </div>
                                         </div>

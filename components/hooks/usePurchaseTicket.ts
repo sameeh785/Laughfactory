@@ -14,7 +14,7 @@ export const usePurchaseTicket = () => {
     const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
     const { purchaseTicketList,setPurchaseTicketList,setSubtotal,setTickets,tickets} = usePurchaseTicketsStore()
     const formRef = useRef<HTMLFormElement>(null)
-    const { resetForm, setAppliedCoupon, isSubmitting } = usePaymentFormStore()
+    const { resetForm, setAppliedCoupon, appliedCoupon, isSubmitting } = usePaymentFormStore()
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
     const searchParams = useSearchParams()
     const showID = searchParams.get("showID")
@@ -67,11 +67,21 @@ export const usePurchaseTicket = () => {
         resetStates()
     }, [router, closeModal, resetStates])
 
+    const removePromoCode = useCallback(() => {
+        setPromoCode("")
+        setAppliedCoupon("")
+        setAppliedCouponApiResponse(null)
+        showToast.success("Promo code removed!")
+    }, [setPromoCode, setAppliedCoupon, setAppliedCouponApiResponse])
 
     const handlePromoCode = useCallback(async () => {
         if (!promoCode || !selectedShow || !purchaseTicketList?.length) return
         setIsLoading(true)
         try {
+            if(appliedCoupon){
+                removePromoCode()
+                return
+            }
             const response = await fetch('/api/validate-coupon', {
                 method: "POST",
                 body: JSON.stringify({
@@ -100,6 +110,7 @@ export const usePurchaseTicket = () => {
             }
         } catch (error) {
             showToast.error("Error applying promo code")
+            removePromoCode()
         } finally {
             setIsLoading(false)
         }
@@ -144,6 +155,7 @@ export const usePurchaseTicket = () => {
         formRef,
         submitFormRef,
         isSubmitting,
-        showID
+        showID,
+        appliedCoupon
     }
 }
