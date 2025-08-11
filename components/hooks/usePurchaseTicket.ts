@@ -131,6 +131,10 @@ export const usePurchaseTicket = () => {
         }
     }, [subtotal,currentStep])
 
+    useEffect(() => {
+        console.log("referror",document.referrer)
+    }, [])
+
     return {
         currentStep,
         setCurrentStep,

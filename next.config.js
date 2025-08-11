@@ -16,12 +16,6 @@ const nextConfig = {
       },
     ],
   },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "http://34.212.24.109/:path*"
-    }
-  ]
 }
 
 module.exports = nextConfig 
