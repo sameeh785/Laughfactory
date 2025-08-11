@@ -1,6 +1,6 @@
 import { IPaymentFormData, IPaymentFormErrors } from "@/interface/payment"
 import usePaymentFormStore from "@/store/usePaymentFormStore"
-import { validateCardNumber, validateEmail, validateExpiryDate } from "@/utils/common"
+import { isSocialMediaLink, validateCardNumber, validateEmail, validateExpiryDate } from "@/utils/common"
 import { showToast } from "@/utils/toast"
 import { useCallback } from "react"
 import { useModalStore } from "@/store/useModalStore"
@@ -144,6 +144,12 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             if(appliedCoupon){
                 payload.coupon_code = appliedCoupon
                 payload.order_source = ORDER_SOURCE.promo_code
+            } else if(ref && isSocialMediaLink(ref)){
+                payload.order_source = ORDER_SOURCE.social
+                payload.referring_site = ref
+            }
+            else{
+                payload.order_source = ORDER_SOURCE.direct
             }
             const response = await fetch('/api/charge', {
                 method: "POST",
