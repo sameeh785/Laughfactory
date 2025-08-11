@@ -7,7 +7,7 @@ import TicketList from "@/components/ShowList/TicketList"
 import PaymentForm from "@/components/ShowList/PaymentForm"
 import { cn } from "@/utils/common"
 import { usePurchaseTicket } from "../hooks/usePurchaseTicket"
-import { IPurchaseTicket } from "@/interface/tickets"
+import { ITicketList } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
@@ -61,7 +61,7 @@ export default function PurchaseTicketModal() {
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
 
                                 <div className="space-y-2 mb-4">
-                                    {purchaseTicketList.map((option: IPurchaseTicket) => {
+                                    {purchaseTicketList.map((option: ITicketList) => {
                                         if (option.quantity === 0) return null
                                         const discount = appliedCouponApiResponse?.applied_ticket_types?.find((ticket) => ticket.ticket_type_id === option.ticket_type_id)?.discount
                                         return (

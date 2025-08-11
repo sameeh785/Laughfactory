@@ -5,7 +5,7 @@ import Loader from '@/components/ui/Loader'
 
 export default function TicketList() {
     // hooks
-    const { selectedShow, addQuantity, removeQuantity, loading, ticketList, purchaseTicketList } = useTicketList()
+    const { selectedShow, addQuantity, removeQuantity, loading, tickets, purchaseTicketList } = useTicketList()
     if (loading) {
         return (
             <div className="lg:col-span-2 flex justify-center items-center min-h-[200px]">
@@ -22,10 +22,10 @@ export default function TicketList() {
                 </p>
                 <p className="text-gray-700">{selectedShow?.description}</p>
             </div>
-            {ticketList?.length === 0 && <div className="text-center text-gray-500 text-lg mt-4">No tickets found for this show</div>}
+            {tickets?.length === 0 && <div className="text-center text-gray-500 text-lg mt-4">No tickets found for this show</div>}
             {/* Ticket Options */}
             <div className="space-y-4">
-                {ticketList.map((ticket) => {
+                {tickets.map((ticket) => {
                     const purchaseTicket = purchaseTicketList.find((purchaseTicket) => purchaseTicket.ticket_id === ticket.ticket_id)
                     return (
                         <div key={ticket.ticket_id} className="border-2 border-orange-200 rounded-lg p-4">

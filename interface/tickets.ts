@@ -7,7 +7,7 @@ export interface ITicket {
     is_sold_out: boolean
     ticket_type_id: number  
 }
-export interface IPurchaseTicket extends ITicket {
+export interface ITicketList extends ITicket {
     quantity: number
 }
 export interface IAppliedCouponApiResponse {

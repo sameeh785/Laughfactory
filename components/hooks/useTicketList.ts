@@ -9,15 +9,14 @@ import { formatDate } from "@/utils/common"
 export const useTicketList = () => {
     //state
     const [loading, setLoading] = useState(true)
-    const [ticketList, setTicketList] = useState<ITicket[]>([])
     // hooks
-    const { selectedShow, setSelectedShow} = useSelectedShowStore()
-    const { setPurchaseTicketList, purchaseTicketList } = usePurchaseTicketsStore()
+    const { selectedShow, setSelectedShow } = useSelectedShowStore()
+    const { setPurchaseTicketList, purchaseTicketList, setTickets, tickets } = usePurchaseTicketsStore()
     const searchParams = useSearchParams()
     const showID = searchParams.get("showID")
     // functions
     const addQuantity = useCallback((ticketId: string) => {
-        const ticket = ticketList.find((ticket) => ticket.ticket_id.toString() === ticketId)
+        const ticket = tickets.find((ticket) => ticket.ticket_id.toString() === ticketId)
         const purchaseTicket = purchaseTicketList?.find((t) => t.ticket_id === ticket?.ticket_id)
         if (!ticket) return
         if (ticket?.is_sold_out) {
@@ -28,34 +27,37 @@ export const useTicketList = () => {
             showToast.error('Ticket is sold out')
             return
         }
-        setTicketList(prev => prev.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity - 1 } : t))
+        const updatedTickets = tickets.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity - 1 } : t)
+        setTickets(updatedTickets)
         setPurchaseTicketList(purchaseTicket ? purchaseTicketList?.map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity + 1 } : t) : [...purchaseTicketList, { ...ticket, quantity: 1 }])
-    }, [ticketList, purchaseTicketList, setTicketList, setPurchaseTicketList])
+    }, [tickets, purchaseTicketList, setTickets, setPurchaseTicketList])
 
 
     const removeQuantity = useCallback((ticketId: string) => {
-        setTicketList(prev => prev.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity + 1 } : t))
+        const updatedTickets = tickets.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity + 1 } : t)
+        setTickets(updatedTickets)
         setPurchaseTicketList([
             ...purchaseTicketList?.filter(t => t.ticket_id.toString() === ticketId && t.quantity === 1 ? false : true).map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity - 1 } : t) || []
         ])
-    }, [ticketList, purchaseTicketList, setTicketList, setPurchaseTicketList])
+    }, [tickets, purchaseTicketList, setTickets, setPurchaseTicketList])
 
 
     const getShowTicketList = useCallback(async () => {
         try {
+            setLoading(true)    
             const response = await fetch(`/api/show-tickets/${showID ? showID : selectedShow?.dateId}`)
 
             const { data: showDetails } = await response.json()
 
             if (showDetails?.show && showDetails?.tickets) {
-                setTicketList(showDetails?.tickets)
+                setTickets(showDetails?.tickets)
                 setSelectedShow({
                     ...selectedShow,
                     ...showDetails?.show,
                     date: formatDate(showDetails?.show?.date, showDetails?.show?.start_time)
                 })
             } else {
-                setTicketList([])
+                setTickets([])
             }
 
         } catch (error) {
@@ -64,18 +66,19 @@ export const useTicketList = () => {
         finally {
             setLoading(false)
         }
-    }, [showID,selectedShow])
+    }, [showID, selectedShow])
     //effect
     useEffect(() => {
-        getShowTicketList()
-    }, [showID])
+        if (tickets.length === 0) getShowTicketList()
+        else setLoading(false)
+    }, [showID, tickets])
     return {
         selectedShow,
         setSelectedShow,
         addQuantity,
         removeQuantity,
         loading,
-        ticketList,
+        tickets,
         purchaseTicketList
     }
 }

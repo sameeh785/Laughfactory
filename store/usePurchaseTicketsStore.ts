@@ -1,16 +1,20 @@
 import { create } from "zustand"
-import { IPurchaseTicket } from "@/interface/tickets"
+import { ITicketList } from "@/interface/tickets"
 
 interface IPurchaseTicketsState {
-    subtotal: number
+    subtotal: number,
+    tickets : ITicketList[]
     setSubtotal: (subtotal: number) => void
-    purchaseTicketList: IPurchaseTicket[]
-    setPurchaseTicketList: (purchaseTicketList: IPurchaseTicket[]) => void
+    setTickets: (tickets: ITicketList[]) => void
+    purchaseTicketList: ITicketList[]
+    setPurchaseTicketList: (purchaseTicketList: ITicketList[]) => void
 }
 
 export const usePurchaseTicketsStore = create<IPurchaseTicketsState>((set) => ({
     subtotal: 0,
     setSubtotal: (subtotal) => set({ subtotal }),
-    purchaseTicketList: [] as IPurchaseTicket[],
+    tickets: [],
+    setTickets: (tickets) => set({ tickets }),
+    purchaseTicketList: [],
     setPurchaseTicketList: (ticketList) => set({ purchaseTicketList: ticketList }),
 }))

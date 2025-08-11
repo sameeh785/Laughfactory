@@ -12,7 +12,7 @@ export const usePurchaseTicket = () => {
     const { isModalOpen, closeModal,openModal } = useModalStore()
     const { selectedShow } = useSelectedShowStore()
     const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
-    const { purchaseTicketList,setPurchaseTicketList,setSubtotal} = usePurchaseTicketsStore()
+    const { purchaseTicketList,setPurchaseTicketList,setSubtotal,setTickets,tickets} = usePurchaseTicketsStore()
     const formRef = useRef<HTMLFormElement>(null)
     const { resetForm, setAppliedCoupon, isSubmitting } = usePaymentFormStore()
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
@@ -53,6 +53,7 @@ export const usePurchaseTicket = () => {
     const resetStates = useCallback(() => {
         setCurrentStep("tickets")
         setPurchaseTicketList([])
+        setTickets([])
         setPromoCode("")
         setAppliedCoupon("")
         setTermsAccepted(false)
