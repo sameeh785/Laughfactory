@@ -18,6 +18,7 @@ export default function ShowsList({shows}: {shows: IShow[]}) {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="mx-auto px-4">
+      <a href="https://laughfactory.vercel.app/">Go to LaughFactory</a>
         <div className="space-y-8 max-w-7xl mx-auto">
       <div className="px-6 py-4 bg-gray-50 rounded-lg">
         <h2 className="text-xl font-bold text-gray-900 uppercase tracking-wide">UPCOMING SHOWS - Hollywood</h2>

@@ -7,7 +7,8 @@ export async function GET(request: NextRequest, { params }: { params: { dateId: 
             {
                 headers: {
                     'Authorization': 'Basic ' + Buffer.from(process.env.NEXT_PUBLIC_API_USERNAME + ':' + process.env.NEXT_PUBLIC_API_PASSWORD).toString('base64')
-                }
+                },
+                cache : 'no-cache'
             }
         )
         const data = await response.json()

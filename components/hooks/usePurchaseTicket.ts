@@ -5,16 +5,20 @@ import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { IAppliedCouponApiResponse } from "@/interface/tickets"
+import { useSearchParams, useRouter } from "next/navigation"
 
 export const usePurchaseTicket = () => {
     // hooks
-    const { isModalOpen, closeModal } = useModalStore()
+    const { isModalOpen, closeModal,openModal } = useModalStore()
     const { selectedShow } = useSelectedShowStore()
     const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
     const { purchaseTicketList,setPurchaseTicketList,setSubtotal} = usePurchaseTicketsStore()
     const formRef = useRef<HTMLFormElement>(null)
     const { resetForm, setAppliedCoupon, isSubmitting } = usePaymentFormStore()
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
+    const searchParams = useSearchParams()
+    const showID = searchParams.get("showID")
+    const router = useRouter()
 
     // state
     const [termsAccepted, setTermsAccepted] = useState(false)
@@ -93,37 +97,9 @@ export const usePurchaseTicket = () => {
             setIsLoading(false)
         }
     }, [promoCode, subtotal, selectedShow, purchaseTicketList])
-
+    
 
     // effects
-    useEffect(() => {
-        if (isModalOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "unset"
-        }
-
-        return () => {
-            document.body.style.overflow = "unset"
-        }
-    }, [isModalOpen])
-
-    useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                closeModal()
-            }
-        }
-        if (isModalOpen) {
-            document.addEventListener("keydown", handleEscape)
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape)
-            resetStates()
-        }
-    }, [isModalOpen, closeModal, setCurrentStep])
-
     useEffect(() => {
         setSubtotal(subtotal)
         if(currentStep === "tickets"){
@@ -132,7 +108,12 @@ export const usePurchaseTicket = () => {
     }, [subtotal,currentStep])
 
     useEffect(() => {
-        console.log("referror",document.referrer)
+        if(showID){
+        openModal()
+        }
+        return () => {
+            resetStates()
+        }
     }, [])
 
     return {
@@ -154,6 +135,7 @@ export const usePurchaseTicket = () => {
         appliedCouponApiResponse,
         formRef,
         submitFormRef,
-        isSubmitting
+        isSubmitting,
+        showID
     }
 }

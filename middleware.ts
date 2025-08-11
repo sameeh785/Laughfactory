@@ -4,9 +4,8 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(req: NextRequest) {
   const referer = req.headers.get('referer');
-  console.log(referer, "referer")
   // If no referer, just continue
-  if (!referer) {
+  if (!referer || referer.includes("localhost")) {
     return NextResponse.next();
   }
 
@@ -18,8 +17,10 @@ export function middleware(req: NextRequest) {
   }
 
   try {
-    const refHost = new URL(referer).hostname;
-    url.searchParams.set('ref', refHost);
+    console.log(referer,"reffer")
+    const ref = new URL(referer);
+    url.searchParams.set('ref', ref.toString());
+    console.log(url,"url")
     return NextResponse.redirect(url);
   } catch {
     // If referer isn't a valid URL, skip

@@ -13,6 +13,7 @@ export default function TicketList() {
             </div>
         )
     }
+    console.log(selectedShow,"selectedShow")
     return (
         <div className="lg:col-span-2 space-y-6">
             <div>

@@ -11,9 +11,9 @@ import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting } = usePurchaseTicket()
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting, showID } = usePurchaseTicket()
 
-    if (!isModalOpen || !selectedShow) return <></>
+    if (!showID && (!isModalOpen || !selectedShow)) return <></>
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -71,7 +71,7 @@ export default function PurchaseTicketModal() {
                                                 </span>
                                                 <div>
                                                     <span className={discount ? "line-through text-gray-500" : ""}>
-                                                        ${ (parseFloat(option.price) * option.quantity).toFixed(2) }
+                                                        ${(parseFloat(option.price) * option.quantity).toFixed(2)}
                                                     </span>
                                                     <span>
                                                         {

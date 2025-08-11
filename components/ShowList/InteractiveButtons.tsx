@@ -6,6 +6,7 @@ import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { useModalStore } from "@/store/useModalStore"
 import { useCallback } from "react"
 import { showToast } from "@/utils/toast"
+import { useRouter } from "next/navigation"
 
 interface InteractiveButtonsProps {
   ticketUrl?: string
@@ -14,6 +15,8 @@ interface InteractiveButtonsProps {
 }
 
 export default function InteractiveButtons({ showShareButton, showDetails }: InteractiveButtonsProps) {
+    // hooks
+ const router = useRouter()
   // Modal state
   const { openModal } = useModalStore()
   const { setSelectedShow } = useSelectedShowStore()

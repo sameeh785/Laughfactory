@@ -1,16 +1,19 @@
-import { IPurchaseTicket, ITicket } from "@/interface/tickets"
+import { ITicket } from "@/interface/tickets"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 
 export const useTicketList = () => {
     //state
     const [loading, setLoading] = useState(true)
     const [ticketList, setTicketList] = useState<ITicket[]>([])
     // hooks
-    const { selectedShow, setSelectedShow } = useSelectedShowStore()
+    const { selectedShow, setSelectedShow} = useSelectedShowStore()
     const { setPurchaseTicketList, purchaseTicketList } = usePurchaseTicketsStore()
+    const searchParams = useSearchParams()
+    const showID = searchParams.get("showID")
     // functions
     const addQuantity = useCallback((ticketId: string) => {
         const ticket = ticketList.find((ticket) => ticket.ticket_id.toString() === ticketId)
@@ -39,12 +42,17 @@ export const useTicketList = () => {
 
     const getShowTicketList = useCallback(async () => {
         try {
-            const response = await fetch(`/api/show-tickets/${selectedShow?.dateId}`)
+            const response = await fetch(`/api/show-tickets/${showID ? showID : selectedShow?.dateId}`)
 
-            const { data: showTickets } = await response.json()
+            const { data: showDetails } = await response.json()
 
-            if (showTickets?.length) {
-                setTicketList(showTickets)
+            console.log(showDetails,"showDetails")
+            if (showDetails?.show && showDetails?.tickets) {
+                setTicketList(showDetails?.tickets)
+                setSelectedShow({
+                    ...selectedShow,
+                    ...showDetails?.show
+                })
             } else {
                 setTicketList([])
             }
@@ -55,11 +63,11 @@ export const useTicketList = () => {
         finally {
             setLoading(false)
         }
-    }, [selectedShow?.dateId])
+    }, [showID,selectedShow])
     //effect
     useEffect(() => {
         getShowTicketList()
-    }, [])
+    }, [showID])
     return {
         selectedShow,
         setSelectedShow,

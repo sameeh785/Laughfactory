@@ -6,6 +6,8 @@ import { useCallback } from "react"
 import { useModalStore } from "@/store/useModalStore"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
+import { ORDER_SOURCE } from "@/constant/checkout"
+import { useSearchParams } from "next/navigation"
 
 export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     // hooks
@@ -13,6 +15,8 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     const { subtotal, purchaseTicketList } = usePurchaseTicketsStore()
     const { selectedShow } = useSelectedShowStore()
     const { closeModal } = useModalStore()
+    const searchParams = useSearchParams()
+    const ref = searchParams.get("ref")
 
     //functions
     const validateForm = useCallback((): boolean => {
@@ -111,7 +115,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             const [month, year] = formData.expiryDate.split('/')
             const expirationDate = `20${year}-${month.padStart(2, '0')}`
 
-            const payload : any= {
+            const payload : any = {
                 amount: subtotal?.toFixed(2),
                 cardNumber: formData.cardNumber.replace(/\s/g, ""),
                 expirationDate: expirationDate,
@@ -139,6 +143,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
 
             if(appliedCoupon){
                 payload.coupon_code = appliedCoupon
+                payload.order_source = ORDER_SOURCE.promo_code
             }
             const response = await fetch('/api/charge', {
                 method: "POST",
