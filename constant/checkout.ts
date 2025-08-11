@@ -23,4 +23,18 @@ export const socialMediaLinks = [
     "tumblr",
     "discord"
   ]
+
+  //checkout referrer search enginelist
+  export const searchEngineLinks = [
+    "https://www.google.com",
+    "https://www.bing.com",
+    "https://search.yahoo.com",
+    "https://duckduckgo.com",
+    "https://www.aol.com",
+    "https://www.ask.com",
+    "https://www.ecosia.org",
+    "https://www.startpage.com",
+    "https://search.brave.com",
+    "https://swisscows.com"
+  ]
   

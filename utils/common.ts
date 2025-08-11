@@ -1,4 +1,4 @@
-import { socialMediaLinks } from "@/constant/checkout"
+import { searchEngineLinks, socialMediaLinks } from "@/constant/checkout"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -48,4 +48,8 @@ export const formatDate = (dateString: string, timeString: string) => {
 //check is the ref link is the social media link
 export const isSocialMediaLink = (ref: string) => {
     return socialMediaLinks.some((link) => ref?.toLowerCase().includes(link))
+}
+//check is the ref link is the search engine link
+export const isSearchEngineLink = (ref: string) => {
+    return searchEngineLinks.some((link) => ref?.toLowerCase().includes(link))
 }

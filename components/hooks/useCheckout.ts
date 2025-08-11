@@ -1,6 +1,6 @@
 import { IPaymentFormData, IPaymentFormErrors } from "@/interface/payment"
 import usePaymentFormStore from "@/store/usePaymentFormStore"
-import { isSocialMediaLink, validateCardNumber, validateEmail, validateExpiryDate } from "@/utils/common"
+import { isSearchEngineLink, isSocialMediaLink, validateCardNumber, validateEmail, validateExpiryDate } from "@/utils/common"
 import { showToast } from "@/utils/toast"
 import { useCallback } from "react"
 import { useModalStore } from "@/store/useModalStore"
@@ -17,6 +17,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     const { closeModal } = useModalStore()
     const searchParams = useSearchParams()
     const ref = searchParams.get("ref")
+    const prID = searchParams.get("prID")
 
     //functions
     const validateForm = useCallback((): boolean => {
@@ -115,11 +116,17 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             const [month, year] = formData.expiryDate.split('/')
             const expirationDate = `20${year}-${month.padStart(2, '0')}`
 
-            const payload : any = {
+            const payload: any = {
+                company_id: process.env.NEXT_PUBLIC_COMPANY_ID,
                 amount: subtotal?.toFixed(2),
                 cardNumber: formData.cardNumber.replace(/\s/g, ""),
                 expirationDate: expirationDate,
                 cardCode: formData.securityCode,
+                show_id: selectedShow?.id,
+                show_date_id: selectedShow?.dateId,
+                affiliate_source: null,
+                promoter_id: null,
+                referring_site: null,
                 billTo: {
                     firstName: firstName,
                     lastName: lastName,
@@ -132,8 +139,6 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 },
                 tickets: purchaseTicketList?.map((ticket) => {
                     return {
-                        "show_id": selectedShow?.id,
-                        "show_date_id": selectedShow?.dateId,
                         "ticket_type_id": ticket.ticket_type_id,
                         "quantity": ticket.quantity,
                         "price": Number(ticket.price)
@@ -141,15 +146,25 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 })
             }
 
-            if(appliedCoupon){
+            if (appliedCoupon) {
                 payload.coupon_code = appliedCoupon
                 payload.order_source = ORDER_SOURCE.promo_code
-            } else if(ref && isSocialMediaLink(ref)){
+            } else if (prID) {
+                payload.order_source = ORDER_SOURCE.promoter
+                payload.promoter_id = prID
+            }
+            else if (ref && isSocialMediaLink(ref)) {
                 payload.order_source = ORDER_SOURCE.social
                 payload.referring_site = ref
-            }
-            else{
+            } else if (ref && isSearchEngineLink(ref)) {
+                payload.order_source = ORDER_SOURCE.organic
+                payload.referring_site = ref
+            } else if (ref) {
+                payload.order_source = ORDER_SOURCE.referring_site
+                payload.referring_site = ref
+            } else {
                 payload.order_source = ORDER_SOURCE.direct
+                payload.referring_site = null
             }
             const response = await fetch('/api/charge', {
                 method: "POST",
