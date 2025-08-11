@@ -91,7 +91,7 @@ export default function PurchaseTicketModal() {
                                         appliedCouponApiResponse?.discount_applied && !appliedCouponApiResponse?.applied_ticket_types?.length && (
                                             <div className="flex justify-between text-sm">
                                                 <span>Discount</span>
-                                                <span>${appliedCouponApiResponse?.discount_applied.toFixed(2)}</span>
+                                                <span className="text-orange-500 font-bold">${appliedCouponApiResponse?.discount_applied.toFixed(2)}</span>
                                             </div>
                                         )
                                     }
@@ -101,7 +101,7 @@ export default function PurchaseTicketModal() {
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span>Fees</span>
-                                        <span>${subtotal.toFixed(2)}</span>
+                                        <span>${0.00.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span>Taxes</span>

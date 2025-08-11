@@ -4,11 +4,7 @@ export interface IShow {
     description: string
     image: string
     comedians: IComedian[]
-    date: {
-        month: string
-        day: string
-        time: string
-    }
+    date: string
     dateId: string
 }
 

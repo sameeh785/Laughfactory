@@ -2,8 +2,7 @@ import Image from "next/image"
 import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
 import ComedianList from "@/components/ShowList/comedianList"
 import { IShow } from "@/interface/shows"
-
-
+import { formatDate } from "@/utils/common"
 
 interface ShowCardProps {
     showDetails: IShow
@@ -19,7 +18,7 @@ export default function ComedyShowCard({
                 <Image src={showDetails.image || "/placeholder.svg"} alt={showDetails.title} fill className="object-image-initial rounded-t-lg" />
                 {/* Time Badge */}
                 <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                    {showDetails.date.month} {showDetails.date.day} / {showDetails.date.time}
+                    {showDetails.date}
                 </div>
             </div>
 

@@ -18,7 +18,7 @@ export default function TicketList() {
             <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedShow?.title}</h2>
                 <p className="text-gray-600 mb-4">
-                    {selectedShow?.date?.month} {selectedShow?.date?.day} at {selectedShow?.date?.time}
+                    {selectedShow?.date}
                 </p>
                 <p className="text-gray-700">{selectedShow?.description}</p>
             </div>
