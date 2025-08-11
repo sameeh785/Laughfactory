@@ -33,3 +33,14 @@ export const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
 }
+
+export const formatDate = (dateString: string, timeString: string) => {
+  const date = new Date(dateString);
+  const time = timeString.split(':');
+  
+  return {
+    month: date.toLocaleDateString('en-US', { month: 'short', weekday: 'short' }).toUpperCase(),
+    day: date.getDate().toString().padStart(2, '0'),
+    time: `${time[0]}:${time[1]} ${parseInt(time[0]) >= 12 ? 'PM' : 'AM'}`
+  };
+};

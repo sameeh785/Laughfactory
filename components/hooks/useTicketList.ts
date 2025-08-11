@@ -4,6 +4,7 @@ import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
 import { useCallback, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
+import { formatDate } from "@/utils/common"
 
 export const useTicketList = () => {
     //state
@@ -46,12 +47,12 @@ export const useTicketList = () => {
 
             const { data: showDetails } = await response.json()
 
-            console.log(showDetails,"showDetails")
             if (showDetails?.show && showDetails?.tickets) {
                 setTicketList(showDetails?.tickets)
                 setSelectedShow({
                     ...selectedShow,
-                    ...showDetails?.show
+                    ...showDetails?.show,
+                    date: formatDate(showDetails?.show?.date, showDetails?.show?.start_time)
                 })
             } else {
                 setTicketList([])

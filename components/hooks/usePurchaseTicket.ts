@@ -60,6 +60,12 @@ export const usePurchaseTicket = () => {
         resetForm()
     }, [setCurrentStep, setPurchaseTicketList, setPromoCode, setTermsAccepted, setAppliedCouponApiResponse, resetForm])
 
+    const handleCloseModal = useCallback(() => {
+        router.replace("/")
+        closeModal()
+        resetStates()
+    }, [router, closeModal, resetStates])
+
 
     const handlePromoCode = useCallback(async () => {
         if (!promoCode || !selectedShow || !purchaseTicketList?.length) return
@@ -125,6 +131,7 @@ export const usePurchaseTicket = () => {
         setTermsAccepted,
         selectedShow,
         closeModal,
+        handleCloseModal,
         isModalOpen,
         handlePurchase,
         purchaseTicketList,

@@ -1,18 +1,7 @@
 import ComedyShowCard from "@/components/ShowList/comedy-show-card"
 import PurchaseTicketModal from "@/components/ShowList/PurchaseTicketModal"
 import { IShow } from "@/interface/shows"
-
-// Helper function to format date
-const formatDate = (dateString: string, timeString: string) => {
-  const date = new Date(dateString);
-  const time = timeString.split(':');
-  
-  return {
-    month: date.toLocaleDateString('en-US', { month: 'short', weekday: 'short' }).toUpperCase(),
-    day: date.getDate().toString().padStart(2, '0'),
-    time: `${time[0]}:${time[1]} ${parseInt(time[0]) >= 12 ? 'PM' : 'AM'}`
-  };
-};
+import { formatDate } from "@/utils/common"
 
 export default function ShowsList({shows}: {shows: IShow[]}) {
   return (

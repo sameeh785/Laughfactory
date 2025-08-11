@@ -17,10 +17,8 @@ export function middleware(req: NextRequest) {
   }
 
   try {
-    console.log(referer,"reffer")
     const ref = new URL(referer);
     url.searchParams.set('ref', ref.toString());
-    console.log(url,"url")
     return NextResponse.redirect(url);
   } catch {
     // If referer isn't a valid URL, skip

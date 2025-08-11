@@ -11,14 +11,14 @@ import { IPurchaseTicket } from "@/interface/tickets"
 
 export default function PurchaseTicketModal() {
 
-    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, closeModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting, showID } = usePurchaseTicket()
+    const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, handleCloseModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting, showID } = usePurchaseTicket()
 
     if (!showID && (!isModalOpen || !selectedShow)) return <></>
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onClick={closeModal} />
+            <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onClick={handleCloseModal} />
             {/* Modal Content */}
             <div className="relative bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
                 {/* Close Button */}
@@ -32,7 +32,7 @@ export default function PurchaseTicketModal() {
                         </button>
                     )}
                     <button
-                        onClick={closeModal}
+                        onClick={handleCloseModal}
                         className="m-3 hover:bg-gray-100 rounded-full transition-colors w-10 h-10 flex items-center justify-center"
                     >
                         <X className="w-5 h-5 text-gray-500" />
