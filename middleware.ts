@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server';
 export function middleware(req: NextRequest) {
   const referer = req.headers.get('referer');
   // If no referer, just continue
-  if (!referer || referer.includes("localhost")) {
+  if (!referer || referer.includes("laughfactory")) {
     return NextResponse.next();
   }
 
