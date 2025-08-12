@@ -1,6 +1,6 @@
 import Image from "next/image"
-import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
-import ComedianList from "@/components/ShowList/comedianList"
+import InteractiveButtons from "@/components/showList/InteractiveButtons"
+import ComedianList from "@/components/showList/comedianList"
 import { IShow } from "@/interface/shows"
 import { formatDate } from "@/utils/common"
 

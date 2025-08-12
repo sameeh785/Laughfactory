@@ -34,3 +34,127 @@ export interface IPaymentFormActions {
     resetForm: () => void
     setIsSubmitting: (isSubmitting: boolean) => void
 }
+
+
+
+// Types for Apple Pay
+export interface IApplePayPaymentRequest {
+    countryCode: string;
+    currencyCode: string;
+    supportedNetworks: string[];
+    merchantCapabilities: string[];
+    total: {
+        label: string;
+        amount: string;
+        type?: 'final' | 'pending';
+    };
+    lineItems?: Array<{
+        label: string;
+        amount: string;
+        type?: 'final' | 'pending';
+    }>;
+    requiredBillingContactFields?: string[];
+    requiredShippingContactFields?: string[];
+    shippingMethods?: Array<{
+        label: string;
+        amount: string;
+        identifier: string;
+        detail?: string;
+    }>;
+}
+
+export interface IApplePayProps {
+    disabled: boolean;
+}
+
+// Google Pay types
+export interface IGooglePayPaymentRequest {
+  apiVersion: number;
+  apiVersionMinor: number;
+  allowedPaymentMethods: IPaymentMethod[];
+  merchantInfo: IMerchantInfo;
+  transactionInfo: TransactionInfo;
+  shippingAddressRequired?: boolean;
+  shippingAddressParameters?: IShippingAddressParameters;
+  emailRequired?: boolean;
+  callbackIntents?: string[];
+}
+
+export interface IPaymentMethod {
+  type: 'CARD' | 'PAYPAL';
+  parameters: ICardParameters;
+  tokenizationSpecification: ITokenizationSpecification;
+}
+
+export interface ICardParameters {
+  allowedAuthMethods: string[];
+  allowedCardNetworks: string[];
+  billingAddressRequired?: boolean;
+  billingAddressParameters?: IBillingAddressParameters;
+}
+
+export interface ITokenizationSpecification {
+  type: 'PAYMENT_GATEWAY' | 'DIRECT';
+  parameters: {
+    gateway?: string;
+    gatewayMerchantId?: string;
+    [key: string]: any;
+  };
+}
+
+export interface IMerchantInfo {
+  merchantId?: string;
+  merchantName: string;
+}
+
+export interface TransactionInfo {
+  displayItems?: IDisplayItem[];
+  countryCode: string;
+  currencyCode: string;
+  totalPriceStatus: 'NOT_CURRENTLY_KNOWN' | 'ESTIMATED' | 'FINAL';
+  totalPrice: string;
+  totalPriceLabel?: string;
+}
+
+export interface IDisplayItem {
+  label: string;
+  type: 'LINE_ITEM' | 'SUBTOTAL';
+  price: string;
+  status?: 'FINAL' | 'PENDING';
+}
+
+export interface IBillingAddressParameters {
+  format?: 'FULL' | 'MIN';
+  phoneNumberRequired?: boolean;
+}
+
+export interface IShippingAddressParameters {
+  allowedCountryCodes?: string[];
+  phoneNumberRequired?: boolean;
+}
+
+export interface IGooglePayProps {
+//   environment: 'TEST' | 'PRODUCTION';
+//   merchantId?: string;
+//   merchantName: string;
+//   gatewayMerchantId: string;
+//   gateway?: string;
+//   amount: number;
+//   currencyCode?: string;
+//   countryCode?: string;
+//   displayItems?: Array<{
+//     label: string;
+//     price: number;
+//     type?: 'LINE_ITEM' | 'SUBTOTAL';
+//   }>;
+//   allowedCardNetworks?: string[];
+//   allowedAuthMethods?: string[];
+//   billingAddressRequired?: boolean;
+//   shippingAddressRequired?: boolean;
+//   emailRequired?: boolean;
+//   onPaymentSuccess: (paymentData: any) => void;
+//   onPaymentError: (error: string) => void;
+//   onPaymentCancel?: () => void;
+//   className?: string;
+  disabled: boolean;
+}

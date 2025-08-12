@@ -1,5 +1,5 @@
-import ComedyShowCard from "@/components/ShowList/comedy-show-card"
-import PurchaseTicketModal from "@/components/ShowList/PurchaseTicketModal"
+import ComedyShowCard from "@/components/showList/comedy-show-card"
+import PurchaseTicketModal from "@/components/showList/PurchaseTicketModal"
 import { IShow } from "@/interface/shows"
 import { formatDate } from "@/utils/common"
 

@@ -7,8 +7,8 @@ import { useModalStore } from "@/store/useModalStore"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { ORDER_SOURCE } from "@/constant/checkout"
-import { useRouter, useSearchParams } from "next/navigation"
-import { usePurchaseTicket } from "./usePurchaseTicket"
+import { useSearchParams } from "next/navigation"
+import { useResetStoreState } from "./useResetStoreState"
 
 // Validation error messages
 const VALIDATION_MESSAGES = {
@@ -61,15 +61,13 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         setIsSubmitting,
         appliedCoupon,
         isSubmitting,
-        resetForm
     } = usePaymentFormStore()
 
     const { purchaseTicketList, setPurchaseTicketList, setTickets, subtotal } = usePurchaseTicketsStore()
     const {  setCurrentStep } = usePaymentFormStore()
-
+    const { resetStoreState } = useResetStoreState()
     const { selectedShow } = useSelectedShowStore()
     const { closeModal } = useModalStore()
-    const router = useRouter()
 
     // URL parameters
     const searchParams = useSearchParams()
@@ -97,12 +95,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         }
     }, [formData])
 
-    const resetStates = useCallback(() => {
-        setCurrentStep("tickets")
-        setPurchaseTicketList([])
-        setTickets([])
-        resetForm()
-    }, [setCurrentStep, setPurchaseTicketList, resetForm])
+    
 
     const validatePersonalInfo = useCallback((newErrors: IPaymentFormErrors): void => {
         if (!formData.fullName.trim()) {
@@ -295,11 +288,11 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         if (result?.status) {
             showToast.success("Tickets purchased successfully")
             closeModal()
-            resetStates()
+            resetStoreState()
         } else {
             showToast.error(result?.message)
         }
-    }, [closeModal, setCurrentStep])
+    }, [closeModal, resetStoreState])
 
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault()
