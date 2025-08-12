@@ -5,6 +5,7 @@ import { ArrowLeft, X } from "lucide-react"
 import Button from "@/components/ui/Button"
 import TicketList from "@/components/ShowList/TicketList"
 import PaymentForm from "@/components/ShowList/PaymentForm"
+import ApplePayButton from "@/components/ShowList/ApplePayButton"
 import { cn } from "@/utils/common"
 import { usePurchaseTicket } from "../hooks/usePurchaseTicket"
 import { ITicketList } from "@/interface/tickets"
@@ -167,6 +168,17 @@ export default function PurchaseTicketModal() {
                                     >
                                         {isSubmitting ? "Processing..." : currentStep === "tickets" ? "Purchase" : "Complete Purchase"}
                                     </Button>
+                                    {
+                                        currentStep === "payment" && (
+                                            <ApplePayButton
+                                                merchantId="merchant.laugh.factory.com"
+                                                amount={subtotal}
+                                                label="Laugh Factory"
+                                                onPaymentSuccess={() => {}}
+                                                onPaymentError={() => {}}
+                                            />
+                                        )
+                                   }
                                     {
                                         currentStep === "payment" && (
                                             // Disclaimer Section
