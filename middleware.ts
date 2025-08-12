@@ -17,8 +17,8 @@ export function middleware(req: NextRequest) {
   }
 
   try {
-    const ref = new URL(referer);
-    url.searchParams.set('ref', ref.toString());
+    const ref = new URL(referer).host;
+    url.searchParams.set('ref', ref);
     return NextResponse.redirect(url);
   } catch {
     // If referer isn't a valid URL, skip

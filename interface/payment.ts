@@ -22,6 +22,7 @@ export interface IPaymentFormState {
     errors: IPaymentFormErrors
     appliedCoupon: string
     isSubmitting: boolean
+    currentStep: "tickets" | "payment"
 }
 
 export interface IPaymentFormActions {
@@ -29,6 +30,7 @@ export interface IPaymentFormActions {
     setFormData: (formData: IPaymentFormData) => void
     updateErrors: (errors: IPaymentFormErrors) => void
     setAppliedCoupon: (appliedCoupon: string) => void
+    setCurrentStep : (currentStep: "tickets" | "payment") => void
     resetForm: () => void
     setIsSubmitting: (isSubmitting: boolean) => void
 }

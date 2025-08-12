@@ -7,7 +7,8 @@ import { useModalStore } from "@/store/useModalStore"
 import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { ORDER_SOURCE } from "@/constant/checkout"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import { usePurchaseTicket } from "./usePurchaseTicket"
 
 // Validation error messages
 const VALIDATION_MESSAGES = {
@@ -52,20 +53,24 @@ const CARD_FORMAT = {
 
 export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     // Store hooks
-    const { 
-        formData, 
-        updateFormData, 
-        updateErrors, 
-        errors, 
-        setIsSubmitting, 
-        appliedCoupon, 
-        isSubmitting 
+    const {
+        formData,
+        updateFormData,
+        updateErrors,
+        errors,
+        setIsSubmitting,
+        appliedCoupon,
+        isSubmitting,
+        resetForm
     } = usePaymentFormStore()
-    
-    const { subtotal, purchaseTicketList } = usePurchaseTicketsStore()
+
+    const { purchaseTicketList, setPurchaseTicketList, setTickets, subtotal } = usePurchaseTicketsStore()
+    const {  setCurrentStep } = usePaymentFormStore()
+
     const { selectedShow } = useSelectedShowStore()
     const { closeModal } = useModalStore()
-    
+    const router = useRouter()
+
     // URL parameters
     const searchParams = useSearchParams()
     const ref = searchParams.get("ref")
@@ -91,6 +96,13 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             newErrors.securityCode = VALIDATION_MESSAGES.securityCode.invalid
         }
     }, [formData])
+
+    const resetStates = useCallback(() => {
+        setCurrentStep("tickets")
+        setPurchaseTicketList([])
+        setTickets([])
+        resetForm()
+    }, [setCurrentStep, setPurchaseTicketList, resetForm])
 
     const validatePersonalInfo = useCallback((newErrors: IPaymentFormErrors): void => {
         if (!formData.fullName.trim()) {
@@ -136,7 +148,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
     // Input handling functions
     const handleInputChange = useCallback((field: keyof IPaymentFormData, value: string) => {
         updateFormData({ [field]: value })
-        
+
         // Clear error when user starts typing
         if (errors[field]) {
             updateErrors({ [field]: "" })
@@ -193,7 +205,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 referring_site: null
             }
         }
-        
+
         if (prID) {
             return {
                 order_source: ORDER_SOURCE.promoter,
@@ -201,7 +213,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 referring_site: null
             }
         }
-        
+
         if (ref && isSocialMediaLink(ref)) {
             return {
                 order_source: ORDER_SOURCE.social,
@@ -209,7 +221,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 promoter_id: null
             }
         }
-        
+
         if (ref && isSearchEngineLink(ref)) {
             return {
                 order_source: ORDER_SOURCE.organic,
@@ -217,7 +229,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 promoter_id: null
             }
         }
-        
+
         if (ref) {
             return {
                 order_source: ORDER_SOURCE.referring_site,
@@ -225,7 +237,7 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
                 promoter_id: null
             }
         }
-        
+
         return {
             order_source: ORDER_SOURCE.direct,
             referring_site: null,
@@ -262,15 +274,16 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             tickets: buildTicketsPayload()
         }
     }, [
-        formData, 
-        subtotal, 
-        selectedShow, 
-        parseFullName, 
-        formatExpirationDate, 
-        buildBillingAddress, 
-        determineOrderSource, 
+        formData,
+        subtotal,
+        selectedShow,
+        parseFullName,
+        formatExpirationDate,
+        buildBillingAddress,
+        determineOrderSource,
         buildTicketsPayload
     ])
+
 
     const handlePaymentResponse = useCallback(async (response: Response) => {
         if (!response.ok) {
@@ -278,25 +291,26 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
         }
 
         const result = await response.json()
-        
+
         if (result?.status) {
             showToast.success("Tickets purchased successfully")
             closeModal()
+            resetStates()
         } else {
             showToast.error(result?.message)
         }
-    }, [closeModal])
+    }, [closeModal, setCurrentStep])
 
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         if (!validateForm()) return
 
         try {
             setIsSubmitting(true)
-            
+
             const payload = buildPaymentPayload()
-            
+
             const response = await fetch('/api/charge', {
                 method: "POST",
                 body: JSON.stringify(payload),
@@ -313,9 +327,9 @@ export const useCheckout = (formRef: React.RefObject<HTMLFormElement>) => {
             setIsSubmitting(false)
         }
     }, [
-        validateForm, 
-        setIsSubmitting, 
-        buildPaymentPayload, 
+        validateForm,
+        setIsSubmitting,
+        buildPaymentPayload,
         handlePaymentResponse
     ])
 

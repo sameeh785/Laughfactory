@@ -12,9 +12,7 @@ import { ITicketList } from "@/interface/tickets"
 export default function PurchaseTicketModal() {
 
     const { currentStep, setCurrentStep, subtotal, hasTicketsSelected, termsAccepted, setTermsAccepted, handleCloseModal, selectedShow, isModalOpen, handlePurchase, purchaseTicketList, promoCode, setPromoCode, appliedCouponApiResponse, formRef, submitFormRef, handlePromoCode, isLoading, isSubmitting, showID, appliedCoupon } = usePurchaseTicket()
-
     if (!showID && (!isModalOpen || !selectedShow)) return <></>
-
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Backdrop */}

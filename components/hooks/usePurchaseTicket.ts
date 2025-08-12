@@ -11,10 +11,9 @@ export const usePurchaseTicket = () => {
     // hooks
     const { isModalOpen, closeModal,openModal } = useModalStore()
     const { selectedShow } = useSelectedShowStore()
-    const [currentStep, setCurrentStep] = useState<"tickets" | "payment">("tickets")
-    const { purchaseTicketList,setPurchaseTicketList,setSubtotal,setTickets,tickets} = usePurchaseTicketsStore()
+    const { purchaseTicketList,setPurchaseTicketList,setSubtotal,setTickets} = usePurchaseTicketsStore()
+    const { resetForm, setAppliedCoupon, appliedCoupon, isSubmitting, currentStep, setCurrentStep } = usePaymentFormStore()
     const formRef = useRef<HTMLFormElement>(null)
-    const { resetForm, setAppliedCoupon, appliedCoupon, isSubmitting } = usePaymentFormStore()
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null)
     const searchParams = useSearchParams()
     const showID = searchParams.get("showID")
@@ -128,9 +127,6 @@ export const usePurchaseTicket = () => {
     useEffect(() => {
         if(showID){
         openModal()
-        }
-        return () => {
-            resetStates()
         }
     }, [])
 
