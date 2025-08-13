@@ -38,3 +38,5 @@ export const socialMediaLinks = [
     "swisscows"
   ]
   
+  // required payment formlist
+  export const requiredFormList = ['addressLine1','zipCode','state','fullName','email','country','city']

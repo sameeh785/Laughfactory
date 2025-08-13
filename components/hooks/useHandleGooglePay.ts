@@ -76,10 +76,8 @@ export const useHandleGooglePay = (disabled: boolean) => {
         client.isReadyToPay(isReadyToPayRequest)
             .then((response: any) => {
                 if (response.result) {
-                    console.log('Google Pay is ready');
                     setIsGooglePayReady(true);
                 } else {
-                    console.log('Google Pay is not ready:', response);
                     setIsGooglePayReady(false);
                 }
             })

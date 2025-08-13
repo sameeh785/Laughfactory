@@ -45,3 +45,7 @@ body {
 .object-image-initial {
   object-fit: initial;
 }
+
+#gpay-button-online-api-id{
+    width: 100% !important;
+}
