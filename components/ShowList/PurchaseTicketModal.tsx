@@ -187,6 +187,7 @@ export default function PurchaseTicketModal() {
                                                     placeholder="Enter your code"
                                                     className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                                                     value={promoCode}
+                                                    disabled={!!appliedCoupon}
                                                     onChange={(e) => setPromoCode(e.target.value)}
                                                 />
                                                 <Button
@@ -195,7 +196,7 @@ export default function PurchaseTicketModal() {
                                                         appliedCoupon ? "bg-red-500 hover:bg-red-600" : ""
                                                     )}
                                                     size="sm"
-                                                    disabled={!promoCode || isLoading.isApplyCouponCode}
+                                                    disabled={appliedCoupon ? false : !promoCode || isLoading.isApplyCouponCode}
                                                     onClick={handlePromoCode}
                                                 >
                                                     {appliedCoupon ? "Remove" : "Apply"}
@@ -260,7 +261,7 @@ export default function PurchaseTicketModal() {
                                             className="w-full"
                                             environment="TEST"
                                             onClick={async (e) => {
-                                                if(!validateForm(false)){
+                                                if (!validateForm(false)) {
                                                     e.preventDefault()
                                                 }
                                             }}

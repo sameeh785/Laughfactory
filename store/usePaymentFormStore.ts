@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import { IPaymentFormData, IPaymentFormState, IPaymentFormActions, IPaymentFormErrors } from "@/interface/payment"
+import { IAppliedCouponApiResponse } from "@/interface/tickets"
 
 const initialFormData: IPaymentFormData = {
     cardNumber: "",
@@ -21,7 +22,9 @@ const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set
     errors: {},
     currentStep: "tickets",
     appliedCoupon: "",
+    appliedCouponApiResponse: null,
     setAppliedCoupon: (appliedCoupon: string) => set({ appliedCoupon }),
+    setAppliedCouponApiResponse: (appliedCouponApiResponse: IAppliedCouponApiResponse | null) => set({ appliedCouponApiResponse }),
     setCurrentStep : (currentStep: "tickets" | "payment") => set({ currentStep }),
     isSubmitting: false,
     setIsSubmitting: (isSubmitting: boolean) => 

@@ -1,3 +1,5 @@
+import { IAppliedCouponApiResponse } from "./tickets"
+
 export interface IPaymentFormData {
     cardNumber: string
     expiryDate: string
@@ -23,6 +25,7 @@ export interface IPaymentFormState {
     appliedCoupon: string
     isSubmitting: boolean
     currentStep: "tickets" | "payment"
+    appliedCouponApiResponse: IAppliedCouponApiResponse | null
 }
 
 export interface IPaymentFormActions {
@@ -30,6 +33,7 @@ export interface IPaymentFormActions {
     setFormData: (formData: IPaymentFormData) => void
     updateErrors: (errors: IPaymentFormErrors) => void
     setAppliedCoupon: (appliedCoupon: string) => void
+    setAppliedCouponApiResponse: (appliedCouponApiResponse: IAppliedCouponApiResponse | null) => void
     setCurrentStep : (currentStep: "tickets" | "payment") => void
     resetForm: () => void
     setIsSubmitting: (isSubmitting: boolean) => void

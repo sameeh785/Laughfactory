@@ -5,7 +5,7 @@ export interface IShow {
     image: string
     comedians: IComedian[]
     date: string
-    dateId: string
+    dateId: number
 }
 
 export interface IComedian {

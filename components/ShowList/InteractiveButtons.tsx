@@ -7,72 +7,77 @@ import { useModalStore } from "@/store/useModalStore"
 import { useCallback } from "react"
 import { showToast } from "@/utils/toast"
 import { useRouter } from "next/navigation"
+import { useResetStoreState } from "../hooks/useResetStoreState"
 
 interface InteractiveButtonsProps {
-  ticketUrl?: string
-  showShareButton?: boolean
-  showDetails?: any
+    ticketUrl?: string
+    showShareButton?: boolean
+    showDetails?: any
 }
 
 export default function InteractiveButtons({ showShareButton, showDetails }: InteractiveButtonsProps) {
     // hooks
- const router = useRouter()
-  // Modal state
-  const { openModal } = useModalStore()
-  const { setSelectedShow } = useSelectedShowStore()
-  // Function
-  const handleGetTickets = useCallback(() => {
-     if (showDetails) {
-       setSelectedShow(showDetails)
-       openModal()
-     } else {
-       showToast.error("Show details not available")
-     }
-  }, [showDetails, openModal, setSelectedShow])
+    const router = useRouter()
+    // Modal state
+    const { openModal } = useModalStore()
+    const { setSelectedShow, selectedShow } = useSelectedShowStore()
+    const { resetStoreState } = useResetStoreState()
+    // Function
+    const handleGetTickets = useCallback((dateId: number) => {
+        if (showDetails) {
+            if (selectedShow?.dateId !== dateId) {
+                resetStoreState()
+            }
+            setSelectedShow(showDetails)
+            openModal()
+        } else {
+            showToast.error("Show details not available")
+        }
+    }, [showDetails, openModal, setSelectedShow, selectedShow, resetStoreState])
 
-  const handleShare = useCallback(() => {
-    if (navigator.share) {
-      navigator.share({
-        title: "Comedy Show",
-        text: "Check out this comedy show!",
-        url: window.location.href,
-      }).then(() => {
-        showToast.success("Shared successfully!")
-      }).catch(() => {
-        showToast.error("Failed to share")
-      })
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => {
-          showToast.success("Link copied to clipboard!")
-        })
-        .catch(() => {
-          showToast.error("Failed to copy link")
-        })
+    const handleShare = useCallback(() => {
+        if (navigator.share) {
+            navigator.share({
+                title: "Comedy Show",
+                text: "Check out this comedy show!",
+                url: window.location.href,
+            }).then(() => {
+                showToast.success("Shared successfully!")
+            }).catch(() => {
+                showToast.error("Failed to share")
+            })
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => {
+                    showToast.success("Link copied to clipboard!")
+                })
+                .catch(() => {
+                    showToast.error("Failed to copy link")
+                })
+        }
+    }, [])
+
+    if (showShareButton) {
+        return (
+            <Button
+                variant="ghost"
+                size="sm"
+                className="text-orange-500 hover:text-orange-600 hover:bg-orange-50"
+                onClick={handleShare}
+            >
+                <Share2 className="w-4 h-4 mr-1" />
+                Share
+            </Button>
+        )
     }
-  }, [])
 
-  if (showShareButton) {
     return (
-      <Button
-        variant="ghost"
-        size="sm"
-        className="text-orange-500 hover:text-orange-600 hover:bg-orange-50"
-        onClick={handleShare}
-      >
-        <Share2 className="w-4 h-4 mr-1" />
-        Share
-      </Button>
+        <Button
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none"
+            onClick={() => handleGetTickets(showDetails?.dateId)}
+        >
+            Get Tickets
+        </Button>
     )
-  }
-
-  return (
-    <Button
-      className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none"
-      onClick={handleGetTickets}
-    >
-      Get Tickets
-    </Button>
-  )
 } 
