@@ -32,10 +32,10 @@ declare global {
 const ApplePayButton: React.FC<IApplePayProps> = ({
     disabled = false
 }) => {
-    const { handleApplePayButtonClick, isProcessing,isApplePayAvailable } = useHandleApplyPay(
+    const { handleApplePayButtonClick, isProcessing, isApplePayAvailable} = useHandleApplyPay(
         disabled
     )
-    if(!isApplePayAvailable){
+    if (!isApplePayAvailable) {
         return null
     }
     return (
