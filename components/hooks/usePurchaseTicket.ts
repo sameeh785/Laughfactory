@@ -205,11 +205,6 @@ export const usePurchaseTicket = () => {
     }
   }, [subtotal, currentStep]);
 
-  useEffect(() => {
-    if (showID) {
-      openModal();
-    }
-  }, []);
 
   return {
     currentStep,

@@ -21,7 +21,6 @@ export default function PurchaseTicketModal() {
         setTermsAccepted,
         handleCloseModal,
         selectedShow,
-        isModalOpen,
         handlePurchase,
         purchaseTicketList,
         promoCode,
@@ -32,12 +31,11 @@ export default function PurchaseTicketModal() {
         handlePromoCode,
         isLoading,
         isSubmitting,
-        showID,
         appliedCoupon,
         onLoadPaymentData,
         validateForm
     } = usePurchaseTicket();
-    if (!showID && (!isModalOpen || !selectedShow)) return <></>;
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Backdrop */}

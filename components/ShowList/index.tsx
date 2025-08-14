@@ -1,9 +1,24 @@
+'use client'
 import ComedyShowCard from "@/components/showList/comedy-show-card"
 import PurchaseTicketModal from "@/components/showList/PurchaseTicketModal"
 import { IShow } from "@/interface/shows"
+import { useModalStore } from "@/store/useModalStore"
 import { formatDate } from "@/utils/common"
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react"
 
 export default function ShowsList({shows}: {shows: IShow[]}) {
+  //hooks
+  const { isModalOpen,openModal } = useModalStore();
+  const searchParams = useSearchParams();
+  const showID = searchParams.get("showID");
+  
+  //effects
+  useEffect(() => {
+    if (showID) {
+      openModal();
+    }
+  }, [showID]);
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="mx-auto px-4">
@@ -34,7 +49,7 @@ export default function ShowsList({shows}: {shows: IShow[]}) {
         </div>
       </div>
       {/* Ticket Modal */}
-      <PurchaseTicketModal/>
+     {isModalOpen  && <PurchaseTicketModal/> }
     </div>
   )
 }
