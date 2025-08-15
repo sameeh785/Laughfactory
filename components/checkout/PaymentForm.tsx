@@ -47,7 +47,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
                 errors.cardNumber ? "border-red-500" : "border-gray-300"
               }`}
             />
-            <div className="absolute right-3 top-2 flex gap-1">
+            <div className="absolute right-3 top-2 gap-1 hidden sm:flex">
              <Image src="/master.svg" alt="Mastercard" className="h-5" width={20} height={30} />
              <Image src="/visa.svg" alt="Visa" className="h-5" width={20} height={30} />
              <Image src="/amex.svg" alt="Amex" className="h-5" width={20} height={30} />
@@ -57,7 +57,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           {errors.cardNumber && <p className="text-red-500 text-sm mt-1">{errors.cardNumber}</p>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Expiry Date */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Expiry date</label>
@@ -104,7 +104,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
             >
               {countries.map((country) => (
-                <option key={country} value={country}>
+                <option key={country} value={country} className="w-full">
                   {country}
                 </option>
               ))}
@@ -179,7 +179,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Zip code</label>
             <input
@@ -212,7 +212,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
             <input

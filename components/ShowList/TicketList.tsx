@@ -13,7 +13,6 @@ export default function TicketList() {
             </div>
         )
     }
-    console.log(tickets,"tickets")
     return (
         <div className="lg:col-span-2 space-y-6">
             <div>
@@ -56,7 +55,7 @@ export default function TicketList() {
                                 </div>
                             </div>
 
-                           {ticket.quantity > 0 && <p className="text-sm text-gray-600 mb-3">{ticket.description}</p> }
+                           {ticket.available_quantity > 0 && <p className="text-sm text-gray-600 mb-3">{ticket.description}</p> }
 
                             <div className="text-lg font-bold text-gray-900">
                                 ${parseFloat(ticket.price).toFixed(2)}

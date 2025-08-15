@@ -181,7 +181,7 @@ export default function PurchaseTicketModal() {
                                             <h4 className="text-sm font-medium text-gray-900 mb-2">
                                                 Have a Promo Code?
                                             </h4>
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-2 flex-col md:flex-row">
                                                 <input
                                                     type="text"
                                                     placeholder="Enter your code"
@@ -259,6 +259,7 @@ export default function PurchaseTicketModal() {
                                     })}>
                                         <GooglePayButton
                                             className="w-full"
+                                            buttonType="short"
                                             environment="TEST"
                                             onClick={async (e) => {
                                                 if (!validateForm(false)) {
