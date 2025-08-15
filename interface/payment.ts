@@ -138,27 +138,11 @@ export interface IShippingAddressParameters {
 }
 
 export interface IGooglePayProps {
-//   environment: 'TEST' | 'PRODUCTION';
-//   merchantId?: string;
-//   merchantName: string;
-//   gatewayMerchantId: string;
-//   gateway?: string;
-//   amount: number;
-//   currencyCode?: string;
-//   countryCode?: string;
-//   displayItems?: Array<{
-//     label: string;
-//     price: number;
-//     type?: 'LINE_ITEM' | 'SUBTOTAL';
-//   }>;
-//   allowedCardNetworks?: string[];
-//   allowedAuthMethods?: string[];
-//   billingAddressRequired?: boolean;
-//   shippingAddressRequired?: boolean;
-//   emailRequired?: boolean;
-//   onPaymentSuccess: (paymentData: any) => void;
-//   onPaymentError: (error: string) => void;
-//   onPaymentCancel?: () => void;
-//   className?: string;
   disabled: boolean;
+}
+
+export interface IState {
+  id: string
+  code: string
+  name: string
 }

@@ -12,7 +12,7 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps) {
-  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm } = useCheckout()
+  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal } = useCheckout()
 
   // Pass the submit function to the ref if provided
   React.useEffect(() => {
@@ -31,7 +31,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
   return (
     <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6 text-gray-900" ref={formRef}>
       {/* Payment Information */}
-      <div className="space-y-4 bg-gray-50 rounded-lg p-4">
+      {appliedCoupon && subtotal === 0 ? null : <div className="space-y-4 bg-gray-50 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-gray-900">Payment Information</h3>
 
         {/* Card Number */}
@@ -57,7 +57,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           {errors.cardNumber && <p className="text-red-500 text-sm mt-1">{errors.cardNumber}</p>}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {/* Expiry Date */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Expiry date</label>
@@ -104,7 +104,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
             >
               {countries.map((country) => (
-                <option key={country} value={country} className="w-full">
+                <option key={country} value={country}>
                   {country}
                 </option>
               ))}
@@ -118,6 +118,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           price to cover credit card service fees.
         </p>
       </div>
+      }
 
       {/* Delivery and Security */}
       <div className="bg-gray-50 rounded-lg p-4 space-y-4">
@@ -179,7 +180,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Zip code</label>
             <input
@@ -212,17 +213,21 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-            <input
-              type="text"
-              value={formData.state}
+            <select
+              value={formData?.state || ""}
               onChange={(e) => handleInputChange("state", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                errors.state ? "border-red-500" : "border-gray-300"
-              }`}
-            />
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
+            >
+              <option value="" disabled>Select State</option>
+              {states?.map((state) => (
+                <option key={state.id} value={state.id}>
+                  {state.name}
+                </option>
+              ))}
+            </select>
             {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
           </div>
 

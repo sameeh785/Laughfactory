@@ -15,6 +15,7 @@ import { useSelectedShowStore } from "@/store/useSelectedShowStore";
 import { ORDER_SOURCE } from "@/constant/checkout";
 import { useSearchParams } from "next/navigation";
 import { useResetStoreState } from "./useResetStoreState";
+import { useGetStates } from "./useGetStates";
 
 // Validation error messages
 const VALIDATION_MESSAGES = {
@@ -74,7 +75,7 @@ export const useCheckout = () => {
   const { resetStoreState } = useResetStoreState();
   const { selectedShow } = useSelectedShowStore();
   const { closeModal } = useModalStore();
-
+  const { states } = useGetStates();
   // URL parameters
   const searchParams = useSearchParams();
   const ref = searchParams.get("ref");
@@ -83,6 +84,9 @@ export const useCheckout = () => {
   // Validation functions
   const validateCardFields = useCallback(
     (newErrors: IPaymentFormErrors): void => {
+      if(appliedCoupon && subtotal === 0) {
+        return;
+      }
       if (!formData.cardNumber.trim()) {
         newErrors.cardNumber = VALIDATION_MESSAGES.cardNumber.required;
       } else if (!validateCardNumber(formData.cardNumber)) {
@@ -101,7 +105,7 @@ export const useCheckout = () => {
         newErrors.securityCode = VALIDATION_MESSAGES.securityCode.invalid;
       }
     },
-    [formData]
+    [formData, appliedCoupon, subtotal]
   );
 
   const validatePersonalInfo = useCallback(
@@ -142,7 +146,6 @@ export const useCheckout = () => {
 
   const validateForm = useCallback((validCardInfo = true): boolean => {
     const newErrors: IPaymentFormErrors = {};
-
     validCardInfo &&  validateCardFields(newErrors);
     validatePersonalInfo(newErrors);
     validateBillingInfo(newErrors);
@@ -276,6 +279,7 @@ export const useCheckout = () => {
       let payload: Record<string, unknown> = {
         company_id: process.env.NEXT_PUBLIC_COMPANY_ID,
         amount: subtotal?.toFixed(2),
+        charge_credit: subtotal > 0 ? true : false,
         show_id: selectedShow?.id,
         show_date_id: selectedShow?.dateId,
         affiliate_source: null,
@@ -285,14 +289,16 @@ export const useCheckout = () => {
           lastName,
           address: billingAddress,
           city: formData.city,
-          state: formData.state,
+          state_id: formData.state,
           zip: formData.zipCode,
           country: formData.country,
           email: formData.email,
         },
         tickets: buildTicketsPayload(),
       };
-      if (appendCardInfo) {
+
+      
+      if (payload.charge_credit && appendCardInfo) {
         payload = {
           ...payload,
           cardNumber: formData.cardNumber.replace(/\s/g, ""),
@@ -372,6 +378,9 @@ export const useCheckout = () => {
     submitForm: handleSubmit,
     isSubmitting,
     buildPaymentPayload,
-    validateForm
+    validateForm,
+    states,
+    subtotal,
+    appliedCoupon
   };
 };
