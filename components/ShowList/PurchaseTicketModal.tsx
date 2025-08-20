@@ -10,6 +10,7 @@ import { cn } from "@/utils/common";
 import { usePurchaseTicket } from "../hooks/usePurchaseTicket";
 import { ITicketList } from "@/interface/tickets";
 import GooglePayButton from "@google-pay/button-react";
+import ThankYou from "../checkout/ThankYou";
 
 export default function PurchaseTicketModal() {
     const {
@@ -44,8 +45,10 @@ export default function PurchaseTicketModal() {
                 onClick={handleCloseModal}
             />
             {/* Modal Content */}
-            <div className="relative bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-                {/* Close Button */}
+            <div className={cn("relative bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto", {
+                "w-auto": currentStep === "thankyou",
+            })}>
+               {currentStep === "thankyou" ? <ThankYou /> : <div>
                 <div
                     className={cn("flex justify-between px-4", {
                         "justify-between": currentStep === "payment",
@@ -340,6 +343,8 @@ export default function PurchaseTicketModal() {
                         </div>
                     </div>
                 </div>
+                </div>
+                }
             </div>
         </div>
     );

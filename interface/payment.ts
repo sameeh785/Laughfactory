@@ -24,7 +24,7 @@ export interface IPaymentFormState {
     errors: IPaymentFormErrors
     appliedCoupon: string
     isSubmitting: boolean
-    currentStep: "tickets" | "payment"
+    currentStep: "tickets" | "payment" | "thankyou"
     appliedCouponApiResponse: IAppliedCouponApiResponse | null
 }
 
@@ -34,7 +34,7 @@ export interface IPaymentFormActions {
     updateErrors: (errors: IPaymentFormErrors) => void
     setAppliedCoupon: (appliedCoupon: string) => void
     setAppliedCouponApiResponse: (appliedCouponApiResponse: IAppliedCouponApiResponse | null) => void
-    setCurrentStep : (currentStep: "tickets" | "payment") => void
+    setCurrentStep : (currentStep: "tickets" | "payment" | "thankyou") => void
     resetForm: () => void
     setIsSubmitting: (isSubmitting: boolean) => void
 }

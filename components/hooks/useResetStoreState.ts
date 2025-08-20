@@ -6,7 +6,7 @@ export const useResetStoreState = () => {
     const { setCurrentStep, resetForm, setAppliedCouponApiResponse,setAppliedCoupon } = usePaymentFormStore()
     const { setPurchaseTicketList, setTickets } = usePurchaseTicketsStore()
     const resetStoreState = () => {
-        setCurrentStep("tickets")
+        setCurrentStep("thankyou")
         setPurchaseTicketList([])
         setTickets([])
         resetForm()

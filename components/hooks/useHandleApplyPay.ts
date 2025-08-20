@@ -17,8 +17,7 @@ export const useHandleApplyPay = (disabled: boolean) => {
   const { validateForm } = useCheckout();
 
   const handlePaymentSuccess = () => {
-    toast.success("Tickets purchased successfully");
-    closeModal();
+
     resetStoreState();
   };
   const checkApplePayAvailability = () => {

@@ -70,7 +70,7 @@ export const usePurchaseTicket = () => {
     }, [currentStep]);
 
     const resetStates = useCallback(() => {
-        setCurrentStep("tickets");
+        setCurrentStep("thankyou");
         setPurchaseTicketList([]);
         setTickets([]);
         setPromoCode("");
@@ -179,8 +179,6 @@ export const usePurchaseTicket = () => {
                 const { data } = await response.json();
                 if (data?.success) {
                     resetStates();
-                    closeModal();
-                    toast.success("Ticket purchased successfully");
                 } else {
                     toast.error(data.message);
                 }
@@ -201,6 +199,11 @@ export const usePurchaseTicket = () => {
         setSubtotal(subtotal);
         if (currentStep === "tickets") {
             setPromoCode("");
+        }
+        return () => {
+           if(currentStep === "thankyou") {
+            setCurrentStep("tickets")
+           }
         }
     }, [subtotal, currentStep]);
 

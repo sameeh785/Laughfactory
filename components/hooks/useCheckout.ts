@@ -329,8 +329,6 @@ export const useCheckout = () => {
       const result = await response.json();
 
       if (result?.status) {
-        showToast.success("Tickets purchased successfully");
-        closeModal();
         resetStoreState();
       } else {
         showToast.error(result?.message);
