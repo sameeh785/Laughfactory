@@ -68,6 +68,7 @@ export const useCheckout = () => {
     setIsSubmitting,
     appliedCoupon,
     isSubmitting,
+    setDownloadTicketsUrl,
   } = usePaymentFormStore();
 
   const { purchaseTicketList, subtotal } =
@@ -327,6 +328,9 @@ export const useCheckout = () => {
       }
 
       const result = await response.json();
+      if(result?.data?.pdf_url) {
+        setDownloadTicketsUrl(result.data.pdf_url)
+      }
 
       if (result?.status) {
         resetStoreState();

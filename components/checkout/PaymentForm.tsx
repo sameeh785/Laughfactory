@@ -217,11 +217,11 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
             <select
-              value={formData?.state || ""}
+              value={formData?.state}
               onChange={(e) => handleInputChange("state", e.target.value)}
+              placeholder="Select State"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
             >
-              <option value="" disabled>Select State</option>
               {states?.map((state) => (
                 <option key={state.id} value={state.id}>
                   {state.name}

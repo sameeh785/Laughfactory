@@ -24,7 +24,8 @@ export const usePurchaseTicket = () => {
         currentStep,
         setCurrentStep,
         appliedCouponApiResponse,
-        setAppliedCouponApiResponse
+        setAppliedCouponApiResponse,
+        setDownloadTicketsUrl
     } = usePaymentFormStore();
     const formRef = useRef<HTMLFormElement>(null);
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null);
@@ -178,6 +179,9 @@ export const usePurchaseTicket = () => {
                 });
                 const { data } = await response.json();
                 if (data?.success) {
+                    if(data?.data?.pdf_url) {
+                        setDownloadTicketsUrl(data.data.pdf_url)
+                    }
                     resetStates();
                 } else {
                     toast.error(data.message);

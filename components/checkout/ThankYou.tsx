@@ -4,15 +4,25 @@ import { useModalStore } from "@/store/useModalStore"
 import usePaymentFormStore from "@/store/usePaymentFormStore";
 
 export default function ThankYou() {
+    // hooks
     const { closeModal } = useModalStore()
-    const { setCurrentStep } = usePaymentFormStore()
+    const { setCurrentStep, downloadTicketsUrl } = usePaymentFormStore()
+
+    // functions
     const onClickCloseModal = () => {
         closeModal()
         setCurrentStep("tickets")
     }
+    const onDownloadTickets = () => {
+        const a = document.createElement("a")
+        a.href = downloadTicketsUrl
+        a.download = "tickets.pdf"
+        a.target = "_blank"
+        a.click()
+    }
     return (
 
-        <div className="bg-white rounded-2xl shadow-xl pb-8 max-w-lg text-center space-y-6">
+        <div className="bg-white rounded-2xl shadow-xl max-w-lg text-center space-y-6">
             {/* close icon */}
             <div className="flex justify-end">
                 <button
@@ -23,25 +33,22 @@ export default function ThankYou() {
                 </button>
             </div>
             {/* Icon */}
-            <CheckCircle className="text-orange-500 m-auto" size={64}/>
-
+            <CheckCircle className="text-orange-500 mx-auto !mt-0" size={64}/>
             {/* Title */}
-           <div className="px-6">
+           <div className="p-6 !mt-0">
            <h1 className="text-3xl font-bold text-gray-800">
                 🎉 Thank You for Your Purchase!
             </h1>
 
             {/* Message */}
-            <p className="text-gray-600">
+            <p className="text-gray-600 my-3">
                 Your ticket for the <span className="font-semibold text-orange-500">Comedy Show</span> has been booked successfully.
-                Get ready for a night full of laughter! 😂
+                Get ready for the show full of laughter! 😂
             </p>
-           </div>
-
-
-            <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onClickCloseModal}>
+            <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onDownloadTickets}>
                 Download Tickets
             </Button>
+           </div>    
         </div>
     );
 }

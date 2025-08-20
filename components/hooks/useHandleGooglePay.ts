@@ -114,7 +114,6 @@ export const useHandleGooglePay = (disabled: boolean) => {
     };
 
     const handlePaymentSuccess = (result: any) => {
-        console.log('Payment successful:', result);
         toast.success('Payment successful');
     }
 
@@ -159,8 +158,6 @@ export const useHandleGooglePay = (disabled: boolean) => {
         paymentsClient.loadPaymentData(paymentDataRequest)
             .then(async (paymentData: any) => {
                 try {
-                    console.log('Google Pay payment data:', paymentData);
-
                     // Process the payment with your backend
                     const result = await processPayment(paymentData);
                     setIsProcessing(false);
@@ -197,7 +194,7 @@ export const useHandleGooglePay = (disabled: boolean) => {
                     currency: 'USD'
                 }),
             });
-
+            
             if (!response.ok) {
                 throw new Error('Payment processing failed');
             }
