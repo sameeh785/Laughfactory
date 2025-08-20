@@ -69,6 +69,7 @@ export const useCheckout = () => {
     appliedCoupon,
     isSubmitting,
     setDownloadTicketsUrl,
+    setCurrentStep,
   } = usePaymentFormStore();
 
   const { purchaseTicketList, subtotal } =
@@ -134,7 +135,7 @@ export const useCheckout = () => {
         newErrors.zipCode = VALIDATION_MESSAGES.zipCode.required;
       }
 
-      if (!formData.state.trim()) {
+      if (!formData.state) {
         newErrors.state = VALIDATION_MESSAGES.state.required;
       }
 
@@ -333,12 +334,13 @@ export const useCheckout = () => {
       }
 
       if (result?.status) {
-        resetStoreState();
+          setCurrentStep("thankyou")
+          resetStoreState();
       } else {
         showToast.error(result?.message);
       }
     },
-    [closeModal, resetStoreState]
+    [closeModal, resetStoreState, setCurrentStep]
   );
 
   const handleSubmit = useCallback(

@@ -13,7 +13,6 @@ interface PaymentFormProps {
 
 export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps) {
   const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal } = useCheckout()
-  console.log(formData,"formData")
   // Pass the submit function to the ref if provided
   React.useEffect(() => {
     if (submitFormRef) {

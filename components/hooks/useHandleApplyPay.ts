@@ -15,9 +15,9 @@ export const useHandleApplyPay = (disabled: boolean) => {
   const { purchaseTicketList, subtotal } = usePurchaseTicketsStore();
   const { resetStoreState } = useResetStoreState();
   const { validateForm } = useCheckout();
-
+  const { setCurrentStep } = usePaymentFormStore();
   const handlePaymentSuccess = () => {
-
+    setCurrentStep("thankyou")
     resetStoreState();
   };
   const checkApplePayAvailability = () => {
