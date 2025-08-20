@@ -1,13 +1,16 @@
 import { useCountryState } from "@/store/useCountryState";
-import { useEffect, useState } from "react";
+import usePaymentFormStore from "@/store/usePaymentFormStore";
+import { useEffect } from "react";
 
 export const useGetStates = () => {
     const { states, setStates } = useCountryState();
+    const {updateFormData} = usePaymentFormStore()
     const fetchStates = async () => {
         const response = await fetch(`/api/getState`);
         const {data} = await response.json();
         if(data?.length > 0) {
             setStates(data);
+            updateFormData({state: data[0].name})
         }
         else {
             setStates([]);

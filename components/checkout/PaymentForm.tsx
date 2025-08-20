@@ -13,7 +13,7 @@ interface PaymentFormProps {
 
 export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps) {
   const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal } = useCheckout()
-
+  console.log(formData,"formData")
   // Pass the submit function to the ref if provided
   React.useEffect(() => {
     if (submitFormRef) {
@@ -219,7 +219,6 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <select
               value={formData?.state}
               onChange={(e) => handleInputChange("state", e.target.value)}
-              placeholder="Select State"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
             >
               {states?.map((state) => (
