@@ -5,7 +5,8 @@ export default async function Home(): Promise<JSX.Element> {
         headers: {
             'Authorization': 'Basic ' + Buffer.from(process.env.NEXT_PUBLIC_API_USERNAME + ':' + process.env.NEXT_PUBLIC_API_PASSWORD).toString('base64')
         },
-        cache: 'no-store'
+        cache: 'no-store',
+        next: { tags: ['shows'] }
     });
 
     const { data: showsData } = await shows.json();

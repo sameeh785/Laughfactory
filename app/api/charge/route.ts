@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
 
 interface BillTo {
   firstName: string
@@ -31,6 +32,12 @@ export async function POST(request: NextRequest) {
         }
     })
     const data = await response.json()
+    
+    // Revalidate the shows data after successful purchase
+    if (data?.status || data?.success) {
+      revalidateTag('shows')
+    }
+    
     // Return success response
     return NextResponse.json(data)
 
