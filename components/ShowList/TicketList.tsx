@@ -2,6 +2,7 @@ import { useTicketList } from '@/components/hooks/useTicketList'
 import { Minus, Plus } from 'lucide-react'
 import React from 'react'
 import Loader from '@/components/ui/Loader'
+import { cn } from '@/utils/common'
 
 export default function TicketList() {
     // hooks
@@ -28,15 +29,20 @@ export default function TicketList() {
                 {tickets.map((ticket) => {
                     const purchaseTicket = purchaseTicketList.find((purchaseTicket) => purchaseTicket.ticket_id === ticket.ticket_id)
                     return (
-                        <div key={ticket.ticket_id} className="border-2 border-orange-200 rounded-lg p-4">
+                        <div key={ticket.ticket_id} className={cn("border-2 border-orange-200 rounded-lg p-4", {
+                            "opacity-50 cursor-not-allowed": ticket.available_quantity === 0,
+                        })}>
                             <div className="flex justify-between items-start mb-3">
-                                <div className="flex-1">
+                                <div className={
+                                    cn({
+                                        "flex-1": ticket.available_quantity > 0,
+                                        "flex justify-between flex-1": ticket.available_quantity === 0,
+                                    })
+                                }>
                                     <h3 className="text-lg font-semibold text-gray-900">{ticket.name}</h3>
-                                    <p className="text-sm text-gray-600">
-                                        {ticket.is_sold_out ? 'Sold Out' : `${ticket.available_quantity} available`}
-                                    </p>
+                                    {ticket.available_quantity === 0 && <div className="text-center bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-2">Sold Out</div>}
                                 </div>
-                                <div className="flex items-center gap-3 text-gray-500">
+                                {ticket.available_quantity > 0 && <div className="flex items-center gap-3 text-gray-500">
                                     <button
                                         onClick={() => removeQuantity(ticket.ticket_id.toString())}
                                         disabled={!purchaseTicket || purchaseTicket?.quantity === 0}
@@ -47,15 +53,16 @@ export default function TicketList() {
                                     <span className="w-8 text-center font-medium">{purchaseTicket?.quantity || 0}</span>
                                     <button
                                         onClick={() => addQuantity(ticket.ticket_id.toString())}
-                                        disabled={ticket.is_sold_out || ticket.available_quantity === 0}
+                                        disabled={ticket.available_quantity === 0 || purchaseTicket?.quantity === ticket.available_quantity}
                                         className="w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 flex items-center justify-center"
                                     >
                                         <Plus className="h-4 w-4" />
                                     </button>
                                 </div>
+                                }
                             </div>
 
-                           {ticket.available_quantity > 0 && <p className="text-sm text-gray-600 mb-3">{ticket.description}</p> }
+                            {ticket.available_quantity > 0 && <p className="text-sm text-gray-600 mb-3">{ticket.description}</p>}
 
                             <div className="text-lg font-bold text-gray-900">
                                 ${parseFloat(ticket.price).toFixed(2)}
