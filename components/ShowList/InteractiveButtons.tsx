@@ -8,6 +8,8 @@ import { useCallback } from "react"
 import { showToast } from "@/utils/toast"
 import { useRouter } from "next/navigation"
 import { useResetStoreState } from "../hooks/useResetStoreState"
+import { cn } from "@/utils/common"
+
 
 interface InteractiveButtonsProps {
     ticketUrl?: string
@@ -74,10 +76,13 @@ export default function InteractiveButtons({ showShareButton, showDetails }: Int
 
     return (
         <Button
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none"
+            className={cn("bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none", {
+                "opacity-50 cursor-not-allowed": showDetails?.is_sold_out
+            })}
+            disabled={showDetails?.is_sold_out}
             onClick={() => handleGetTickets(showDetails?.dateId)}
         >
-            Get Tickets
+            {showDetails?.is_sold_out ? "Sold Out" : "Get Tickets"}
         </Button>
     )
 } 

@@ -2,7 +2,7 @@ import Image from "next/image"
 import InteractiveButtons from "@/components/showList/InteractiveButtons"
 import ComedianList from "@/components/showList/comedianList"
 import { IShow } from "@/interface/shows"
-import { formatDate } from "@/utils/common"
+import { cn } from "@/utils/common"
 
 interface ShowCardProps {
     showDetails: IShow
@@ -12,7 +12,9 @@ export default function ComedyShowCard({
     showDetails,
 }: ShowCardProps) {
     return (
-        <div className="bg-white rounded-lg shadow-lg">
+        <div className={cn("bg-white rounded-lg shadow-lg", {
+            "opacity-70": showDetails?.is_sold_out
+        })}>
             {/* Banner Image */}
             <div className="relative h-48 rounded-t-lg">
                 <Image src={showDetails.image || "/placeholder.svg"} alt={showDetails.title} fill className="object-image-initial rounded-t-lg" />

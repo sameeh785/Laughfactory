@@ -41,7 +41,8 @@ export default function ShowsList({shows}: {shows: IShow[]}) {
                 })),
                 date: formatDate(show.date, show.start_time),
                 dateId: show.date_id,
-                id: show.id
+                id: show.id,
+                is_sold_out: show.is_sold_out
               }}
             />
           ))}

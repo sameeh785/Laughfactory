@@ -6,6 +6,7 @@ export interface IShow {
     comedians: IComedian[]
     date: string
     dateId: number
+    is_sold_out: number
 }
 
 export interface IComedian {
