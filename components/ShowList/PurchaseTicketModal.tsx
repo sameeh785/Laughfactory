@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ArrowLeft, X } from "lucide-react";
 import Button from "@/components/ui/Button";
-import TicketList from "@/components/showList/TicketList";
+import TicketList from "@/components/ShowList/TicketList";
 import PaymentForm from "@/components/checkout/PaymentForm";
 import ApplePayButton from "@/components/checkout/ApplePayButton";
 import { cn } from "@/utils/common";

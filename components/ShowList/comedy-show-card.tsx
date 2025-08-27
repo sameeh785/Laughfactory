@@ -1,18 +1,20 @@
 import Image from "next/image"
-import InteractiveButtons from "@/components/showList/InteractiveButtons"
-import ComedianList from "@/components/showList/comedianList"
+import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
+import ComedianList from "@/components/ShowList/ComedianList"
 import { IShow } from "@/interface/shows"
 import { cn } from "@/utils/common"
 
 interface ShowCardProps {
     showDetails: IShow
+    key: string
 }
 
 export default function ComedyShowCard({
     showDetails,
+    key
 }: ShowCardProps) {
     return (
-        <div className={cn("bg-white rounded-lg shadow-lg", {
+        <div key={key} className={cn("bg-white rounded-lg shadow-lg", {
             "opacity-70": showDetails?.is_sold_out
         })}>
             {/* Banner Image */}

@@ -1,4 +1,4 @@
-import ShowsList from '@/components/showList'
+import ShowsList from '@/components/ShowList'
 
 export default async function Home(): Promise<JSX.Element> {
     const shows = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-shows/${process.env.NEXT_PUBLIC_COMPANY_ID}`, {

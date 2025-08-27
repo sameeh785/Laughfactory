@@ -1,6 +1,6 @@
 'use client'
-import ComedyShowCard from "@/components/showList/comedy-show-card"
-import PurchaseTicketModal from "@/components/showList/PurchaseTicketModal"
+import ComedyShowCard from "@/components/ShowList/comedy-show-card"
+import PurchaseTicketModal from "@/components/ShowList/PurchaseTicketModal"
 import { IShow } from "@/interface/shows"
 import { useModalStore } from "@/store/useModalStore"
 import { formatDate } from "@/utils/common"
