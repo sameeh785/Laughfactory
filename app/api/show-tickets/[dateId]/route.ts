@@ -16,7 +16,6 @@ export async function GET(request: NextRequest, { params }: { params: { dateId: 
         return NextResponse.json(data)
 
     } catch (error) {
-        console.log(error, "error")
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

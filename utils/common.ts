@@ -39,9 +39,13 @@ export const validateEmail = (email: string): boolean => {
 export const formatDate = (date: string, time: string) => {
     // Parse the ISO date string
     const dateObj = new Date(date)
-    const month = dateObj.toLocaleDateString('en-US', { month: 'long' })
-    const day = dateObj.getDate()
-    const year = dateObj.getFullYear()
+      const formattedDate = dateObj.toLocaleDateString('en-US', {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  timeZone: 'UTC'
+            });
 
     // Format time to 12-hour format with AM/PM
     const formatTime = (timeStr: string) => {
@@ -69,7 +73,7 @@ export const formatDate = (date: string, time: string) => {
         return `${displayHour} ${ampm}`
     }
 
-    return `${month} ${day}, ${year} at ${formatTime(time)}`
+    return `${formattedDate} at ${formatTime(time)}`
 }
 
 //check is the ref link is the social media link

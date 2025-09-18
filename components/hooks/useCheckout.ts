@@ -82,6 +82,7 @@ export const useCheckout = () => {
   const searchParams = useSearchParams();
   const ref = searchParams.get("ref");
   const prID = searchParams.get("prID");
+  const affID = searchParams.get("aff");
 
   // Validation functions
   const validateCardFields = useCallback(
@@ -236,7 +237,14 @@ export const useCheckout = () => {
     if (prID) {
       return {
         order_source: ORDER_SOURCE.promoter,
-        promoter_id: prID,
+        promoter_code: prID,
+        referring_site: null,
+      };
+    }
+    if (affID) {
+      return {
+        order_source: ORDER_SOURCE.affiliate,
+        affiliate_source: affID,
         referring_site: null,
       };
     }
@@ -299,7 +307,6 @@ export const useCheckout = () => {
         tickets: buildTicketsPayload(),
       };
 
-      
       if (payload.charge_credit && appendCardInfo) {
         payload = {
           ...payload,
@@ -319,6 +326,7 @@ export const useCheckout = () => {
       buildBillingAddress,
       determineOrderSource,
       buildTicketsPayload,
+      selectedShow
     ]
   );
 
@@ -385,6 +393,6 @@ export const useCheckout = () => {
     validateForm,
     states,
     subtotal,
-    appliedCoupon
+    appliedCoupon,
   };
 };

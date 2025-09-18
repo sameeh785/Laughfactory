@@ -12,7 +12,7 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps) {
-  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal } = useCheckout()
+  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal,isSubmitting } = useCheckout()
   // Pass the submit function to the ref if provided
   React.useEffect(() => {
     if (submitFormRef) {
@@ -40,6 +40,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <input
               type="text"
               value={formData.cardNumber}
+              disabled={isSubmitting}
               onChange={(e) => handleInputChange("cardNumber", formatCardNumber(e.target.value))}
               placeholder="1234 1234 1234 1234"
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
@@ -63,6 +64,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <input
               type="text"
               value={formData.expiryDate}
+              disabled={isSubmitting}
               onChange={(e) => handleInputChange("expiryDate", formatExpiryDate(e.target.value))}
               placeholder="MM / YY"
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
@@ -79,6 +81,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
               <input
                 type="text"
                 value={formData.securityCode}
+                disabled={isSubmitting}
                 onChange={(e) => handleInputChange("securityCode", e.target.value.replace(/\D/g, "").substring(0, 4))}
                 placeholder="CVC"
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
@@ -99,6 +102,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <div className="relative">
             <select
               value={formData.country}
+              disabled={isSubmitting}
               onChange={(e) => handleInputChange("country", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
             >
@@ -128,6 +132,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <input
             type="text"
             value={formData.fullName}
+            disabled={isSubmitting}
             onChange={(e) => handleInputChange("fullName", e.target.value)}
             className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
               errors.fullName ? "border-red-500" : "border-gray-300"
@@ -143,6 +148,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <input
             type="email"
             value={formData.email}
+            disabled={isSubmitting}
             onChange={(e) => handleInputChange("email", e.target.value)}
             className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
               errors.email ? "border-red-500" : "border-gray-300"
@@ -161,6 +167,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <input
             type="text"
             value={formData.addressLine1}
+            disabled={isSubmitting}
             onChange={(e) => handleInputChange("addressLine1", e.target.value)}
             className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
               errors.addressLine1 ? "border-red-500" : "border-gray-300"
@@ -174,6 +181,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <input
             type="text"
             value={formData.addressLine2}
+            disabled={isSubmitting}
             onChange={(e) => handleInputChange("addressLine2", e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -185,6 +193,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <input
               type="text"
               value={formData.zipCode}
+              disabled={isSubmitting}
               onChange={(e) => handleInputChange("zipCode", e.target.value)}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                 errors.zipCode ? "border-red-500" : "border-gray-300"
@@ -198,6 +207,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <div className="relative">
               <select
                 value={formData.billingCountry}
+                disabled={isSubmitting}
                 onChange={(e) => handleInputChange("billingCountry", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
               >
@@ -217,6 +227,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
             <select
               value={formData?.state}
+              disabled={isSubmitting}
               onChange={(e) => handleInputChange("state", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none"
             >
@@ -234,6 +245,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
             <input
               type="text"
               value={formData.city}
+              disabled={isSubmitting}
               onChange={(e) => handleInputChange("city", e.target.value)}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                 errors.city ? "border-red-500" : "border-gray-300"

@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         if (!data?.status) {
             return NextResponse.json({
                data : {
-                error : "Invalid promo code"
+                error : data?.message || "Invalid promo code"
                }
             });
         }

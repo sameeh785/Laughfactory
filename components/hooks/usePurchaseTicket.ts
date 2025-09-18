@@ -4,7 +4,6 @@ import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore";
 import { useSelectedShowStore } from "@/store/useSelectedShowStore";
 import { showToast } from "@/utils/toast";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { IAppliedCouponApiResponse } from "@/interface/tickets";
 import { useSearchParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useCheckout } from "./useCheckout";

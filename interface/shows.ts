@@ -7,6 +7,10 @@ export interface IShow {
     date: string
     dateId: number
     is_sold_out: number
+    alert_is_percentage: number
+    alert_message: string
+    alert_quantity: number
+    thumbnail?: string
 }
 
 export interface IComedian {

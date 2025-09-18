@@ -5,11 +5,11 @@ import { ArrowLeft, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import TicketList from "@/components/ShowList/TicketList";
 import PaymentForm from "@/components/checkout/PaymentForm";
-import ApplePayButton from "@/components/checkout/ApplePayButton";
+// import ApplePayButton from "@/components/checkout/ApplePayButton";
 import { cn } from "@/utils/common";
 import { usePurchaseTicket } from "../hooks/usePurchaseTicket";
 import { ITicketList } from "@/interface/tickets";
-import GooglePayButton from "@google-pay/button-react";
+// import GooglePayButton from "@google-pay/button-react";
 import ThankYou from "../checkout/ThankYou";
 
 export default function PurchaseTicketModal() {
@@ -34,7 +34,7 @@ export default function PurchaseTicketModal() {
         isSubmitting,
         appliedCoupon,
         onLoadPaymentData,
-        validateForm
+        validateForm,
     } = usePurchaseTicket();
 
     return (
@@ -84,7 +84,7 @@ export default function PurchaseTicketModal() {
                             <div className="relative h-64 rounded-lg overflow-hidden">
                                 <Image
                                     src={
-                                        "https://storage.googleapis.com/partner-portal-storage/ticketing/others/730HWInstagramjpg5c0f2b24-382b-40c5-9beb-0dcb6291017e.jpeg"
+                                        selectedShow?.thumbnail || "https://storage.googleapis.com/partner-portal-storage/ticketing/others/730HWInstagramjpg5c0f2b24-382b-40c5-9beb-0dcb6291017e.jpeg"
                                     }
                                     alt={selectedShow?.title || ""}
                                     className="m-auto rounded-lg mt-2 object-image-initial"
@@ -249,15 +249,15 @@ export default function PurchaseTicketModal() {
                                                 ? "Purchase"
                                                 : "Complete Purchase"}
                                     </Button>
-                                    {currentStep === "payment" && (
+                                    {/* {currentStep === "payment" && (
                                         <ApplePayButton
                                             disabled={
                                                 !hasTicketsSelected ||
                                                 (currentStep === "payment" && !termsAccepted)
                                             }
                                         />
-                                    )}
-                                    {currentStep === "payment" && <div className={cn({
+                                    )} */}
+                                    {/* {currentStep === "payment" && <div className={cn({
                                         "pointer-events-none opacity-50 cursor-not-allowed": !termsAccepted || !hasTicketsSelected || isLoading.isPayingWithGoogle
                                     })}>
                                         <GooglePayButton
@@ -308,7 +308,7 @@ export default function PurchaseTicketModal() {
                                             }}
                                         />
                                     </div>
-                                    }
+                                    } */}
                                     {currentStep === "payment" && (
                                         // Disclaimer Section
                                         <div className="text-xs text-gray-600 space-y-2 mt-4 p-3 rounded-md">
