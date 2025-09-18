@@ -33,9 +33,8 @@ export default function PurchaseTicketModal() {
         isLoading,
         isSubmitting,
         appliedCoupon,
-        onLoadPaymentData,
-        validateForm,
     } = usePurchaseTicket();
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">

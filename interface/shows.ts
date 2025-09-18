@@ -11,6 +11,7 @@ export interface IShow {
     alert_message: string
     alert_quantity: number
     tags: ITag[]
+    show_after_sold_out: number
     thumbnail?: string
 }
 

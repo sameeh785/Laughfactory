@@ -13,6 +13,7 @@ export default function ComedyShowCard({
     showDetails,
     key
 }: ShowCardProps) {
+    if(!showDetails?.show_after_sold_out && showDetails?.is_sold_out) return null;
     return (
         <div key={key} className={cn("bg-white rounded-lg shadow-lg", {
             "opacity-70": showDetails?.is_sold_out
