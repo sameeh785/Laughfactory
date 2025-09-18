@@ -216,6 +216,7 @@ export default function PurchaseTicketModal() {
                                                 onChange={(e) => {
                                                     setTermsAccepted(e.target.checked);
                                                 }}
+                                                checked={termsAccepted}
                                             />
                                             <label
                                                 htmlFor="terms"

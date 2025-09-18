@@ -83,7 +83,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
                   alert_is_percentage: show.alert_is_percentage,
                   alert_message: show.alert_message,
                   alert_quantity: show.alert_quantity,
-                  thumbnail: show?.thumbnail || "",
+                  thumbnail: show?.thumbnail_image || "",
                   tags : show?.tags || [],
                   show_after_sold_out: show?.show_after_sold_out || 0
                 }}

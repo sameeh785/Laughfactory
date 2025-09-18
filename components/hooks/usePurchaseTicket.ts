@@ -114,7 +114,7 @@ export const usePurchaseTicket = () => {
                 method: "POST",
                 body: JSON.stringify({
                     coupon_code: promoCode,
-                    show_id: selectedShow?.id,
+                    show_id: selectedShow?.dateId,
                     ticket_types: purchaseTicketList?.map((ticket) => {
                         return {
                             ticket_type_id: ticket.ticket_type_id,
