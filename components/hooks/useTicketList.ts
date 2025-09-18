@@ -83,7 +83,7 @@ export const useTicketList = () => {
         if (selectedShow?.alert_quantity && tickets?.length) {
             const available_quantity = tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
             if(selectedShow?.alert_is_percentage) {
-               const totalQuantity =  tickets?.reduce((acc, ticket) => acc + ticket.quantity, 0)
+               const totalQuantity =  tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
                const percentage = (totalQuantity / selectedShow?.alert_quantity) * 100
                if(percentage == available_quantity) {
                 setAlertMessage(selectedShow?.alert_message)
@@ -92,7 +92,7 @@ export const useTicketList = () => {
                 setAlertMessage(selectedShow?.alert_message)
             }
         }
-    }, [selectedShow])
+    }, [selectedShow,tickets])
     //effect
     useEffect(() => {
         if (tickets.length === 0) getShowTicketList()

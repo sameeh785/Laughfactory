@@ -1,7 +1,7 @@
 import Image from "next/image"
 import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
 import ComedianList from "@/components/ShowList/ComedianList"
-import { IShow } from "@/interface/shows"
+import { IShow, ITag } from "@/interface/shows"
 import { cn } from "@/utils/common"
 
 interface ShowCardProps {
@@ -31,6 +31,17 @@ export default function ComedyShowCard({
                     <div className="flex-1 min-w-0">
                         {/* Title and Subtitle */}
                         <div className="mb-3">
+                           <div className="flex items-center gap-2 my-1 max-h-[80px] scroll-v">
+                           {
+                                showDetails?.tags?.map((tag: ITag) => (
+                                    <div key={tag.id} className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                                        {
+                                            tag.name
+                                        }
+                                    </div>
+                                ))
+                            }
+                           </div>
                             <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">
                                 {showDetails.title}
                             </h3>

@@ -3,6 +3,7 @@ import { Minus, Plus } from 'lucide-react'
 import React from 'react'
 import Loader from '@/components/ui/Loader'
 import { cn } from '@/utils/common'
+import { ITag } from '@/interface/shows'
 
 export default function TicketList() {
     // hooks
@@ -15,6 +16,7 @@ export default function TicketList() {
             </div>
         )
     }
+
     return (
         <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center">
@@ -23,7 +25,18 @@ export default function TicketList() {
                 <p className="text-gray-600 mb-4">
                     {selectedShow?.date}
                 </p>
-                <p className="text-gray-700">{selectedShow?.description}</p>
+                <div className="text-gray-600 text-[14px] mb-1 min-h-[30px] max-h-[30px] truncate" dangerouslySetInnerHTML={{ __html: selectedShow?.description || '' }} />
+                <div className="flex items-center gap-2">
+                           {
+                                selectedShow?.tags?.map((tag: ITag) => (
+                                    <div key={tag.id} className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                                        {
+                                            tag.name
+                                        }
+                                    </div>
+                                ))
+                            }
+                           </div>
                </div>
                <div>
                {alertMessage && <p className="font-2xl font-bold rounded-2xl bg-orange-500 text-white p-2">{alertMessage}</p>}

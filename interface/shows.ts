@@ -10,10 +10,16 @@ export interface IShow {
     alert_is_percentage: number
     alert_message: string
     alert_quantity: number
+    tags: ITag[]
     thumbnail?: string
 }
 
 export interface IComedian {
     name: string
     image: string
+}
+
+export interface ITag {
+    name: string
+    id: string
 }

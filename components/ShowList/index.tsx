@@ -13,7 +13,6 @@ export default function ShowsList({ shows }: { shows: any[] }) {
   const { setSelectedShow} = useSelectedShowStore();
   const searchParams = useSearchParams();
   const showID = searchParams.get("showID");
-  console.log(shows,"shows")
   //effects
   useEffect(() => {
     if (showID) {
@@ -40,6 +39,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
                   alert_message: show.alert_message,
                   alert_quantity: show.alert_quantity,
                   thumbnail: show?.thumbnail || "",
+                  tags : show?.tags || []
         });
       }
     }
@@ -82,6 +82,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
                   alert_message: show.alert_message,
                   alert_quantity: show.alert_quantity,
                   thumbnail: show?.thumbnail || "",
+                  tags : show?.tags || []
                 }}
               />
             ))}
