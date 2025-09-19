@@ -10,7 +10,7 @@ import { useCheckout } from "./useCheckout";
 
 export const usePurchaseTicket = () => {
     // hooks
-    const { isModalOpen, closeModal, openModal } = useModalStore();
+    const { isModalOpen, closeModal } = useModalStore();
     const { selectedShow } = useSelectedShowStore();
     const { buildPaymentPayload, validateForm } = useCheckout();
     const { purchaseTicketList, setPurchaseTicketList, setSubtotal, setTickets } =
@@ -70,7 +70,7 @@ export const usePurchaseTicket = () => {
     }, [currentStep]);
 
     const resetStates = useCallback(() => {
-        setCurrentStep("thankyou");
+        setCurrentStep("tickets");
         setPurchaseTicketList([]);
         setTickets([]);
         setPromoCode("");

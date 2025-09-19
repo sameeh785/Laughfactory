@@ -35,6 +35,26 @@ export const validateEmail = (email: string): boolean => {
     return emailRegex.test(email)
 }
 
+export const validateZipCode = (zipCode: string, country?: string): boolean => {
+    const value = zipCode?.trim()
+    if (!value) return false
+
+    const countryCode = (country || 'US').toUpperCase()
+
+    if (countryCode === 'US') {
+        // 12345 or 12345-6789
+        return /^\d{5}(-\d{4})?$/.test(value)
+    }
+
+    if (countryCode === 'CA') {
+        // Canadian postal code (e.g., A1A 1A1)
+        return /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(value)
+    }
+
+    // Generic fallback: 3-10 chars (letters, numbers, space, dash)
+    return /^[A-Za-z0-9 -]{3,10}$/.test(value)
+}
+
 // Helper function to format date
 export const formatDate = (date: string, time: string) => {
     // Parse the ISO date string

@@ -43,6 +43,7 @@ const VALIDATION_MESSAGES = {
   },
   zipCode: {
     required: "Zip code is required",
+    invalid: "Please enter a valid zip code",
   },
   state: {
     required: "State is required",
@@ -134,6 +135,13 @@ export const useCheckout = () => {
 
       if (!formData.zipCode.trim()) {
         newErrors.zipCode = VALIDATION_MESSAGES.zipCode.required;
+      } else {
+        const value = formData.zipCode.trim();
+        const isDigitsOnly = /^\d{3,10}$/.test(value);
+        const isAllZeros = /^0+$/.test(value);
+        if (!isDigitsOnly || isAllZeros) {
+          newErrors.zipCode = VALIDATION_MESSAGES.zipCode.invalid;
+        }
       }
 
       if (!formData.state) {
