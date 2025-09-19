@@ -50,16 +50,9 @@ export const validateUSPhoneNumber = (phone: string): boolean => {
     let core = digits
     if (digits.length === 11 && digits.startsWith("1")) {
         core = digits.slice(1)
-    } else if (digits.length !== 10) {
-        return false
     }
-
-    // NANP format: NXX NXX XXXX where N=2-9, X=0-9
-    const areaCodeFirst = core.charAt(0)
-    const exchangeFirst = core.charAt(3)
-    if (!/[2-9]/.test(areaCodeFirst)) return false
-    if (!/[2-9]/.test(exchangeFirst)) return false
-
+    if (core.length !== 10) return false
+    if (/^0+$/.test(core)) return false
     return true
 }
 
