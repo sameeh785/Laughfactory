@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ShowsList({ shows }: { shows: any[] }) {
+  console.log(shows,"shows");
   //hooks
   const { isModalOpen, openModal } = useModalStore();
   const { setSelectedShow} = useSelectedShowStore();

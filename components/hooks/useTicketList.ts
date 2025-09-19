@@ -98,7 +98,7 @@ export const useTicketList = () => {
     useEffect(() => {
         if (tickets.length === 0) getShowTicketList()
         else setLoading(false)
-    }, [selectedShow, tickets])
+    }, [selectedShow])
     useEffect(() => {
         isToSetAlertMessage()
     }, [tickets, selectedShow])
