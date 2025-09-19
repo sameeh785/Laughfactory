@@ -46,7 +46,7 @@ export default function ComedyShowCard({
                             <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">
                                 {showDetails.title}
                             </h3>
-                            <div className="text-gray-600 text-[14px] min-h-[30px] max-h-[30px] truncate" dangerouslySetInnerHTML={{ __html: showDetails.description }} />
+                            <div className="text-gray-600 text-[14px] max-h-[3px] overflow-y-scroll min-h-[30px]" dangerouslySetInnerHTML={{ __html: showDetails.description }} />
                         </div>
 
                         {/* Comedians Section */}
