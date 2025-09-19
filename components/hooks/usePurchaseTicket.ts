@@ -90,6 +90,7 @@ export const usePurchaseTicket = () => {
     const handleCloseModal = useCallback(() => {
         router.replace("/");
         closeModal();
+        resetStates();
     }, [router, closeModal, resetStates]);
 
     const removePromoCode = useCallback(() => {

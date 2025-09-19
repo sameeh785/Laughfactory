@@ -41,7 +41,6 @@ export default function PurchaseTicketModal() {
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
-                onClick={handleCloseModal}
             />
             {/* Modal Content */}
             <div className={cn("relative bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto", {
