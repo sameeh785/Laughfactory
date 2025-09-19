@@ -217,7 +217,7 @@ export const useCheckout = () => {
   );
 
   const buildTicketsPayload = useCallback(() => {
-    return purchaseTicketList?.map((ticket) => ({
+    return purchaseTicketList?.filter((ticket) => ticket.quantity > 0).map((ticket) => ({
       ticket_type_id: ticket.ticket_type_id,
       quantity: ticket.quantity,
       price: Number(ticket.price),

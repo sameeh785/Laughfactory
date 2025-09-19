@@ -8,6 +8,8 @@ export interface ITicket {
     ticket_type_id: number  
     is_in_pool: boolean
     pool_capacity : number | null
+    is_special: boolean
+
 }
 export interface ITicketList extends ITicket {
     quantity: number

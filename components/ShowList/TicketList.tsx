@@ -16,7 +16,6 @@ export default function TicketList() {
             </div>
         )
     }
-
     return (
         <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center">
@@ -42,15 +41,21 @@ export default function TicketList() {
                {alertMessage && <p className="font-2xl font-bold rounded-2xl bg-orange-500 text-white p-2">{alertMessage}</p>}
                </div>
             </div>
+
             {tickets?.length === 0 && <div className="text-center text-gray-500 text-lg mt-4">No tickets found for this show</div>}
             {/* Ticket Options */}
             <div className="space-y-4">
                 {tickets.map((ticket) => {
                     const purchaseTicket = purchaseTicketList.find((purchaseTicket) => purchaseTicket.ticket_id === ticket.ticket_id)
+                    if(ticket.is_special &&  tickets?.filter((ticket) => !ticket.is_special).reduce((acc, ticket) => acc + ticket.available_quantity, 0) !== 0){
+                        return null
+                    }
                     return (
                         <div key={ticket.ticket_id} className={cn("border-2 border-orange-200 rounded-lg p-4", {
                             "opacity-50 cursor-not-allowed": ticket.available_quantity === 0,
+                            "border-4 border-orange-600 rounded-lg p-4": ticket.is_special
                         })}>
+                            {ticket.is_special && <div className="w-[120px] text-center text-sm font-bold mb-2 bg-orange-600 text-white rounded-lg p-2">Special</div>}
                             <div className="flex justify-between items-start mb-3">
                                 <div className={
                                     cn({
@@ -58,6 +63,7 @@ export default function TicketList() {
                                         "flex justify-between flex-1": ticket.available_quantity === 0,
                                     })
                                 }>
+                                    
                                     <h3 className="text-lg font-semibold text-gray-900">{ticket.name}</h3>
                                     {ticket.available_quantity === 0 && <div className="text-center bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-2">Sold Out</div>}
                                 </div>
