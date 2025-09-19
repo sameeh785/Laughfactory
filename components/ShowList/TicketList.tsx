@@ -18,13 +18,16 @@ export default function TicketList() {
     }
     return (
         <div className="lg:col-span-2 space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="w-full">
                <div>
-               <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedShow?.title}</h2>
+                <div className="flex items-center justify-between gap-2 w-full">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedShow?.title}</h2>
+                    {alertMessage && <p className="font-2xl font-bold rounded-2xl bg-orange-500 text-white p-2">{alertMessage}</p>}
+                </div>
                 <p className="text-gray-600 mb-4">
                     {selectedShow?.date}
                 </p>
-                <div className="text-gray-600 text-[14px] mb-1 min-h-[30px] max-h-[30px] truncate" dangerouslySetInnerHTML={{ __html: selectedShow?.description || '' }} />
+                <div className="text-gray-600 text-[14px] mb-1 h-[80px] w-full overflow-y-auto whitespace-normal break-words pr-2" dangerouslySetInnerHTML={{ __html: selectedShow?.description || '' }} />
                 <div className="flex items-center gap-2">
                            {
                                 selectedShow?.tags?.map((tag: ITag) => (
@@ -38,7 +41,7 @@ export default function TicketList() {
                            </div>
                </div>
                <div>
-               {alertMessage && <p className="font-2xl font-bold rounded-2xl bg-orange-500 text-white p-2">{alertMessage}</p>}
+               
                </div>
             </div>
 

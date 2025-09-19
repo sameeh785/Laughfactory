@@ -84,12 +84,13 @@ export const useTicketList = () => {
         if (selectedShow?.alert_quantity && tickets?.length) {
             const available_quantity = tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
             if(selectedShow?.alert_is_percentage) {
-               const totalQuantity =  tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
-               const percentage = (totalQuantity / selectedShow?.alert_quantity) * 100
-               if(percentage == available_quantity) {
+               const totalQuantityAvailable =  tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
+               const totalQuantity =  tickets?.reduce((acc, ticket) => acc + ticket.quantity, 0)
+               const percentage = (totalQuantityAvailable * 100)/ totalQuantity
+               if(percentage === selectedShow?.alert_quantity) {
                 setAlertMessage(selectedShow?.alert_message)
                }
-            } else if(available_quantity == selectedShow?.alert_quantity) {
+            } else if(available_quantity === selectedShow?.alert_quantity) {
                 setAlertMessage(selectedShow?.alert_message)
             }
         }
