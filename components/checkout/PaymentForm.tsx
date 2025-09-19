@@ -141,7 +141,8 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
         </div>
 
-        <div>
+         <div className="grid grid-cols-2 gap-4">
+         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Email<span className="text-red-500">*</span>
           </label>
@@ -156,6 +157,26 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Phone Number<span className="text-red-500">*</span>
+          </label>
+          <input
+            type="tel"
+            inputMode="tel"
+            value={formData.phoneNumber}
+            disabled={isSubmitting}
+            onChange={(e) => handleInputChange("phoneNumber", e.target.value.replace(/[^\d+\-()\s]/g, ""))}
+            placeholder="415-555-2671"
+            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+              errors.phoneNumber ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+          )}
+        </div>
+         </div>
       </div>
 
       {/* Billing Info */}

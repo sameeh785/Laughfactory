@@ -13,6 +13,7 @@ export interface IPaymentFormData {
     billingCountry: string
     state: string
     city: string
+    phoneNumber: string
 }
 
 export interface IPaymentFormErrors {

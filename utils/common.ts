@@ -35,6 +35,34 @@ export const validateEmail = (email: string): boolean => {
     return emailRegex.test(email)
 }
 
+export const validatePhoneNumber = (phone: string): boolean => {
+    if (!phone) return false
+    const digitsOnly = phone.replace(/\D/g, "")
+    if (digitsOnly.length < 10 || digitsOnly.length > 15) return false
+    if (/^0+$/.test(digitsOnly)) return false
+    return true
+}
+
+export const validateUSPhoneNumber = (phone: string): boolean => {
+    if (!phone) return false
+    const digits = phone.replace(/\D/g, "")
+
+    let core = digits
+    if (digits.length === 11 && digits.startsWith("1")) {
+        core = digits.slice(1)
+    } else if (digits.length !== 10) {
+        return false
+    }
+
+    // NANP format: NXX NXX XXXX where N=2-9, X=0-9
+    const areaCodeFirst = core.charAt(0)
+    const exchangeFirst = core.charAt(3)
+    if (!/[2-9]/.test(areaCodeFirst)) return false
+    if (!/[2-9]/.test(exchangeFirst)) return false
+
+    return true
+}
+
 export const validateZipCode = (zipCode: string, country?: string): boolean => {
     const value = zipCode?.trim()
     if (!value) return false

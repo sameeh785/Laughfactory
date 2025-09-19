@@ -6,6 +6,8 @@ import {
   validateCardNumber,
   validateEmail,
   validateExpiryDate,
+  validatePhoneNumber,
+  validateUSPhoneNumber,
 } from "@/utils/common";
 import { showToast } from "@/utils/toast";
 import { useCallback } from "react";
@@ -37,6 +39,10 @@ const VALIDATION_MESSAGES = {
   email: {
     required: "Email is required",
     invalid: "Please enter a valid email address",
+  },
+  phoneNumber: {
+    required: "Phone number is required",
+    invalid: "Please enter a valid phone number",
   },
   addressLine1: {
     required: "Address is required",
@@ -122,6 +128,23 @@ export const useCheckout = () => {
         newErrors.email = VALIDATION_MESSAGES.email.required;
       } else if (!validateEmail(formData.email)) {
         newErrors.email = VALIDATION_MESSAGES.email.invalid;
+      }
+
+      if (!formData.phoneNumber.trim()) {
+        newErrors.phoneNumber = VALIDATION_MESSAGES.phoneNumber.required;
+      } else {
+        const isUS = (formData.country || '').toLowerCase().includes('united states')
+          || (formData.billingCountry || '').toLowerCase().includes('united states')
+          || (formData.country || '').toLowerCase() === 'usa'
+          || (formData.billingCountry || '').toLowerCase() === 'usa'
+          || (formData.country || '').toLowerCase() === 'us'
+          || (formData.billingCountry || '').toLowerCase() === 'us'
+        const valid = isUS
+          ? validateUSPhoneNumber(formData.phoneNumber)
+          : validatePhoneNumber(formData.phoneNumber)
+        if (!valid) {
+          newErrors.phoneNumber = VALIDATION_MESSAGES.phoneNumber.invalid;
+        }
       }
     },
     [formData]
@@ -310,6 +333,7 @@ export const useCheckout = () => {
           state_id: formData.state,
           zip: formData.zipCode,
           country: formData.country,
+          phone: formData.phoneNumber,
           email: formData.email,
         },
         tickets: buildTicketsPayload(),

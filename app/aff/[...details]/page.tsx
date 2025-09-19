@@ -3,10 +3,9 @@ import { redirect } from 'next/navigation'
 const Page = ({ params }: { params: { details: string[] } }) => {
     const details = params.details
     const affID = details?.[0]
-    const showID = details?.[1]
-    if (affID && showID) {
+    if (affID) {
         // redirect to the home page with the prID and showID search params
-        redirect(`/?aff=${affID}&showID=${showID}`)
+        redirect(`/?aff=${affID}`)
     }
     else {
         redirect("/")

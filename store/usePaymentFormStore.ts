@@ -15,6 +15,7 @@ const initialFormData: IPaymentFormData = {
     billingCountry: "United States",
     state: "",
     city: "",
+    phoneNumber: "",
 }
 
 const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set) => ({
