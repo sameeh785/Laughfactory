@@ -115,7 +115,7 @@ export const usePurchaseTicket = () => {
                 body: JSON.stringify({
                     coupon_code: promoCode,
                     show_id: selectedShow?.dateId,
-                    ticket_types: purchaseTicketList?.map((ticket) => {
+                    ticket_types: purchaseTicketList?.filter((ticket) => ticket.quantity > 0)?.map((ticket) => {
                         return {
                             ticket_type_id: ticket.ticket_type_id,
                             amount: Number(ticket.price),

@@ -105,7 +105,7 @@ export default function PurchaseTicketModal() {
                                             appliedCouponApiResponse?.applied_ticket_types?.find(
                                                 (ticket) =>
                                                     ticket.ticket_type_id === option.ticket_type_id
-                                            )?.discount;
+                                            )?.discount_amount;
                                         return (
                                             <div
                                                 key={option.ticket_id}

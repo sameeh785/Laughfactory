@@ -19,7 +19,7 @@ export interface IAppliedCouponApiResponse {
     applied_ticket_types: [
         {
             ticket_type_id: number
-            discount: number
+            discount_amount: number
         }
     ]
 }
