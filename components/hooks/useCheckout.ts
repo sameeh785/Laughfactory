@@ -18,6 +18,7 @@ import { ORDER_SOURCE } from "@/constant/checkout";
 import { useSearchParams } from "next/navigation";
 import { useResetStoreState } from "./useResetStoreState";
 import { useGetStates } from "./useGetStates";
+import toast from "react-hot-toast";
 
 // Validation error messages
 const VALIDATION_MESSAGES = {
@@ -196,6 +197,11 @@ export const useCheckout = () => {
   // Input handling functions
   const handleInputChange = useCallback(
     (field: keyof IPaymentFormData, value: string) => {
+      if(field === "zipCode"){
+        if(Number(value) < 0){
+          return toast.error("Enter a positive number")
+        }
+      }
       updateFormData({ [field]: value });
 
       // Clear error when user starts typing
