@@ -3,6 +3,8 @@ import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
 import ComedianList from "@/components/ShowList/ComedianList"
 import { IShow, ITag } from "@/interface/shows"
 import { cn } from "@/utils/common"
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 interface ShowCardProps {
     showDetails: IShow
@@ -32,21 +34,24 @@ export default function ComedyShowCard({
                     <div className="flex-1 min-w-0">
                         {/* Title and Subtitle */}
                         <div className="mb-3">
-                           <div className="flex items-center gap-2 my-1 max-h-[80px] scroll-v">
+                           <div className="flex items-center gap-2 my-1 flex-wrap">
                            {
-                                showDetails?.tags?.map((tag: ITag) => (
-                                    <div key={tag.id} className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                                        {
-                                            tag.name
-                                        }
-                                    </div>
-                                ))
-                            }
+    showDetails?.tags?.slice(0, 5).map((tag: ITag) => (
+        <div key={tag.id} className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+            {tag.name}
+        </div>
+    ))}
+
+{showDetails?.tags && showDetails.tags.length > 5 && (
+    <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+        +{showDetails.tags.length - 5}
+    </div>
+)}
                            </div>
                             <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">
                                 {showDetails.title}
                             </h3>
-                            <div className="text-gray-600 text-[14px] max-h-[3px] overflow-y-scroll min-h-[30px]" dangerouslySetInnerHTML={{ __html: showDetails.description }} />
+                            <div className="text-gray-600 text-[14px] max-h-[3px] overflow-y-scroll min-h-[30px]" dangerouslySetInnerHTML={{ __html: showDetails.description }} /> 
                         </div>
 
                         {/* Comedians Section */}
