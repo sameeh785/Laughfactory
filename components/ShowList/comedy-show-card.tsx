@@ -3,6 +3,7 @@ import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
 import ComedianList from "@/components/ShowList/ComedianList"
 import { IShow, ITag } from "@/interface/shows"
 import { cn } from "@/utils/common"
+import RichTextDisplay from "./RenderHtml"
 
 interface ShowCardProps {
     showDetails: IShow
@@ -49,7 +50,8 @@ export default function ComedyShowCard({
                             <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">
                                 {showDetails.title}
                             </h3>
-                            <div className="text-gray-600 text-[14px] max-h-[3px] overflow-y-scroll min-h-[30px]" dangerouslySetInnerHTML={{ __html: showDetails.description }} /> 
+                           {showDetails.description ? <RichTextDisplay htmlContent={showDetails.description} className="!max-h-[50px] !overflow-y-scroll !min-h-[50px]" /> : null }
+
                         </div>
 
                         {/* Comedians Section */}

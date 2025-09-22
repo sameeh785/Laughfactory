@@ -4,6 +4,7 @@ import React from "react";
 import Loader from "@/components/ui/Loader";
 import { cn } from "@/utils/common";
 import { ITag } from "@/interface/shows";
+import RichTextDisplay from "./RenderHtml";
 
 export default function TicketList() {
   // hooks
@@ -40,12 +41,10 @@ export default function TicketList() {
             )}
           </div>
           <p className="text-gray-600 mb-4">{selectedShow?.date}</p>
-          <div
-            className="text-gray-600 text-[14px] mb-1 h-[80px] w-full overflow-y-auto whitespace-normal break-words pr-2"
-            dangerouslySetInnerHTML={{
-              __html: selectedShow?.description || "",
-            }}
-          />
+
+          {selectedShow?.description ? (
+            <RichTextDisplay htmlContent={selectedShow?.description} className="!max-h-[90px] !overflow-y-scroll !min-h-90px]" />
+          ) : null}
           <div className="flex items-center gap-2 flex-wrap">
             {selectedShow?.tags?.map((tag: ITag) => (
               <div

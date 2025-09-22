@@ -2,11 +2,13 @@ import { CheckCircle, X } from "lucide-react";
 import Button from "../ui/Button";
 import { useModalStore } from "@/store/useModalStore"
 import usePaymentFormStore from "@/store/usePaymentFormStore";
+import { useSelectedShowStore } from "@/store/useSelectedShowStore";
 
 export default function ThankYou() {
     // hooks
     const { closeModal } = useModalStore()
     const { setCurrentStep, downloadTicketsUrl } = usePaymentFormStore()
+    const {selectedShow} =  useSelectedShowStore()
 
     // functions
     const onClickCloseModal = () => {
@@ -42,7 +44,7 @@ export default function ThankYou() {
 
             {/* Message */}
             <p className="text-gray-600 my-3">
-                Your ticket for the <span className="font-semibold text-orange-500">Comedy Show</span> has been booked successfully.
+                Your ticket for the <span className="font-semibold text-orange-500">{selectedShow?.title}</span> has been booked successfully.
                 Get ready for the show full of laughter! 😂
             </p>
             <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onDownloadTickets}>
