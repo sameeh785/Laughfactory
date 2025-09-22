@@ -3,8 +3,6 @@ import InteractiveButtons from "@/components/ShowList/InteractiveButtons"
 import ComedianList from "@/components/ShowList/ComedianList"
 import { IShow, ITag } from "@/interface/shows"
 import { cn } from "@/utils/common"
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
 
 interface ShowCardProps {
     showDetails: IShow
