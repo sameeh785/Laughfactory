@@ -22,6 +22,7 @@ const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set
     formData: initialFormData,
     errors: {},
     currentStep: "tickets",
+    promoCode: "",
     appliedCoupon: "",
     appliedCouponApiResponse: null,
     downloadTicketsUrl: "",
@@ -30,6 +31,8 @@ const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set
     setAppliedCouponApiResponse: (appliedCouponApiResponse: IAppliedCouponApiResponse | null) => set({ appliedCouponApiResponse }),
     setCurrentStep : (currentStep: "tickets" | "payment" | "thankyou") => set({ currentStep }),
     isSubmitting: false,
+    setPromoCode: (promoCode: string) => 
+        set({ promoCode }),
     setIsSubmitting: (isSubmitting: boolean) => 
         set({ isSubmitting }),
 
@@ -47,7 +50,7 @@ const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set
         })),
 
     resetForm: () => 
-        set({ formData: initialFormData }),
+        set({ formData: initialFormData, errors : {}, promoCode : "" }),
 }))
 
 export default usePaymentFormStore

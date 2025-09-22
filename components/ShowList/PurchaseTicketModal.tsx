@@ -63,7 +63,8 @@ export default function PurchaseTicketModal() {
                     )}
                     <button
                         onClick={handleCloseModal}
-                        className="m-3 hover:bg-gray-100 rounded-full transition-colors w-10 h-10 flex items-center justify-center"
+                        disabled={isSubmitting}
+                        className={`m-3 hover:bg-gray-100 rounded-full transition-colors w-10 h-10 flex items-center justify-center ${isSubmitting ? "cursor-not-allowed" : ""}`}
                     >
                         <X className="w-5 h-5 text-gray-500" />
                     </button>
@@ -221,7 +222,7 @@ export default function PurchaseTicketModal() {
                                                 htmlFor="terms"
                                                 className="text-xs text-gray-700 leading-relaxed"
                                             >
-                                                I accept Punchup's Fan{" "}
+                                                I accept Laugh Factory{" "}
                                                 <a
                                                     href="#"
                                                     className="text-blue-600 underline hover:text-blue-800"

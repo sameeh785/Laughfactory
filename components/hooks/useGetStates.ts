@@ -8,6 +8,7 @@ export const useGetStates = () => {
     const fetchStates = async () => {
         const response = await fetch(`/api/getState`);
         const {data} = await response.json();
+        console.log("list of state", data)
         if(data?.length > 0) {
             setStates(data);
             updateFormData({state: data[0].id})

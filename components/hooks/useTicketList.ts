@@ -47,7 +47,6 @@ export const useTicketList = () => {
             const response = await fetch(`/api/show-tickets/${selectedShow?.dateId}`)
             const { data: showDetails } = await response.json()
             if (showDetails?.show && showDetails?.tickets) {
-                console.log(showDetails?.tickets,"showDetails?.tickets");
                 setTickets(showDetails?.tickets)
                 setPurchaseTicketList(showDetails?.tickets.map((ticket: ITicket) => ({
                     ...ticket,

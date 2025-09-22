@@ -24,6 +24,7 @@ export interface IPaymentFormState {
     formData: IPaymentFormData
     errors: IPaymentFormErrors
     downloadTicketsUrl: string
+    promoCode: string
     appliedCoupon: string
     isSubmitting: boolean
     currentStep: "tickets" | "payment" | "thankyou"
@@ -35,6 +36,7 @@ export interface IPaymentFormActions {
     setFormData: (formData: IPaymentFormData) => void
     updateErrors: (errors: IPaymentFormErrors) => void
     setAppliedCoupon: (appliedCoupon: string) => void
+    setPromoCode: (promoCode: string) => void
     setAppliedCouponApiResponse: (appliedCouponApiResponse: IAppliedCouponApiResponse | null) => void
     setCurrentStep : (currentStep: "tickets" | "payment" | "thankyou") => void
     resetForm: () => void

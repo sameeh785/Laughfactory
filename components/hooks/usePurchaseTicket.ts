@@ -24,7 +24,9 @@ export const usePurchaseTicket = () => {
         setCurrentStep,
         appliedCouponApiResponse,
         setAppliedCouponApiResponse,
-        setDownloadTicketsUrl
+        setDownloadTicketsUrl,
+        setPromoCode,
+        promoCode
     } = usePaymentFormStore();
     const formRef = useRef<HTMLFormElement>(null);
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null);
@@ -33,7 +35,6 @@ export const usePurchaseTicket = () => {
     const router = useRouter();
     // state
     const [termsAccepted, setTermsAccepted] = useState(false);
-    const [promoCode, setPromoCode] = useState("");
     const [isLoading, setIsLoading] = useState({
         isApplyCouponCode: false,
         isPayingWithGoogle: false,
@@ -201,15 +202,15 @@ export const usePurchaseTicket = () => {
     // effects
     useEffect(() => {
         setSubtotal(subtotal);
-        if (currentStep === "tickets") {
-            setPromoCode("");
-        }
+        // if (currentStep === "tickets") {
+        //      promoCode && setPromoCode("");
+        // }
         return () => {
            if(currentStep === "thankyou") {
             setCurrentStep("tickets")
            }
         }
-    }, [subtotal, currentStep]);
+    }, [subtotal, currentStep, promoCode]);
 
 
     return {
