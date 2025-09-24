@@ -11,8 +11,11 @@ import { usePurchaseTicket } from "../hooks/usePurchaseTicket";
 import { ITicketList } from "@/interface/tickets";
 // import GooglePayButton from "@google-pay/button-react";
 import ThankYou from "../checkout/ThankYou";
+import useLockBodyScroll from "../hooks/useBodyScrollLock";
+import { useModalStore } from "@/store/useModalStore";
 
 export default function PurchaseTicketModal() {
+    const { isModalOpen } = useModalStore();
     const {
         currentStep,
         setCurrentStep,
@@ -34,6 +37,8 @@ export default function PurchaseTicketModal() {
         isSubmitting,
         appliedCoupon,
     } = usePurchaseTicket();
+
+    useLockBodyScroll(isModalOpen);
 
 
     return (
@@ -189,16 +194,18 @@ export default function PurchaseTicketModal() {
                                                     placeholder="Enter your code"
                                                     className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                                                     value={promoCode}
-                                                    disabled={!!appliedCoupon}
+                                                    disabled={!!appliedCoupon || isSubmitting}
                                                     onChange={(e) => setPromoCode(e.target.value)}
                                                 />
                                                 <Button
                                                     className={cn(
-                                                        "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed",
-                                                        appliedCoupon ? "bg-red-500 hover:bg-red-600" : ""
+                                                        "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed",{
+                                                        appliedCoupon : "bg-red-500 hover:bg-red-600",
+                                                        isSubmitting  : "cursor-not-allowed"
+                                                        }
                                                     )}
                                                     size="sm"
-                                                    disabled={appliedCoupon ? false : !promoCode || isLoading.isApplyCouponCode}
+                                                    disabled={appliedCoupon ? false : !promoCode || isLoading.isApplyCouponCode || isSubmitting}
                                                     onClick={handlePromoCode}
                                                 >
                                                     {appliedCoupon ? "Remove" : "Apply"}

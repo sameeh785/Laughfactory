@@ -212,9 +212,8 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Zip code</label>
             <input
-              type="number"
+              type="text"
               value={formData.zipCode}
-              min={0}
               disabled={isSubmitting}
               onChange={(e) => handleInputChange("zipCode", e.target.value)}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${

@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} w-full bg-gray-100 `}>
         {children}
         <ToastProvider />
       </body>

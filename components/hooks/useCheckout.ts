@@ -197,10 +197,11 @@ export const useCheckout = () => {
   // Input handling functions
   const handleInputChange = useCallback(
     (field: keyof IPaymentFormData, value: string) => {
+      // if its a zip code is number and length is 5 or 10 then validate it using validateZipCode
       if(field === "zipCode"){
-        if(Number(value) < 0){
-          return toast.error("Enter a positive number")
-        }
+        if(isNaN(Number(value))){
+         return updateErrors({ "zipCode" : "Enter a valid zip code" });
+         }
       }
       updateFormData({ [field]: value });
 
