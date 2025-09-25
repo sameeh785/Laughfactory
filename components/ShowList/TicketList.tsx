@@ -49,7 +49,7 @@ export default function TicketList() {
             />
           ) : null}
           <div className="flex items-center gap-2 flex-wrap">
-            {selectedShow?.tags?.map((tag: ITag) => (
+            {Array?.isArray(selectedShow?.tags) && selectedShow.tags.map((tag: ITag) => (
               <div
                 key={tag.id}
                 className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg"

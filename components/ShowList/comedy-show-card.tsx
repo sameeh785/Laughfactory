@@ -35,13 +35,13 @@ export default function ComedyShowCard({
                         <div className="mb-3">
                            <div className="flex items-center gap-2 my-1 flex-wrap">
                            {
-    Array?.isArray(showDetails?.tags) && showDetails?.tags?.slice(0, 5).map((tag: ITag) => (
+    Array?.isArray(showDetails?.tags) && showDetails.tags.slice(0, 5).map((tag: ITag) => (
         <div key={tag.id} className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
             {tag.name}
         </div>
     ))}
 
-{showDetails?.tags && showDetails.tags.length > 5 && (
+{ Array?.isArray(showDetails?.tags) && showDetails.tags.length > 5 && (
     <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
         +{showDetails.tags.length - 5}
     </div>
