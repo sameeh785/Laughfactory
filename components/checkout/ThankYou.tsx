@@ -1,5 +1,5 @@
 import { CheckCircle, X } from "lucide-react";
-import Button from "../ui/Button";
+// import Button from "../ui/Button";
 import { useModalStore } from "@/store/useModalStore"
 import usePaymentFormStore from "@/store/usePaymentFormStore";
 import { useSelectedShowStore } from "@/store/useSelectedShowStore";
@@ -15,13 +15,13 @@ export default function ThankYou() {
         closeModal()
         setCurrentStep("tickets")
     }
-    const onDownloadTickets = () => {
-        const a = document.createElement("a")
-        a.href = downloadTicketsUrl
-        a.download = "tickets.pdf"
-        a.target = "_blank"
-        a.click()
-    }
+    // const onDownloadTickets = () => {
+    //     const a = document.createElement("a")
+    //     a.href = downloadTicketsUrl
+    //     a.download = "tickets.pdf"
+    //     a.target = "_blank"
+    //     a.click()
+    // }
     return (
 
         <div className="bg-white rounded-2xl shadow-xl max-w-lg text-center space-y-6">
@@ -47,9 +47,9 @@ export default function ThankYou() {
                 Your ticket for the <span className="font-semibold text-orange-500">{selectedShow?.title}</span> has been booked successfully.
                 Get ready for the show full of laughter! 😂
             </p>
-            <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onDownloadTickets}>
+            {/* <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onDownloadTickets}>
                 Download Tickets
-            </Button>
+            </Button> */}
            </div>    
         </div>
     );
