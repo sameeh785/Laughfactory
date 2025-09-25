@@ -43,7 +43,10 @@ export default function TicketList() {
           <p className="text-gray-600 mb-4">{selectedShow?.date}</p>
 
           {selectedShow?.description ? (
-            <RichTextDisplay htmlContent={selectedShow?.description} className="!max-h-[90px] !overflow-y-scroll !min-h-90px]" />
+            <RichTextDisplay
+              htmlContent={selectedShow?.description}
+              className="!max-h-[90px] !overflow-y-scroll !min-h-90px]"
+            />
           ) : null}
           <div className="flex items-center gap-2 flex-wrap">
             {selectedShow?.tags?.map((tag: ITag) => (
@@ -78,6 +81,11 @@ export default function TicketList() {
           ) {
             return null;
           }
+          const isPlusDisabled =
+            ticket.available_quantity === 0 ||
+            purchaseTicket?.quantity === ticket.available_quantity ||
+            checkifPoolIsFull(purchaseTicket);
+          const isMinusDisabled =  !purchaseTicket || purchaseTicket?.quantity === 0
           return (
             <div
               key={ticket.ticket_id}
@@ -116,9 +124,11 @@ export default function TicketList() {
                         removeQuantity(ticket.ticket_id.toString())
                       }
                       disabled={
-                        !purchaseTicket || purchaseTicket?.quantity === 0
+                        isMinusDisabled
                       }
-                      className="w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                      className={cn("w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center", {
+                        "opacity-50 cursor-not-allowed": isMinusDisabled
+                      })}
                     >
                       <Minus className="h-4 w-4" />
                     </button>
@@ -128,12 +138,11 @@ export default function TicketList() {
                     <button
                       onClick={() => addQuantity(ticket.ticket_id.toString())}
                       disabled={
-                        ticket.available_quantity === 0 ||
-                        purchaseTicket?.quantity ===
-                          ticket.available_quantity ||
-                        checkifPoolIsFull(purchaseTicket)
+                        isPlusDisabled
                       }
-                      className="w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 flex items-center justify-center"
+                      className={cn("w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 flex items-center justify-center", {
+                        "opacity-50 cursor-not-allowed": isPlusDisabled
+                      })}
                     >
                       <Plus className="h-4 w-4" />
                     </button>

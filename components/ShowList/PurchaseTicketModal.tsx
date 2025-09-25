@@ -60,7 +60,10 @@ export default function PurchaseTicketModal() {
                 >
                     {currentStep === "payment" && (
                         <button
-                            onClick={() => setCurrentStep("tickets")}
+                            onClick={() => {
+                                setTermsAccepted(false)
+                                setCurrentStep("tickets")
+                            }}
                             className="m-3 hover:bg-gray-100 rounded-full transition-colors w-10 h-10 flex items-center justify-center"
                         >
                             <ArrowLeft className="w-5 h-5 text-gray-500" />
