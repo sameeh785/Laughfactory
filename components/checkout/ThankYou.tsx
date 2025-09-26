@@ -47,7 +47,7 @@ export default function ThankYou() {
                 Your ticket for the <span className="font-semibold text-orange-500">{selectedShow?.title}</span> has been booked successfully.
                 Get ready for the show full of laughter! 😂
             </p>
-            <p>Your tickets have been sent to your email.</p>
+            <p className="text-gray-600">Your tickets have been sent to your email.</p>
             {/* <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onDownloadTickets}>
                 Download Tickets
             </Button> */}
