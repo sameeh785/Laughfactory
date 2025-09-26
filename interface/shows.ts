@@ -18,6 +18,7 @@ export interface IShow {
 export interface IComedian {
     name: string
     image: string
+    url: string
 }
 
 export interface ITag {
