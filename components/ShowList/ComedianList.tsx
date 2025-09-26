@@ -4,6 +4,7 @@ import Tooltip from "@/components/ui/Tooltip"
 interface Comedian {
   name: string
   image: string
+  url: string
 }
 
 interface ComedianCarouselProps {
@@ -18,7 +19,7 @@ export default function ComedianList({ comedians }: ComedianCarouselProps) {
           {comedians.map((comedian, index) => (
             <div key={index} className="flex flex-col items-center justify-center flex-shrink-0">
               <Tooltip content={comedian.name} placement="top">
-                <div className="relative w-14 h-14 rounded-full overflow-hidden border-4 border-orange-400 mb-2 hover:border-orange-500 transition-colors group cursor-pointer">
+                <div className="relative w-14 h-14 rounded-full overflow-hidden border-4 border-orange-400 mb-2 hover:border-orange-500 transition-colors group cursor-pointer" onClick={() => comedian?.url && window.open(comedian.url, '_blank')}>
                   <Image
                     src={comedian.image || "/placeholder.svg"}
                     alt={comedian.name}

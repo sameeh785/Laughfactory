@@ -13,6 +13,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
   const { setSelectedShow} = useSelectedShowStore();
   const searchParams = useSearchParams();
   const showID = searchParams.get("showID");
+
   //effects
   useEffect(() => {
     if (showID) {
@@ -30,6 +31,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
                     image:
                       comedian.image ||
                       "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg",
+                    url: comedian?.url || "",
                   })),
                   date: formatDate(show.date, show.start_time),
                   dateId: show.date_id,
@@ -75,6 +77,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
                     image:
                       comedian.image ||
                       "https://cdn.laughfactory.com/images/comedians/com0000003819_big.jpg",
+                    url: comedian.url || "",
                   })),
                   date: formatDate(show.date, show.start_time),
                   dateId: show.date_id,

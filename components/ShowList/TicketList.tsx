@@ -30,12 +30,12 @@ export default function TicketList() {
     <div className="lg:col-span-2 space-y-6">
       <div className="w-full">
         <div>
-          <div className="flex items-center justify-between gap-2 w-full">
+          <div className="flex items-center justify-between md:gap-2 w-full flex-col md:flex-row">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               {selectedShow?.title}
             </h2>
             {alertMessage && (
-              <p className="font-2xl font-bold rounded-2xl bg-orange-500 text-white p-2">
+              <p className="font-2xl font-bold rounded-2xl bg-orange-500 text-white p-2 my-2">
                 {alertMessage}
               </p>
             )}
