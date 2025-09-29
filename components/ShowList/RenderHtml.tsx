@@ -1,9 +1,15 @@
 
 
+"use client";
+
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+
 interface RichTextDisplayProps {
   htmlContent: string;
   className?: string;
   maxHeight?: number;
+  detailHref?: string;
 }
 
 interface VideoEmbed {
@@ -15,8 +21,53 @@ interface VideoEmbed {
 const RichTextDisplay: React.FC<RichTextDisplayProps> = ({ 
   htmlContent, 
   className = '',
-  maxHeight = 400
+  maxHeight = 200,
+  detailHref
 }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockScrollTop, setLockScrollTop] = useState<number | null>(null);
+
+  useEffect(() => {
+    const element = contentRef.current;
+    if (!element) return;
+    const hasOverflow = element.scrollHeight > element.clientHeight + 1;
+    setIsOverflowing(hasOverflow);
+
+    if (!detailHref || !hasOverflow) {
+      setIsLocked(false);
+      setLockScrollTop(null);
+      return;
+    }
+
+    const clientHeight = element.clientHeight;
+    const maxScrollTop = Math.max(0, element.scrollHeight - clientHeight);
+    const baseAllowed = Math.max(60, Math.floor(clientHeight * 2));
+    const allowed = Math.min(baseAllowed, maxScrollTop);
+    setLockScrollTop(allowed);
+
+    // Clamp if already past allowed
+    if (element.scrollTop > allowed) {
+      element.scrollTop = allowed;
+      setIsLocked(true);
+    } else {
+      setIsLocked(false);
+    }
+  }, [htmlContent, maxHeight, detailHref]);
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.currentTarget;
+    if (lockScrollTop == null) return;
+    const tolerance = 4;
+    if (target.scrollTop >= lockScrollTop - tolerance) {
+      target.scrollTop = lockScrollTop;
+      if (!isLocked) setIsLocked(true);
+      return;
+    }
+    if (isLocked && target.scrollTop > lockScrollTop) {
+      target.scrollTop = lockScrollTop;
+    }
+  };
   const extractVideoInfo = (url: string): VideoEmbed => {
     // YouTube
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
@@ -117,15 +168,31 @@ const RichTextDisplay: React.FC<RichTextDisplayProps> = ({
   };
 
   const containerStyle: React.CSSProperties = {
-    maxHeight: maxHeight ? `${maxHeight}px` : 'none',
+    maxHeight: detailHref && maxHeight ? `${maxHeight}px` : 'none',
+    overflowY: detailHref && maxHeight ? 'auto' : undefined,
   };
-
   return (
-    <div 
-      className={`rich-text-container text-gray-600 ${className}`}
-      style={containerStyle}
-      dangerouslySetInnerHTML={{ __html: processHTML(htmlContent) }} 
-    />
+    <div className="relative">
+      <div 
+        ref={contentRef}
+        className={`rich-text-container text-gray-600 ${className}`}
+        style={containerStyle}
+        onScroll={handleScroll}
+      >
+        <div dangerouslySetInnerHTML={{ __html: processHTML(htmlContent) }} />
+
+        {detailHref && isOverflowing && (
+          <div className={`sticky bottom-2 w-full flex justify-end transition-opacity ${isLocked ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+            <Link 
+              href={detailHref}
+              className="inline-flex items-center rounded-md bg-orange-600 px-3 py-1.5 text-xs font-medium !text-white shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 !no-underline"
+            >
+              Read more
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

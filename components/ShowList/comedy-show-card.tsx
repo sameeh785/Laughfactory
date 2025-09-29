@@ -50,7 +50,7 @@ export default function ComedyShowCard({
                             <h3 className="text-[20px] font-bold text-gray-900 mb-2 truncate">
                                 {showDetails.title}
                             </h3>
-                           {showDetails.description ? <RichTextDisplay htmlContent={showDetails.description} className="!max-h-[50px] !overflow-y-scroll !min-h-[50px]" /> : null }
+                           {showDetails.description ? <RichTextDisplay htmlContent={showDetails.description} detailHref="https://laughfactory.vercel.app" maxHeight={90} /> : <p className="text-gray-500 flex items-center justify-center max-h-[90px]">No description available</p> }
 
                         </div>
 

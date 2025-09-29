@@ -45,7 +45,8 @@ export default function TicketList() {
           {selectedShow?.description ? (
             <RichTextDisplay
               htmlContent={selectedShow?.description}
-              className="!max-h-[90px] !overflow-y-scroll !min-h-90px]"
+              maxHeight={130}
+              detailHref="https://laughfactory.vercel.app"
             />
           ) : null}
           <div className="flex items-center gap-2 flex-wrap">
