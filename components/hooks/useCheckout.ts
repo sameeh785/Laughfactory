@@ -259,6 +259,7 @@ export const useCheckout = () => {
       ticket_type_id: ticket.ticket_type_id,
       quantity: ticket.quantity,
       price: Number(ticket.price),
+      ticket_id: ticket.ticket_id,
     }));
   }, [purchaseTicketList]);
 
