@@ -36,6 +36,33 @@ export const useTicketList = () => {
         ])
     }, [tickets, purchaseTicketList, setTickets, setPurchaseTicketList])
 
+    const setQuantity = useCallback((ticketId: string, nextQuantity: number) => {
+        const ticket = tickets.find((t) => t.ticket_id.toString() === ticketId)
+        if (!ticket) return
+
+        const requested = Number.isFinite(nextQuantity) ? Math.max(0, Math.floor(nextQuantity)) : 0
+
+        // Max allowed based on available quantity
+        let maxAllowed = ticket.available_quantity
+
+        // If ticket belongs to a pool, enforce pool capacity across pool tickets
+        if (ticket.is_in_pool && ticket.pool_capacity != null) {
+            const totalOtherPoolQty = purchaseTicketList
+                .filter((t) => t.is_in_pool && t.ticket_id !== ticket.ticket_id)
+                .reduce((acc, t) => acc + t.quantity, 0)
+            const poolRemaining = Math.max(0, (ticket.pool_capacity || 0) - totalOtherPoolQty)
+            maxAllowed = Math.min(maxAllowed, poolRemaining)
+        }
+
+        const clamped = Math.min(requested, maxAllowed)
+
+        setPurchaseTicketList(
+            purchaseTicketList.map((t) =>
+                t.ticket_id.toString() === ticketId ? { ...t, quantity: clamped } : t
+            )
+        )
+    }, [tickets, purchaseTicketList, setPurchaseTicketList])
+
 
     const getShowTicketList = useCallback(async () => {
         if(!selectedShow) {
@@ -107,6 +134,7 @@ export const useTicketList = () => {
         setSelectedShow,
         addQuantity,
         removeQuantity,
+        setQuantity,
         loading,
         tickets,
         purchaseTicketList,

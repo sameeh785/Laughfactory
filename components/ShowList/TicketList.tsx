@@ -12,6 +12,7 @@ export default function TicketList() {
     selectedShow,
     addQuantity,
     removeQuantity,
+    setQuantity,
     loading,
     tickets,
     purchaseTicketList,
@@ -26,6 +27,7 @@ export default function TicketList() {
       </div>
     );
   }
+ 
   return (
     <div className="lg:col-span-2 space-y-6">
       <div className="w-full">
@@ -87,6 +89,7 @@ export default function TicketList() {
             purchaseTicket?.quantity === ticket.available_quantity ||
             checkifPoolIsFull(purchaseTicket);
           const isMinusDisabled =  !purchaseTicket || purchaseTicket?.quantity === 0
+
           return (
             <div
               key={ticket.ticket_id}
@@ -133,9 +136,30 @@ export default function TicketList() {
                     >
                       <Minus className="h-4 w-4" />
                     </button>
-                    <span className="w-8 text-center font-medium">
-                      {purchaseTicket?.quantity || 0}
-                    </span>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      max={ticket.available_quantity}
+                      className="w-16 text-center font-medium border border-gray-300 rounded py-1 px-2 focus:outline-none focus:ring-2 focus:ring-orange-500 input-no-spinners"
+                      value={(purchaseTicket?.quantity ?? 0) > 0 ? purchaseTicket?.quantity : ""}
+                      placeholder="0"
+                      onFocus={(e) => e.currentTarget.select()}
+                      onKeyDown={(e) => {
+                        if (["e","E","+","-","."].includes(e.key)) {
+                          e.preventDefault()
+                        }
+                      }}
+                      onChange={(e) => {
+                        const next = Number(e.target.value)
+                        setQuantity(ticket.ticket_id.toString(), Number.isFinite(next) ? next : 0)
+                      }}
+                      onBlur={(e) => {
+                        if (e.target.value === "") {
+                          setQuantity(ticket.ticket_id.toString(), 0)
+                        }
+                      }}
+                    />
                     <button
                       onClick={() => addQuantity(ticket.ticket_id.toString())}
                       disabled={
