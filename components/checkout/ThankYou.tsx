@@ -3,8 +3,9 @@ import { CheckCircle, X } from "lucide-react";
 import { useModalStore } from "@/store/useModalStore"
 import usePaymentFormStore from "@/store/usePaymentFormStore";
 import { useSelectedShowStore } from "@/store/useSelectedShowStore";
+import { cn } from "@/utils/common";
 
-export default function ThankYou() {
+export default function ThankYou({ removeIcon }: { removeIcon?: boolean }) {
     // hooks
     const { closeModal } = useModalStore()
     const { setCurrentStep, downloadTicketsUrl } = usePaymentFormStore()
@@ -24,9 +25,13 @@ export default function ThankYou() {
     // }
     return (
 
-        <div className="bg-white rounded-2xl shadow-xl max-w-lg text-center space-y-6">
-            {/* close icon */}
-            <div className="flex justify-end">
+        <div className={cn("bg-white rounded-2xl shadow-xl text-center space-y-6 w-full h-full", {
+            "!w-full h-full justify-center items-center flex": removeIcon,
+            "max-w-lg": !removeIcon,
+        })}>
+           <div>
+             {/* close icon */}
+            {!removeIcon && <div className="flex justify-end">
                 <button
                     onClick={onClickCloseModal}
                     className="m-3 hover:bg-gray-100 rounded-full transition-colors w-6 h-6 flex items-center justify-center mr-4"
@@ -34,6 +39,7 @@ export default function ThankYou() {
                     <X className="w-5 h-5 text-gray-500" />
                 </button>
             </div>
+            }
             {/* Icon */}
             <CheckCircle className="text-orange-500 mx-auto !mt-0" size={64}/>
             {/* Title */}
@@ -51,7 +57,7 @@ export default function ThankYou() {
             {/* <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-200 transform hover:scale-105 outline-none" onClick={onDownloadTickets}>
                 Download Tickets
             </Button> */}
-           </div>    
+           </div>   </div> 
         </div>
     );
 }
