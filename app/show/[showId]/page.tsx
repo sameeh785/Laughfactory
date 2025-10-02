@@ -109,10 +109,9 @@ export default function PurchaseTicketModal({
   }
   return <div
   className={cn(
-    "relative w-full h-full",
+    "relative w-full h-full bg-white",
     {
-      "w-auto": currentStep === "thankyou",
-      "bg-white rounded-lg shadow-xl": currentStep === "tickets",
+      "w-auto": currentStep === "thankyou"
     }
   )}
 >
