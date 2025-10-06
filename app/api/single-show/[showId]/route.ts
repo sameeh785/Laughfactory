@@ -12,10 +12,12 @@ export async function GET(request: NextRequest, { params }: { params: { showId: 
             }
         )
         const data = await response.json()
+        console.log(data,"dataaa")
         // Return success response
         return NextResponse.json(data)
 
     } catch (error) {
+        console.log(error,"error")
         return NextResponse.json(
             { error:  error instanceof Error ? error.message : 'Internal server error' },
             { status: 500 }
