@@ -108,7 +108,7 @@ export const useTicketList = () => {
 
     const isToSetAlertMessage = useCallback(() => {
         if (selectedShow?.alert_quantity && tickets?.length) {
-            const available_quantity = tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
+            const available_quantity = tickets?.filter((ticket) => !ticket.is_special).reduce((acc, ticket) => acc + ticket.available_quantity, 0)
             if(selectedShow?.alert_is_percentage) {
                const totalQuantityAvailable =  tickets?.reduce((acc, ticket) => acc + ticket.available_quantity, 0)
                const totalQuantity =  tickets?.reduce((acc, ticket) => acc + ticket.quantity, 0)
