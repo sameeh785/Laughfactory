@@ -21,7 +21,7 @@ export default function ComedyShowCard({
         })}>
             {/* Banner Image */}
             <div className="relative h-48 rounded-t-lg">
-                <Image src={showDetails.image || "/placeholder.svg"} alt={showDetails.title} fill className="object-image-initial rounded-t-lg" />
+                {showDetails.image && <Image src={showDetails.image || "/placeholder.svg"} alt={showDetails.title} fill className="object-image-initial rounded-t-lg" /> }
                 {/* Time Badge */}
                 <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
                     {showDetails.date}

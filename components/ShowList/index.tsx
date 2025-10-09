@@ -24,8 +24,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
           title: show.title,
                   description: show.description,
                   image:
-                    show.image ||
-                    "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
+                    show?.image || "",
                   comedians: show.comedians.map((comedian: any) => ({
                     name: comedian.name,
                     image:
@@ -69,9 +68,7 @@ export default function ShowsList({ shows }: { shows: any[] }) {
                 showDetails={{
                   title: show.title,
                   description: show.description,
-                  image:
-                    show.image ||
-                    "https://cdn.laughfactory.com/images/liveshowimages/BAN0000001257.jpg",
+                  image:  show?.image || "",
                   comedians: show.comedians.map((comedian: any) => ({
                     name: comedian.name,
                     image:

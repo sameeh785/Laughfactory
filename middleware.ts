@@ -27,5 +27,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: '/' // Adjust matcher for the pages you want this to run on
+  matcher: '/((?!api|_next/static|_next/image|favicon.ico).*)',
 };
