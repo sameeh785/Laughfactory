@@ -213,7 +213,7 @@ export const useCheckout = () => {
         
         // Clear error when user starts typing
         if (errors[field]) {
-          updateErrors({ [field]: "" });
+          updateErrors({ [field]: "Only numbers are allowed" });
         }
         return;
       }
