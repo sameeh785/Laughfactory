@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 
-export async function GET(request: NextRequest, { params }: { params: { showId: string } }) {
+export async function GET(request: NextRequest) {
     try {
-        const { showId } = params
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-single-show/${process.env.NEXT_PUBLIC_COMPANY_ID}/${showId}`,
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/company/${process.env.NEXT_PUBLIC_COMPANY_ID}/settings`,
             {
                 headers: {
                     'Authorization': 'Basic ' + Buffer.from(process.env.NEXT_PUBLIC_API_USERNAME + ':' + process.env.NEXT_PUBLIC_API_PASSWORD).toString('base64')

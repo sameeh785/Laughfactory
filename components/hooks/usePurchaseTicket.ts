@@ -26,7 +26,9 @@ export const usePurchaseTicket = () => {
         setAppliedCouponApiResponse,
         setDownloadTicketsUrl,
         setPromoCode,
-        promoCode
+        promoCode,
+        setPromotionalOffers,
+        promotionalOffers
     } = usePaymentFormStore();
     const formRef = useRef<HTMLFormElement>(null);
     const submitFormRef = useRef<((e?: React.FormEvent) => void) | null>(null);
@@ -238,5 +240,7 @@ export const usePurchaseTicket = () => {
         appliedCoupon,
         onLoadPaymentData,
         validateForm,
+        promotionalOffers,
+        setPromotionalOffers,
     };
 };

@@ -78,6 +78,7 @@ export const useCheckout = () => {
     isSubmitting,
     setDownloadTicketsUrl,
     setCurrentStep,
+    promotionalOffers,
   } = usePaymentFormStore();
 
   const { purchaseTicketList, subtotal } =
@@ -345,6 +346,7 @@ export const useCheckout = () => {
           email: formData.email,
         },
         tickets: buildTicketsPayload(),
+        promotional_offers: promotionalOffers,
       };
 
       if (payload.charge_credit && appendCardInfo) {

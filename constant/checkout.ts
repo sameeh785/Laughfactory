@@ -10,18 +10,18 @@ export const ORDER_SOURCE = {
 
 //checkout referrer social media list
 export const socialMediaLinks = [
-    "facebook",
-    "x",
-    "instagram",
-    "tiktok",
-    "linkedin",
-    "snapchat",
-    "reddit",
-    "pinterest",
-    "youtube",
-    "nextdoor",
-    "tumblr",
-    "discord"
+  "facebook",
+  "x",
+  "instagram",
+  "tiktok",
+  "linkedin",
+  "snapchat",
+  "reddit",
+  "pinterest",
+  "youtube",
+  "nextdoor",
+  "tumblr",
+  "discord"
   ]
 
   //checkout referrer search enginelist

@@ -21,6 +21,7 @@ const initialFormData: IPaymentFormData = {
 const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set) => ({
     formData: initialFormData,
     errors: {},
+    promotionalOffers: false,
     currentStep: "tickets",
     promoCode: "",
     appliedCoupon: "",
@@ -35,7 +36,7 @@ const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set
         set({ promoCode }),
     setIsSubmitting: (isSubmitting: boolean) => 
         set({ isSubmitting }),
-
+    setPromotionalOffers: (promotionalOffers: boolean) => set({ promotionalOffers }),  
     updateFormData: (updates: Partial<IPaymentFormData>) => 
         set((state) => ({
             formData: { ...state.formData, ...updates }
@@ -50,7 +51,7 @@ const usePaymentFormStore = create<IPaymentFormState & IPaymentFormActions>((set
         })),
 
     resetForm: () => 
-        set({ formData: initialFormData, errors : {}, promoCode : "" }),
+        set({ formData: initialFormData, errors : {}, promoCode : "", promotionalOffers: false }),
 }))
 
 export default usePaymentFormStore

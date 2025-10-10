@@ -29,6 +29,7 @@ export interface IPaymentFormState {
     isSubmitting: boolean
     currentStep: "tickets" | "payment" | "thankyou"
     appliedCouponApiResponse: IAppliedCouponApiResponse | null
+    promotionalOffers: boolean
 }
 
 export interface IPaymentFormActions {
@@ -42,6 +43,7 @@ export interface IPaymentFormActions {
     resetForm: () => void
     setIsSubmitting: (isSubmitting: boolean) => void
     setDownloadTicketsUrl: (downloadTicketsUrl: string) => void
+    setPromotionalOffers: (promotionalOffers: boolean) => void
 }
 
 
