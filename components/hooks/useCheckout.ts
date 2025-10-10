@@ -204,6 +204,20 @@ export const useCheckout = () => {
          return updateErrors({ "zipCode" : "Enter a valid zip code" });
          }
       }
+      
+      // if its a card number, only accept numbers and spaces
+      if(field === "cardNumber"){
+        // Remove any characters that are not numbers or spaces
+        const numericValue = value.replace(/[^\d\s]/g, "");
+        updateFormData({ [field]: numericValue });
+        
+        // Clear error when user starts typing
+        if (errors[field]) {
+          updateErrors({ [field]: "" });
+        }
+        return;
+      }
+      
       updateFormData({ [field]: value });
 
       // Clear error when user starts typing
