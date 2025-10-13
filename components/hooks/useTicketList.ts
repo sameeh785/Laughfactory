@@ -16,6 +16,8 @@ export const useTicketList = () => {
     const searchParams = useSearchParams()
     const prID = searchParams.get("prID");
     const affID = searchParams.get("aff");
+    console.log(prID,"prID")
+    console.log(affID,"affID")
     // functions
     const addQuantity = useCallback((ticketId: string) => {
         const ticket = tickets.find((ticket) => ticket.ticket_id.toString() === ticketId)
