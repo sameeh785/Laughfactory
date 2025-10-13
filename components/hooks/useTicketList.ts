@@ -2,7 +2,7 @@ import { usePurchaseTicketsStore } from "@/store/usePurchaseTicketsStore"
 import { useSelectedShowStore } from "@/store/useSelectedShowStore"
 import { showToast } from "@/utils/toast"
 import { useCallback, useEffect, useState } from "react"
-// import { useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 // import { formatDate } from "@/utils/common"
 import { ITicket, ITicketList } from "@/interface/tickets"
 
@@ -13,6 +13,9 @@ export const useTicketList = () => {
     // hooks
     const { selectedShow, setSelectedShow } = useSelectedShowStore()
     const { setPurchaseTicketList, purchaseTicketList, setTickets, tickets } = usePurchaseTicketsStore()
+    const searchParams = useSearchParams()
+    const prID = searchParams.get("prID");
+    const affID = searchParams.get("aff");
     // functions
     const addQuantity = useCallback((ticketId: string) => {
         const ticket = tickets.find((ticket) => ticket.ticket_id.toString() === ticketId)
@@ -70,9 +73,17 @@ export const useTicketList = () => {
             return
         }
         try {
-            setLoading(true)    
-            const response = await fetch(`/api/show-tickets/${selectedShow?.dateId}`)
+            setLoading(true)
+            let path = `/api/show-tickets/${selectedShow?.dateId}`
+            if(prID) {
+                path += `?promoter_code=${prID}`
+            }
+            if(affID) {
+                path += `?affiliate_code=${affID}`
+            }
+            const response = await fetch(path)
             const { data: showDetails } = await response.json()
+            console.log(showDetails,"showDetails")
             if (showDetails?.show && showDetails?.tickets) {
                 setTickets(showDetails?.tickets)
                 setPurchaseTicketList(showDetails?.tickets.map((ticket: ITicket) => ({
