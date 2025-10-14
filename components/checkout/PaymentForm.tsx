@@ -12,7 +12,7 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps) {
-  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal,isSubmitting } = useCheckout()
+  const { handleSubmit, handleInputChange, formatCardNumber, formatExpiryDate, formData, errors, submitForm, states, appliedCoupon, subtotal,isSubmitting, purchaseTicketList } = useCheckout()
   // Pass the submit function to the ref if provided
   React.useEffect(() => {
     if (submitFormRef) {
@@ -30,7 +30,7 @@ export default function PaymentForm({formRef, submitFormRef }: PaymentFormProps)
   return (
     <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6 text-gray-900" ref={formRef}>
       {/* Payment Information */}
-      {appliedCoupon && subtotal === 0 ? null : <div className="space-y-4 bg-gray-50 rounded-lg p-4">
+      {subtotal === 0  && purchaseTicketList.some((ticket) => ticket.quantity > 0)? null : <div className="space-y-4 bg-gray-50 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-gray-900">Payment Information</h3>
 
         {/* Card Number */}

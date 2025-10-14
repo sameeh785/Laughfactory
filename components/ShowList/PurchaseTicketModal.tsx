@@ -124,11 +124,18 @@ export default function PurchaseTicketModal() {
                     <div className="space-y-2 mb-4">
                       {purchaseTicketList.map((option: ITicketList) => {
                         if (option.quantity === 0) return null;
-                        const discount =
-                          appliedCouponApiResponse?.applied_ticket_types?.find(
-                            (ticket) =>
-                              ticket.ticket_type_id === option.ticket_type_id
-                          )?.discount_amount;
+                        const appliedCouponDiscount = appliedCouponApiResponse?.applied_ticket_types?.find(
+                          (ticket) =>
+                            ticket.ticket_type_id === option.ticket_type_id
+                        )?.discount_amount;
+                        let discount = 0;
+                        if(appliedCouponDiscount) {
+                          discount = appliedCouponDiscount;
+                        }
+                        else if(option.discount) {
+                          discount = parseFloat(option.discount.amount);
+                        }
+                        
                         return (
                           <div
                             key={option.ticket_id}
@@ -191,7 +198,7 @@ export default function PurchaseTicketModal() {
                             ? `$${appliedCouponApiResponse?.discount_applied.toFixed(
                                 2
                               )}`
-                            : "$0.00"}
+                            : purchaseTicketList.filter((ticket) => ticket.quantity > 0).some((ticket) => ticket.discount) ? `$${purchaseTicketList.filter((ticket) => ticket.quantity > 0).reduce((sum, ticket) => sum + (parseFloat(ticket.discount?.amount || "0") || 0), 0).toFixed(2)}` : "$0.00"}
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
