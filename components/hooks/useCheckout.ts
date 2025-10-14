@@ -96,7 +96,7 @@ export const useCheckout = () => {
   // Validation functions
   const validateCardFields = useCallback(
     (newErrors: IPaymentFormErrors): void => {
-      if(appliedCoupon && subtotal === 0) {
+      if(subtotal === 0  && purchaseTicketList.some((ticket) => ticket.quantity > 0)) {
         return;
       }
       if (!formData.cardNumber.trim()) {
@@ -117,7 +117,7 @@ export const useCheckout = () => {
         newErrors.securityCode = VALIDATION_MESSAGES.securityCode.invalid;
       }
     },
-    [formData, appliedCoupon, subtotal]
+    [formData, appliedCoupon, subtotal, purchaseTicketList]
   );
 
   const validatePersonalInfo = useCallback(
