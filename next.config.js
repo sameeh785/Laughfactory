@@ -17,9 +17,14 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: '34.212.24.109',
-      },{
+      },
+      {
         protocol: 'http',
         hostname: 'cdn.laughfactory.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lfwebcdn.s3.us-west-2.amazonaws.com',
       }
     ],
   },
