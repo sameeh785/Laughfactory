@@ -450,5 +450,6 @@ export const useCheckout = () => {
     states,
     subtotal,
     appliedCoupon,
+    purchaseTicketList,
   };
 };

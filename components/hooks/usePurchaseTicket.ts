@@ -44,7 +44,13 @@ export const usePurchaseTicket = () => {
 
     // calculations
     const subtotal = useMemo(() => {
-        const discount = appliedCouponApiResponse?.discount_applied ?? 0;
+        let discount = 0;
+        if(appliedCouponApiResponse?.discount_applied) {
+            discount = appliedCouponApiResponse?.discount_applied;
+        }
+        else if(purchaseTicketList.some((ticket) => ticket.discount)) {
+            discount = purchaseTicketList.reduce((sum, ticket) => sum + (parseFloat(ticket.discount?.amount || "0") || 0), 0);
+        }
         const total =
             purchaseTicketList.reduce((sum, option) => {
                 return sum + parseFloat(option.price) * option.quantity;

@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
         const response = await fetch(`/api/settingDescription`);
         const {data} = await response.json();
         if(data?.settings?.frontend_text?.length > 0) {
-            console.log("data?.settings?.frontend_text",data?.settings?.frontend_text);
             setSettingDescription(data?.settings?.frontend_text);
         }
         else {

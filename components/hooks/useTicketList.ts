@@ -29,9 +29,20 @@ export const useTicketList = () => {
         }
         // const updatedTickets = tickets.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity - 1 } : t)
         // setTickets(updatedTickets)
-        setPurchaseTicketList(purchaseTicket ? purchaseTicketList?.map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity + 1 } : t) : [...purchaseTicketList, { ...ticket, quantity: 1 }])
-    }, [tickets, purchaseTicketList, setTickets, setPurchaseTicketList])
+      const updatedPurchaseTicketList = purchaseTicket ? purchaseTicketList?.map(t => t.ticket_id.toString() === ticketId ? { ...t, quantity: t.quantity + 1 } : t) : [...purchaseTicketList, { ...ticket, quantity: 1 }]
+       const finalUpdatedList = updatedPurchaseTicketList.map(t =>  {
+            if(t.discount?.type === "percentage"){
+               return { ...t, discount: { ...t.discount, amount: (t.quantity * parseFloat(t.price) * parseFloat(t.discount.discount_value)/ 100).toString() } }
+            } else if(t.discount?.type === "amount") {
+                const discount = parseFloat(tickets?.find(t => t.ticket_id.toString() === ticketId)?.discount?.discount_value || "0")
+               return { ...t, discount: { ...t.discount, amount: (discount > t.quantity * parseFloat(t.price) ? (t.quantity * parseFloat(t.price)).toString() : discount.toString()) } }
+            }
+           return t
+        })
+          
+        setPurchaseTicketList([...finalUpdatedList])
 
+    }, [tickets, purchaseTicketList, setTickets, setPurchaseTicketList])
 
     const removeQuantity = useCallback((ticketId: string) => {
         // const updatedTickets = tickets.map(t => t.ticket_id.toString() === ticketId ? { ...t, available_quantity: t.available_quantity + 1 } : t)
@@ -76,16 +87,15 @@ export const useTicketList = () => {
         }
         try {
             setLoading(true)
-            let path = `/api/show-tickets/${selectedShow?.dateId}`
+            let searchParams  = '?';
             if(prID) {
-                path += `?promoter_code=${prID}`
+                searchParams += `promoter_code=${prID}`
             }
             if(affID) {
-                path += `?affiliate_code=${affID}`
+                searchParams += `affiliate_code=${affID}`
             }
-            const response = await fetch(path)
+            const response = await fetch(`/api/show-tickets/${selectedShow?.dateId}${searchParams}`)
             const { data: showDetails } = await response.json()
-            console.log(showDetails,"showDetails")
             if (showDetails?.show && showDetails?.tickets) {
                 setTickets(showDetails?.tickets)
                 setPurchaseTicketList(showDetails?.tickets.map((ticket: ITicket) => ({
