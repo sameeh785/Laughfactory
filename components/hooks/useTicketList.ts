@@ -16,8 +16,7 @@ export const useTicketList = () => {
     const searchParams = useSearchParams()
     const prID = searchParams.get("prID");
     const affID = searchParams.get("aff");
-    console.log(prID,"prID")
-    console.log(affID,"affID")
+
     // functions
     const addQuantity = useCallback((ticketId: string) => {
         const ticket = tickets.find((ticket) => ticket.ticket_id.toString() === ticketId)
@@ -34,12 +33,13 @@ export const useTicketList = () => {
             if(t.discount?.type === "percentage"){
                return { ...t, discount: { ...t.discount, amount: (t.quantity * parseFloat(t.price) * parseFloat(t.discount.discount_value)/ 100).toString() } }
             } else if(t.discount?.type === "amount") {
-                const discount = parseFloat(tickets?.find(t => t.ticket_id.toString() === ticketId)?.discount?.discount_value || "0")
+                // Use the current ticket's discount value, not the ticket being added
+                const discount = parseFloat(t.discount.discount_value || "0")
                return { ...t, discount: { ...t.discount, amount: (discount > t.quantity * parseFloat(t.price) ? (t.quantity * parseFloat(t.price)).toString() : discount.toString()) } }
-            }
+            }     
            return t
         })
-          
+
         setPurchaseTicketList([...finalUpdatedList])
 
     }, [tickets, purchaseTicketList, setTickets, setPurchaseTicketList])
