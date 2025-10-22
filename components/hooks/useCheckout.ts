@@ -361,6 +361,7 @@ export const useCheckout = () => {
         },
         tickets: buildTicketsPayload(),
         promotional_offers: promotionalOffers,
+        user_timezone : Intl.DateTimeFormat().resolvedOptions().timeZone,
       };
 
       if (payload.charge_credit && appendCardInfo) {
